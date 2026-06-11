@@ -4,11 +4,11 @@ export const Route = createFileRoute('/_main/')({ component: Home })
 
 function Home() {
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold">Welcome to TanStack Start</h1>
+    <section >
+      <h1 className="text-4xl font-bold">Welcome to Setuverse</h1>
       <p className="mt-4 text-lg">
-        Edit <code>src/routes/index.tsx</code> to get started.
+        Setuverse is a platform for creating and sharing your own sets of cards.
       </p>
-    </div>
+    </section>
   )
 }

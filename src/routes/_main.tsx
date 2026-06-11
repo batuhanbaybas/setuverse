@@ -1,3 +1,4 @@
+import Navbar from '#/components/navbar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main')({
@@ -5,5 +6,10 @@ export const Route = createFileRoute('/_main')({
 })
 
 function MainLayout() {
-  return <Outlet />
+  return (
+    <main className="min-h-screen container mx-auto">
+      <Navbar />
+      <Outlet />
+    </main>
+  )
 }
