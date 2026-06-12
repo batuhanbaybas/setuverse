@@ -7,9 +7,11 @@ export const Route = createFileRoute('/_main')({
 
 function MainLayout() {
   return (
-    <main className="min-h-screen container mx-auto">
+    <main className="min-h-screen">
       <Navbar />
-      <Outlet />
+      <div className="container mx-auto">
+        <Outlet />
+      </div>
     </main>
   )
 }

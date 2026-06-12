@@ -1,21 +1,17 @@
-import { useSession } from "#/lib/auth-client"
-import { Link } from "@tanstack/react-router"
-import AuthButton from "./auth-button"
-import AuthUserDropdown from "./auth-user-dropdown"
+import { useSession } from '#/lib/auth-client'
+import AuthButton from './auth-button'
+import AuthArea from './auth-area'
+import BrandLogo from '../brand-logo'
 
 function Navbar() {
-    const { data: session } = useSession()
+  const { data: session } = useSession()
   return (
-    <header className="sticky top-0 z-50 border-b flex justify-between items-center py-4">
-        <h1>
-            <Link to="/" className="text-2xl font-bold">Setuverse</Link>
-        </h1>
+    <header className="sticky top-0 z-50 border-b py-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <BrandLogo />
 
-    {session ? (
-        <AuthUserDropdown />
-    ) : (
-        <AuthButton />
-    )}
+        {session ? <AuthArea /> : <AuthButton />}
+      </div>
     </header>
   )
 }

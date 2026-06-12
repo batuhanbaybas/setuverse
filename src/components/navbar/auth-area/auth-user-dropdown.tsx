@@ -1,6 +1,6 @@
-import Dropdown from "../ui/dropdown"
+import Dropdown from "../../ui/dropdown"
 import { signOut, useSession } from "#/lib/auth-client"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 
 function AuthUserDropdown() {
   const { data: session } = useSession()
