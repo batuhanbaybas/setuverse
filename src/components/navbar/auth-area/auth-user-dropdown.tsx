@@ -12,7 +12,7 @@ function AuthUserDropdown() {
   return (
     <Dropdown
       triggerProps={
-        {children: <Avatar className="size-10">
+        {children: <Avatar className="size-10 ring-1 ring-ring/20">
           <AvatarImage src={session?.user.image ?? ""} />
           <AvatarFallback>
             {session?.user.name
