@@ -8,6 +8,18 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  databaseHooks: {
+    user: {
+      create: {
+        // Google (veya baska bir provider) ile ilk girişte Better Auth user
+        // kaydini olusturur; ad/e-posta/avatar zaten User üzerinde tutuldugu
+        // icin profil sadece userId ile iliskilendirilerek acilir.
+        after: async (user) => {
+          await prisma.profile.create({ data: { userId: user.id } })
+        },
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,

@@ -1,0 +1,29 @@
+model Profile {
+  id        String   @id @default(cuid())
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Her kullanicinin tek bir profili olur; kullanici silinirse profil de silinir.
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  links ProfileLink[]
+
+  @@map("profile")
+}
+
+model ProfileLink {
+  id        String   @id @default(cuid())
+  label     String
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("profile_link")
+}
