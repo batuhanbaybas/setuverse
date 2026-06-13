@@ -2,6 +2,7 @@ import type { IconType } from 'react-icons'
 import { FaGoogle } from 'react-icons/fa6'
 import { LuPlus,LuCheck, LuChevronRight, LuCircle } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
+import { IoHome } from 'react-icons/io5'
 
 export const iconList = [
   // general icons
@@ -10,6 +11,7 @@ export const iconList = [
   { name: 'circle', icon: LuCircle },
   { name: 'check', icon: LuCheck },
   { name: 'chevron-right', icon: LuChevronRight },
+  { name: 'home', icon: IoHome },
   // social icons
   { name: 'google', icon: FaGoogle },
 ] as const satisfies ReadonlyArray<{ name: string; icon: IconType }>

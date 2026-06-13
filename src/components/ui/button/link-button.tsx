@@ -5,6 +5,7 @@ import { cn } from "#/lib/utils"
 
 
 function LinkButton({
+  className,
   variant = "default",
   size = "default",
   ...props
@@ -13,7 +14,7 @@ function LinkButton({
 
   return (
     <Link
-      className={cn(buttonVariants({ variant, size }))}
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
   )

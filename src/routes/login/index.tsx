@@ -1,6 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import GoogleSignInButton from '#/components/auth/google-sign-in-button'
 import { getSession } from '#/lib/auth.functions'
+import LinkButton from '#/components/ui/button/link-button'
+import Icon from '#/components/icons'
 
 type LoginSearch = {
   redirect?: string
@@ -29,10 +31,11 @@ function Login() {
       <p className="mt-3 text-muted-foreground">
         Create and share your own setups on Setuverse.
       </p>
-      <GoogleSignInButton
-        callbackURL={redirectTo}
-        className="mt-8"
-      />
+      <GoogleSignInButton callbackURL={redirectTo} className="mt-8" />
+      <LinkButton to="/" className="mt-4 gap-2 flex items-center" variant="outline">
+        <Icon name="home" />
+        Back to homepage
+      </LinkButton>
     </section>
   )
 }
