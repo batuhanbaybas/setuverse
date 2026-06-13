@@ -7,6 +7,7 @@ function AuthUserDropdown() {
 
   const handleSignOut = async () => {
     await signOut()
+    window.location.href = '/'
   }
 
   return (
