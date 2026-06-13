@@ -14,7 +14,6 @@
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
-    "post-cta-init": "pnpm dlx create-db@latest --user-agent tanstack/tsrouter",
     "db:generate": "dotenv -e .env -- prisma generate",
     "db:push": "dotenv -e .env -- prisma db push",
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
