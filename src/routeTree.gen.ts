@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
+import { Route as MainCreateIndexRouteImport } from './routes/_main/create/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const MainRoute = MainRouteImport.update({
@@ -22,6 +23,11 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any)
+const MainCreateIndexRoute = MainCreateIndexRouteImport.update({
+  id: '/create/',
+  path: '/create/',
+  getParentRoute: () => MainRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -31,23 +37,26 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/create/': typeof MainCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/create': typeof MainCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
   '/_main/': typeof MainIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_main/create/': typeof MainCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/$'
+  fullPaths: '/' | '/api/auth/$' | '/create/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$'
-  id: '__root__' | '/_main' | '/_main/' | '/api/auth/$'
+  to: '/' | '/api/auth/$' | '/create'
+  id: '__root__' | '/_main' | '/_main/' | '/api/auth/$' | '/_main/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -71,6 +80,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/create/': {
+      id: '/_main/create/'
+      path: '/create'
+      fullPath: '/create/'
+      preLoaderRoute: typeof MainCreateIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -83,10 +99,12 @@ declare module '@tanstack/react-router' {
 
 interface MainRouteChildren {
   MainIndexRoute: typeof MainIndexRoute
+  MainCreateIndexRoute: typeof MainCreateIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainIndexRoute: MainIndexRoute,
+  MainCreateIndexRoute: MainCreateIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)

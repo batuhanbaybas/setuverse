@@ -1,10 +1,10 @@
 import { Link } from '@tanstack/react-router'
-import { EarthIcon } from 'lucide-react'
+import Icon from './icons'
 
 function BrandLogo() {
   return (
     <Link to="/" className="flex items-center gap-1">
-      <EarthIcon className="size-8" color='var(--primary)' />
+      <Icon name="palanet" className="size-10 text-primary"  />
       <span className="text-2xl font-bold">Setuverse</span>
     </Link>
   )

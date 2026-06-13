@@ -1,12 +1,12 @@
 import LinkButton from "#/components/ui/button/link-button"
-import { PlusIcon } from "lucide-react"
 import AuthUserDropdown from "./auth-user-dropdown"
+import Icon from "#/components/icons"
 
 function AuthArea() {
   return (
     <nav className=" inline-flex items-center gap-6">
       <LinkButton to="/create">
-        <PlusIcon className="size-4" />
+        <Icon name="plus" />
         Create Setup
       </LinkButton>
       <AuthUserDropdown />
