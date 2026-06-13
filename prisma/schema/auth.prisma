@@ -3,10 +3,19 @@
 // runtime expects them exactly as defined here. Do not rename fields
 // without configuring field mapping in the Better Auth adapter.
 
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+
 model User {
   id            String   @id
   name          String
   email         String
+  role          Role   @default(USER)
   emailVerified Boolean  @default(false)
   image         String?
   createdAt     DateTime @default(now())
