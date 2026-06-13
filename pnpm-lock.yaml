@@ -50,9 +50,6 @@ dependencies:
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
-  lucide-react:
-    specifier: ^0.577.0
-    version: 0.577.0(react@19.2.0)
   nitro:
     specifier: npm:nitro-nightly@latest
     version: /nitro-nightly@3.0.1-20260611-123640-7765bcb7(@electric-sql/pglite@0.3.15)(vite@8.0.0)
@@ -5946,14 +5943,6 @@ packages:
   /lru.min@1.1.4:
     resolution: {integrity: sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
-    dev: false
-
-  /lucide-react@0.577.0(react@19.2.0):
-    resolution: {integrity: sha512-4LjoFv2eEPwYDPg/CUdBJQSDfPyzXCRrVW1X7jrx/trgxnxkHFjnVZINbzvzxjN70dxychOfg+FTYwBiS3pQ5A==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    dependencies:
-      react: 19.2.0
     dev: false
 
   /lz-string@1.5.0:
