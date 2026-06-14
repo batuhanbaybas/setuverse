@@ -24,7 +24,5 @@ export const Route = createFileRoute('/_main/create/')({
 })
 
 function CreateSetup() {
-  const { user  } = Route.useRouteContext()
-
-  return <CreateSetupPage userName={user.name} />
+  return <CreateSetupPage />
 }

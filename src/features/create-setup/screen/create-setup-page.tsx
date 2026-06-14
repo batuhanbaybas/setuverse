@@ -9,11 +9,7 @@ import {
 } from '../lib/create-setup-form'
 import type { CreateSetupFormValues } from '../lib/create-setup-form'
 
-type CreateSetupPageProps = {
-  userName: string
-}
-
-function CreateSetupPage({ userName }: CreateSetupPageProps) {
+function CreateSetupPage() {
   const form = useForm<CreateSetupFormValues>({
     resolver: zodResolver(
       createSetupFormSchema as never,
@@ -24,9 +20,11 @@ function CreateSetupPage({ userName }: CreateSetupPageProps) {
 
   return (
     <FormProvider {...form}>
-      <section className="mx-auto grid w-full grid-cols-12 gap-8 py-16">
-        <AddPhoto />
-        <SetupDetails />
+      <section className="mx-auto w-full py-16">
+        <div className="grid grid-cols-12 items-stretch gap-8">
+          <AddPhoto />
+          <SetupDetails />
+        </div>
       </section>
     </FormProvider>
   )

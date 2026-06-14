@@ -10,7 +10,9 @@ import {
 import { Slider } from '#/shared/components/ui/slider'
 import { getCroppedImage } from '../../lib/get-cropped-image'
 
-const COVER_ASPECT = 16 / 9
+import { SETUP_PHOTO_COVER_ASPECT } from '../../lib/setup-photo-limits'
+
+const COVER_ASPECT = SETUP_PHOTO_COVER_ASPECT
 
 type PhotoCropDialogProps = {
   open: boolean

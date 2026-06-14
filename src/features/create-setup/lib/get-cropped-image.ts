@@ -1,4 +1,8 @@
 import type { Area } from 'react-easy-crop'
+import {
+  getSetupPhotoOutputSize,
+  SETUP_PHOTO_JPEG_QUALITY,
+} from './setup-photo-limits'
 
 function createImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -21,8 +25,10 @@ export async function getCroppedImage(
     throw new Error('Could not get canvas context')
   }
 
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
+  const outputSize = getSetupPhotoOutputSize(pixelCrop.width, pixelCrop.height)
+
+  canvas.width = outputSize.width
+  canvas.height = outputSize.height
 
   context.drawImage(
     image,
@@ -32,8 +38,8 @@ export async function getCroppedImage(
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height,
+    outputSize.width,
+    outputSize.height,
   )
 
   return new Promise((resolve, reject) => {
@@ -47,7 +53,7 @@ export async function getCroppedImage(
         resolve(blob)
       },
       'image/jpeg',
-      0.92,
+      SETUP_PHOTO_JPEG_QUALITY,
     )
   })
 }

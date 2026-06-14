@@ -5,10 +5,15 @@ import type {
   CreateSetupFormValues,
   SetupPhoto,
 } from '../../lib/create-setup-form'
+import {
+  SETUP_PHOTO_ACCEPT_ATTRIBUTE,
+  validateSetupPhotoFile,
+} from '../../lib/setup-photo-limits'
 import CardHeader from '../../shared/card-header'
 import EmptyState from './empty-state'
 import HasPhoto from './has-photo'
 import PhotoCropDialog from './photo-crop-dialog'
+import SetupPreviewDialog from '../setup-preview-dialog'
 
 type CropState = {
   sourceFile: File
@@ -21,6 +26,8 @@ function AddPhoto() {
   const photo = useWatch({ control, name: 'photo' }) as SetupPhoto | undefined
   const previewUrlRef = useRef<string | undefined>(undefined)
   const [cropState, setCropState] = useState<CropState | null>(null)
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
   previewUrlRef.current = photo?.previewUrl
 
   useEffect(() => {
@@ -45,11 +52,15 @@ function AddPhoto() {
     })
   }
 
-  const handleFileSelected = (file: File) => {
-    if (!file.type.startsWith('image/')) {
+  const handleFileSelected = async (file: File) => {
+    const validation = await validateSetupPhotoFile(file)
+
+    if (!validation.ok) {
+      setUploadError(validation.error)
       return
     }
 
+    setUploadError(null)
     openCropper(file)
   }
 
@@ -97,6 +108,7 @@ function AddPhoto() {
     }
 
     setValue('photo', undefined, { shouldDirty: true })
+    setUploadError(null)
   }
 
   const openFilePicker = () => {
@@ -112,31 +124,37 @@ function AddPhoto() {
   }
 
   return (
-    <div className="col-span-12 md:col-span-8">
+    <div className="col-span-12 flex h-full flex-col md:col-span-8">
       <Card
+        wrapperProps={{ className: 'h-full' }}
         cardHeaderProps={{
           className: 'gap-3',
           children: <CardHeader step={1} title="Add Photo" description="Upload a cover photo for your setup. This will be the first thing people see." />,
         }}
         cardContentProps={{
+          className: 'flex min-h-0 flex-1 flex-col',
           children: (
             <>
               {photo ? (
                 <HasPhoto
                   photo={photo}
                   onEditCrop={handleEditCrop}
+                  onPreview={() => setPreviewOpen(true)}
                   openFilePicker={openFilePicker}
                   handleRemovePhoto={handleRemovePhoto}
                 />
               ) : (
-                <EmptyState onFileSelect={handleFileSelected} />
+                <EmptyState
+                  error={uploadError}
+                  onFileSelect={handleFileSelected}
+                />
               )}
 
               <input
                 id="setup-photo-input"
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept={SETUP_PHOTO_ACCEPT_ATTRIBUTE}
                 className="sr-only"
                 onChange={handleAddPhoto}
               />
@@ -156,6 +174,8 @@ function AddPhoto() {
           onComplete={handleCropComplete}
         />
       ) : null}
+
+      <SetupPreviewDialog open={previewOpen} onOpenChange={setPreviewOpen} />
     </div>
   )
 }
