@@ -1,18 +1,12 @@
-enum SetupStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 model Setup {
   id          String      @id @default(cuid())
   title       String
   description String
-  images      String[]
   status      SetupStatus @default(PENDING)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
+  images     SetupImage[]
   categories SetupCategory[]
 
   userId String

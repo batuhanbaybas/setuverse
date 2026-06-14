@@ -1,0 +1,16 @@
+model Equipment {
+  id          String   @id @default(cuid())
+  name        String
+  brand       String?
+  model       String?
+  url         String?
+  image       String?
+  description String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  pins EquipmentPin[]
+
+  @@map("equipments")
+}

@@ -1,0 +1,14 @@
+model ProfileLink {
+  id        String   @id @default(cuid())
+  label     String
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("profile_link")
+}

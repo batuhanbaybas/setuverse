@@ -2,7 +2,7 @@ model Category {
   id        String   @id @default(cuid())
   name      String
   slug      String   @unique
-  icon      String? 
+  icon      String?
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -10,18 +10,6 @@ model Category {
 
   setups SetupCategory[]
 
-  @@index([isActive,order])
+  @@index([isActive, order])
   @@map("categories")
-}
-
-model SetupCategory {
-  setupId    String
-  categoryId String
-
-  setup    Setup    @relation(fields: [setupId], references: [id], onDelete: Cascade)
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@id([setupId, categoryId])
-  @@index([categoryId])
-  @@map("setup_categories")
 }

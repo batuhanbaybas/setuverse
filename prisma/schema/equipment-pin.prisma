@@ -1,0 +1,17 @@
+model EquipmentPin {
+  id        String   @id @default(cuid())
+  x         Float
+  y         Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  setupImageId String
+  setupImage   SetupImage @relation(fields: [setupImageId], references: [id], onDelete: Cascade)
+
+  equipmentId String
+  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@unique([equipmentId, setupImageId])
+  @@index([setupImageId])
+  @@map("equipment_pins")
+}
