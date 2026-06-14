@@ -16,7 +16,6 @@ model User {
   sessions Session[]
   accounts Account[]
   profile  Profile?
-  setups   Setup[]
 
   @@unique([email])
   @@map("user")

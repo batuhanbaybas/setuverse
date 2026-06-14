@@ -1,6 +1,6 @@
+import Icon from '#/shared/components/icons'
 import LinkButton from '#/shared/components/ui/button/link-button'
 import AuthUserDropdown from './auth-user-dropdown'
-import Icon from '#/shared/components/icons'
 
 function AuthArea() {
   return (

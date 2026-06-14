@@ -1,7 +1,6 @@
 import type { IconType } from 'react-icons'
 import { FaGoogle } from 'react-icons/fa6'
 import {
-  LuPlus,
   LuCheck,
   LuChevronRight,
   LuCircle,
@@ -10,8 +9,8 @@ import {
   LuGamepad2,
   LuLeaf,
   LuStar,
-  LuUpload,
   LuX,
+  LuPlus,
 } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
 import { IoHome } from 'react-icons/io5'
@@ -23,7 +22,6 @@ export const iconList = [
   { name: 'plus', icon: LuPlus },
   { name: 'x', icon: LuX },
   { name: 'star', icon: LuStar },
-  { name: 'upload', icon: LuUpload },
   { name: 'circle', icon: LuCircle },
   { name: 'check', icon: LuCheck },
   { name: 'chevron-right', icon: LuChevronRight },

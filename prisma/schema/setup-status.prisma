@@ -1,5 +1,0 @@
-enum SetupStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}

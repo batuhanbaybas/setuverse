@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
-import { Route as MainCreateIndexRouteImport } from './routes/_main/create/index'
+import { Route as MainCreateRouteImport } from './routes/_main/create'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const MainRoute = MainRouteImport.update({
@@ -29,9 +29,9 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any)
-const MainCreateIndexRoute = MainCreateIndexRouteImport.update({
-  id: '/create/',
-  path: '/create/',
+const MainCreateRoute = MainCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => MainRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -42,36 +42,36 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
+  '/create': typeof MainCreateRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/create/': typeof MainCreateIndexRoute
 }
 export interface FileRoutesByTo {
+  '/create': typeof MainCreateRoute
   '/': typeof MainIndexRoute
   '/login': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/create': typeof MainCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
+  '/_main/create': typeof MainCreateRoute
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_main/create/': typeof MainCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/api/auth/$' | '/create/'
+  fullPaths: '/' | '/create' | '/login/' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/api/auth/$' | '/create'
+  to: '/create' | '/' | '/login' | '/api/auth/$'
   id:
     | '__root__'
     | '/_main'
+    | '/_main/create'
     | '/_main/'
     | '/login/'
     | '/api/auth/$'
-    | '/_main/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -103,11 +103,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRoute
     }
-    '/_main/create/': {
-      id: '/_main/create/'
+    '/_main/create': {
+      id: '/_main/create'
       path: '/create'
-      fullPath: '/create/'
-      preLoaderRoute: typeof MainCreateIndexRouteImport
+      fullPath: '/create'
+      preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
     }
     '/api/auth/$': {
@@ -121,13 +121,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface MainRouteChildren {
+  MainCreateRoute: typeof MainCreateRoute
   MainIndexRoute: typeof MainIndexRoute
-  MainCreateIndexRoute: typeof MainCreateIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainCreateRoute: MainCreateRoute,
   MainIndexRoute: MainIndexRoute,
-  MainCreateIndexRoute: MainCreateIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
