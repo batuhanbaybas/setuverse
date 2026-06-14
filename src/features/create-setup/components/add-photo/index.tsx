@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import Card from '#/shared/components/ui/card'
 import type {
@@ -8,12 +8,19 @@ import type {
 import CardHeader from './card-header'
 import EmptyState from './empty-state'
 import HasPhoto from './has-photo'
+import PhotoCropDialog from './photo-crop-dialog'
+
+type CropState = {
+  sourceFile: File
+  imageSrc: string
+}
 
 function AddPhoto() {
   const { control, setValue } = useFormContext<CreateSetupFormValues>()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const photo = useWatch({ control, name: 'photo' }) as SetupPhoto | undefined
   const previewUrlRef = useRef<string | undefined>(undefined)
+  const [cropState, setCropState] = useState<CropState | null>(null)
   previewUrlRef.current = photo?.previewUrl
 
   useEffect(() => {
@@ -24,8 +31,45 @@ function AddPhoto() {
     }
   }, [])
 
-  const setPhoto = (file: File) => {
+  const revokeCropPreview = (state: CropState | null) => {
+    if (state?.imageSrc) {
+      URL.revokeObjectURL(state.imageSrc)
+    }
+  }
+
+  const openCropper = (sourceFile: File) => {
+    revokeCropPreview(cropState)
+    setCropState({
+      sourceFile,
+      imageSrc: URL.createObjectURL(sourceFile),
+    })
+  }
+
+  const handleFileSelected = (file: File) => {
     if (!file.type.startsWith('image/')) {
+      return
+    }
+
+    openCropper(file)
+  }
+
+  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+
+    if (file) {
+      handleFileSelected(file)
+    }
+
+    event.target.value = ''
+  }
+
+  const handleCropCancel = () => {
+    revokeCropPreview(cropState)
+    setCropState(null)
+  }
+
+  const handleCropComplete = (croppedFile: File, previewUrl: string) => {
+    if (!cropState) {
       return
     }
 
@@ -36,21 +80,15 @@ function AddPhoto() {
     setValue(
       'photo',
       {
-        file,
-        previewUrl: URL.createObjectURL(file),
+        file: croppedFile,
+        previewUrl,
+        sourceFile: cropState.sourceFile,
       },
       { shouldDirty: true },
     )
-  }
 
-  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-
-    if (file) {
-      setPhoto(file)
-    }
-
-    event.target.value = ''
+    revokeCropPreview(cropState)
+    setCropState(null)
   }
 
   const handleRemovePhoto = () => {
@@ -65,37 +103,60 @@ function AddPhoto() {
     fileInputRef.current?.click()
   }
 
-  return (
-    <Card
-      cardHeaderProps={{
-        className: 'gap-3',
-        children: <CardHeader />,
-      }}
-      cardContentProps={{
-        children: (
-          <>
-            {photo ? (
-              <HasPhoto
-                photo={photo}
-                openFilePicker={openFilePicker}
-                handleRemovePhoto={handleRemovePhoto}
-              />
-            ) : (
-              <EmptyState />
-            )}
+  const handleEditCrop = () => {
+    if (!photo) {
+      return
+    }
 
-            <input
-              id="setup-photo-input"
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="sr-only"
-              onChange={handleAddPhoto}
-            />
-          </>
-        ),
-      }}
-    />
+    openCropper(photo.sourceFile)
+  }
+
+  return (
+    <>
+      <Card
+        cardHeaderProps={{
+          className: 'gap-3',
+          children: <CardHeader />,
+        }}
+        cardContentProps={{
+          children: (
+            <>
+              {photo ? (
+                <HasPhoto
+                  photo={photo}
+                  onEditCrop={handleEditCrop}
+                  openFilePicker={openFilePicker}
+                  handleRemovePhoto={handleRemovePhoto}
+                />
+              ) : (
+                <EmptyState onFileSelect={handleFileSelected} />
+              )}
+
+              <input
+                id="setup-photo-input"
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={handleAddPhoto}
+              />
+            </>
+          ),
+        }}
+      />
+
+      {cropState ? (
+        <PhotoCropDialog
+          key={cropState.imageSrc}
+          open
+          imageSrc={cropState.imageSrc}
+          fileName={cropState.sourceFile.name}
+          onOpenChange={() => undefined}
+          onCancel={handleCropCancel}
+          onComplete={handleCropComplete}
+        />
+      ) : null}
+    </>
   )
 }
 

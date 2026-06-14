@@ -4,10 +4,12 @@ import type { SetupPhoto } from '../../lib/create-setup-form'
 
 function HasPhoto({
   photo,
+  onEditCrop,
   openFilePicker,
   handleRemovePhoto,
 }: {
   photo: SetupPhoto
+  onEditCrop: () => void
   openFilePicker: () => void
   handleRemovePhoto: () => void
 }) {
@@ -29,6 +31,14 @@ function HasPhoto({
           </div>
 
           <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={onEditCrop}
+            >
+              Edit crop
+            </Button>
             <Button
               type="button"
               variant="secondary"

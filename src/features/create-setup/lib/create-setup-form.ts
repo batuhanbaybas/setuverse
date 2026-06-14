@@ -1,6 +1,7 @@
 export type SetupPhoto = {
   file: File
   previewUrl: string
+  sourceFile: File
 }
 
 export type CreateSetupFormValues = {
