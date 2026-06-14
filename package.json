@@ -17,7 +17,8 @@
     "db:generate": "dotenv -e .env -- prisma generate",
     "db:push": "dotenv -e .env -- prisma db push",
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
-    "db:studio": "dotenv -e .env -- prisma studio"
+    "db:studio": "dotenv -e .env -- prisma studio",
+    "db:seed": "dotenv -e .env -- prisma db seed"
   },
   "dependencies": {
     "@better-auth/prisma-adapter": "^1.6.16",
