@@ -1,5 +1,6 @@
 import CreateSetupPage from '#/features/create-setup/screen/create-setup-page'
 import { getSession } from '#/features/auth/lib/auth.functions'
+import getCategories from '#/features/home/server/get-categories'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main/create/')({
@@ -15,13 +16,15 @@ export const Route = createFileRoute('/_main/create/')({
       })
     }
 
-    return { user: session.user }
+    const categories = await getCategories()
+
+    return { user: session.user, categories }
   },
   component: CreateSetup,
 })
 
 function CreateSetup() {
-  const { user } = Route.useRouteContext()
+  const { user  } = Route.useRouteContext()
 
   return <CreateSetupPage userName={user.name} />
 }

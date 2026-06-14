@@ -3,18 +3,24 @@ import {
   CardTitle,
 } from '#/shared/components/ui/card/card-wrapper'
 
-function CardHeader() {
+interface Props { 
+    step: number
+    title: string
+    description: string
+}
+
+
+function CardHeader({ step, title, description }: Props) {
   return (
     <>
       <div className="flex items-center gap-3">
         <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
-          1
+          {step}
         </span>
-        <CardTitle className="text-lg">Add Photo</CardTitle>
+        <CardTitle className="text-lg">{title}</CardTitle>
       </div>
       <CardDescription>
-        Upload a cover photo for your setup. This will be the first thing people
-        see.
+        {description}
       </CardDescription>
     </>
   )

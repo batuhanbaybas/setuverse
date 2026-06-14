@@ -8,6 +8,9 @@ dependencies:
   '@better-auth/prisma-adapter':
     specifier: ^1.6.16
     version: 1.6.16(@better-auth/core@1.6.16)(@better-auth/utils@0.4.1)(@prisma/client@7.4.2)(prisma@7.4.2)
+  '@hookform/resolvers':
+    specifier: ^5.4.0
+    version: 5.4.0(react-hook-form@7.79.0)
   '@prisma/adapter-pg':
     specifier: ^7.4.2
     version: 7.4.2
@@ -1017,6 +1020,15 @@ packages:
       hono: ^4
     dependencies:
       hono: 4.11.4
+    dev: false
+
+  /@hookform/resolvers@5.4.0(react-hook-form@7.79.0):
+    resolution: {integrity: sha512-EIsqr/t/qbinPIhGjMdtvutIN1Kk4uwbROE9/UQ93CAVGR7GkA7Y92+fX80OzXi/OB67jVFYwKGO1WzkxmkFZw==}
+    peerDependencies:
+      react-hook-form: ^7.55.0
+    dependencies:
+      '@standard-schema/utils': 0.3.0
+      react-hook-form: 7.79.0(react@19.2.0)
     dev: false
 
   /@humanfs/core@0.19.2:
@@ -3100,6 +3112,10 @@ packages:
 
   /@standard-schema/spec@1.1.0:
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  /@standard-schema/utils@0.3.0:
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+    dev: false
 
   /@stylistic/eslint-plugin@5.10.0(eslint@9.20.0):
     resolution: {integrity: sha512-nPK52ZHvot8Ju/0A4ucSX1dcPV2/1clx0kLcH5wDmrE4naKso7TUC/voUyU1O9OTKTrR6MYip6LP0ogEMQ9jPQ==}

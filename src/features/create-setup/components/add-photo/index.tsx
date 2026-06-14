@@ -5,7 +5,7 @@ import type {
   CreateSetupFormValues,
   SetupPhoto,
 } from '../../lib/create-setup-form'
-import CardHeader from './card-header'
+import CardHeader from '../../shared/card-header'
 import EmptyState from './empty-state'
 import HasPhoto from './has-photo'
 import PhotoCropDialog from './photo-crop-dialog'
@@ -112,11 +112,11 @@ function AddPhoto() {
   }
 
   return (
-    <>
+    <div className="col-span-12 md:col-span-8">
       <Card
         cardHeaderProps={{
           className: 'gap-3',
-          children: <CardHeader />,
+          children: <CardHeader step={1} title="Add Photo" description="Upload a cover photo for your setup. This will be the first thing people see." />,
         }}
         cardContentProps={{
           children: (
@@ -156,7 +156,7 @@ function AddPhoto() {
           onComplete={handleCropComplete}
         />
       ) : null}
-    </>
+    </div>
   )
 }
 

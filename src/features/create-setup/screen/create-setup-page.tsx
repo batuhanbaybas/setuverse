@@ -1,7 +1,13 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import type { Resolver } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import AddPhoto from '../components/add-photo'
+import SetupDetails from '../components/setup-details'
+import {
+  createSetupDefaultValues,
+  createSetupFormSchema,
+} from '../lib/create-setup-form'
 import type { CreateSetupFormValues } from '../lib/create-setup-form'
-import { createSetupDefaultValues } from '../lib/create-setup-form'
 
 type CreateSetupPageProps = {
   userName: string
@@ -9,21 +15,18 @@ type CreateSetupPageProps = {
 
 function CreateSetupPage({ userName }: CreateSetupPageProps) {
   const form = useForm<CreateSetupFormValues>({
+    resolver: zodResolver(
+      createSetupFormSchema as never,
+    ) as Resolver<CreateSetupFormValues>,
     defaultValues: createSetupDefaultValues,
     mode: 'onChange',
   })
 
   return (
     <FormProvider {...form}>
-      <section className="mx-auto flex w-full max-w-4xl flex-col gap-8">
-        <header>
-          <h1 className="text-4xl font-bold">Create Setup</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Welcome back, {userName}. Start building your card set.
-          </p>
-        </header>
-
+      <section className="mx-auto grid w-full grid-cols-12 gap-8 py-16">
         <AddPhoto />
+        <SetupDetails />
       </section>
     </FormProvider>
   )
