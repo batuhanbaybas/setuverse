@@ -9,6 +9,9 @@ import {
   LuCodeXml,
   LuGamepad2,
   LuLeaf,
+  LuStar,
+  LuUpload,
+  LuX,
 } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
 import { IoHome } from 'react-icons/io5'
@@ -18,6 +21,9 @@ export const iconList = [
   // general icons
   { name: 'palanet', icon: TbPlanet },
   { name: 'plus', icon: LuPlus },
+  { name: 'x', icon: LuX },
+  { name: 'star', icon: LuStar },
+  { name: 'upload', icon: LuUpload },
   { name: 'circle', icon: LuCircle },
   { name: 'check', icon: LuCheck },
   { name: 'chevron-right', icon: LuChevronRight },
