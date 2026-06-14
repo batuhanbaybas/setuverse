@@ -8,8 +8,20 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  setups Setup[]
+  setups SetupCategory[]
 
   @@index([isActive,order])
   @@map("categories")
+}
+
+model SetupCategory {
+  setupId    String
+  categoryId String
+
+  setup    Setup    @relation(fields: [setupId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([setupId, categoryId])
+  @@index([categoryId])
+  @@map("setup_categories")
 }
