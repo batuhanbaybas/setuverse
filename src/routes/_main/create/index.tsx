@@ -1,4 +1,4 @@
-import CreateSetupPage from '#/features/create-setup/components/create-setup-page'
+import CreateSetupPage from '#/features/create-setup/screen/create-setup-page'
 import { getSession } from '#/features/auth/lib/auth.functions'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 

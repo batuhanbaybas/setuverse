@@ -1,0 +1,26 @@
+enum SetupStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Setup {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  image       String
+  status      SetupStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([status])
+  @@map("setup")
+}

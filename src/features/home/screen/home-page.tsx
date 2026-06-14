@@ -1,5 +1,5 @@
 import type { Category } from '#/generated/prisma/client'
-import Categories from './categories'
+import Categories from '../components/categories'
 
 interface Props {
   categories: Category[]
