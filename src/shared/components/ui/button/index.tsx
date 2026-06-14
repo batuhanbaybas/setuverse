@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority"
 import type { VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
 
-import { cn } from "#/lib/utils.ts"
+import { cn } from '#/shared/lib/utils'
 import { buttonVariants } from "./button-variant"
 
 

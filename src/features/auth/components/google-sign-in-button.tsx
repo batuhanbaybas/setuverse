@@ -1,6 +1,6 @@
-import { signIn } from '#/lib/auth-client'
-import Icon from '#/components/icons'
-import { Button } from '#/components/ui/button'
+import { signIn } from '#/features/auth/lib/auth-client'
+import Icon from '#/shared/components/icons'
+import { Button } from '#/shared/components/ui/button'
 
 type GoogleSignInButtonProps = {
   callbackURL?: string

@@ -1,7 +1,7 @@
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { betterAuth } from 'better-auth'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import { prisma } from '#/lib/prisma'
+import { prisma } from '#/shared/lib/prisma'
 
 export const auth = betterAuth({
   baseURL: process.env.BASE_URL!,

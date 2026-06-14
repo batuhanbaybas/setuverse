@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { buttonVariants } from "./button-variant"
 import type { VariantProps } from "class-variance-authority"
-import { cn } from "#/lib/utils"
+import { cn } from '#/shared/lib/utils'
 
 
 function LinkButton({

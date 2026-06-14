@@ -1,5 +1,5 @@
 import type { IconBaseProps } from 'react-icons'
-import { cn } from '#/lib/utils'
+import { cn } from '#/shared/lib/utils'
 import type { IconName } from './icon-list'
 import { iconList } from './icon-list'
 

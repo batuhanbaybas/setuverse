@@ -1,7 +1,7 @@
-import { useSession } from '#/lib/auth-client'
-import AuthButton from './auth-button'
-import AuthArea from './auth-area'
-import BrandLogo from '../brand-logo'
+import { useSession } from '#/features/auth/lib/auth-client'
+import AuthButton from '#/features/auth/components/auth-button'
+import AuthArea from '#/features/auth/components/auth-area'
+import BrandLogo from '#/features/shell/components/brand-logo'
 
 function Navbar() {
   const { data: session } = useSession()

@@ -1,8 +1,8 @@
 import * as React from "react"
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
-import { cn } from "#/lib/utils.ts"
-import Icon from "#/components/icons"
+import { cn } from '#/shared/lib/utils'
+import Icon from '#/shared/components/icons'
 
 function DropdownMenu({
   ...props

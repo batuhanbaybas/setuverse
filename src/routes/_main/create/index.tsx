@@ -1,5 +1,6 @@
+import CreateSetupPage from '#/features/create-setup/components/create-setup-page'
+import { getSession } from '#/features/auth/lib/auth.functions'
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { getSession } from '#/lib/auth.functions'
 
 export const Route = createFileRoute('/_main/create/')({
   beforeLoad: async ({ location }) => {
@@ -22,12 +23,5 @@ export const Route = createFileRoute('/_main/create/')({
 function CreateSetup() {
   const { user } = Route.useRouteContext()
 
-  return (
-    <section>
-      <h1 className="text-4xl font-bold">Create Setup</h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        Welcome back, {user.name}. Start building your card set.
-      </p>
-    </section>
-  )
+  return <CreateSetupPage userName={user.name} />
 }

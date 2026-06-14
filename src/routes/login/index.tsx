@@ -1,8 +1,6 @@
+import LoginPage from '#/features/auth/components/login-page'
+import { getSession } from '#/features/auth/lib/auth.functions'
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import GoogleSignInButton from '#/components/auth/google-sign-in-button'
-import { getSession } from '#/lib/auth.functions'
-import LinkButton from '#/components/ui/button/link-button'
-import Icon from '#/components/icons'
 
 type LoginSearch = {
   redirect?: string
@@ -25,17 +23,5 @@ export const Route = createFileRoute('/login/')({
 function Login() {
   const { redirect: redirectTo } = Route.useSearch()
 
-  return (
-    <section className="mx-auto flex max-w-md flex-col items-center py-16 text-center">
-      <h1 className="text-3xl font-bold">Sign in to continue</h1>
-      <p className="mt-3 text-muted-foreground">
-        Create and share your own setups on Setuverse.
-      </p>
-      <GoogleSignInButton callbackURL={redirectTo} className="mt-8" />
-      <LinkButton to="/" className="mt-4 gap-2 flex items-center" variant="outline">
-        <Icon name="home" />
-        Back to homepage
-      </LinkButton>
-    </section>
-  )
+  return <LoginPage redirectTo={redirectTo} />
 }

@@ -1,4 +1,4 @@
-import Navbar from '#/components/navbar'
+import Navbar from '#/features/shell/components/navbar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main')({

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import Icon from './icons'
+import Icon from '#/shared/components/icons'
 
 function BrandLogo() {
   return (

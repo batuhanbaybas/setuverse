@@ -1,6 +1,6 @@
-import Dropdown from "../../ui/dropdown"
-import { signOut, useSession } from "#/lib/auth-client"
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
+import Dropdown from '#/shared/components/ui/dropdown'
+import { signOut, useSession } from '#/features/auth/lib/auth-client'
+import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
 
 function AuthUserDropdown() {
   const { data: session } = useSession()
