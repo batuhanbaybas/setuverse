@@ -1,8 +1,4 @@
-export const SETUP_PHOTO_COVER_ASPECT = 16 / 9
-
-export const SETUP_PHOTO_MAX_OUTPUT_WIDTH = 1920
-export const SETUP_PHOTO_MAX_OUTPUT_HEIGHT = 1080
-export const SETUP_PHOTO_JPEG_QUALITY = 0.88
+export const SETUP_PHOTO_MAX_COUNT = 10
 
 export const SETUP_PHOTO_MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 export const SETUP_PHOTO_MAX_INPUT_DIMENSION = 6000
@@ -82,17 +78,4 @@ export async function validateSetupPhotoFile(
   }
 
   return { ok: true }
-}
-
-export function getSetupPhotoOutputSize(width: number, height: number) {
-  const scale = Math.min(
-    SETUP_PHOTO_MAX_OUTPUT_WIDTH / width,
-    SETUP_PHOTO_MAX_OUTPUT_HEIGHT / height,
-    1,
-  )
-
-  return {
-    width: Math.round(width * scale),
-    height: Math.round(height * scale),
-  }
 }

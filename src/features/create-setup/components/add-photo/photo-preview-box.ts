@@ -1,2 +1,2 @@
-export const photoPreviewBoxClassName =
-  'min-h-0 w-full flex-1 overflow-hidden rounded-xl'
+export const photoEmptyStateClassName =
+  'min-h-72 w-full overflow-hidden rounded-xl'

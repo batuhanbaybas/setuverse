@@ -41,9 +41,8 @@ function SetupDetails() {
   const {categories} =Route.useRouteContext()
 
   return (
-    <div className="col-span-12 flex h-full flex-col md:col-span-4">
+    <div className="col-span-12 md:col-span-4">
       <Card
-        wrapperProps={{ className: 'h-full' }}
         cardHeaderProps={{
           children: (
             <CardHeader
@@ -54,9 +53,8 @@ function SetupDetails() {
           ),
         }}
         cardContentProps={{
-          className: 'flex flex-1 flex-col',
           children: (
-            <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-col gap-6">
             <FormField
               control={control}
               name="title"

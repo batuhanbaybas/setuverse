@@ -11,5 +11,6 @@ model SetupImage {
   pins EquipmentPin[]
 
   @@index([setupId])
+  @@index([setupId, order])
   @@map("setup_images")
 }

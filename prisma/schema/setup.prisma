@@ -1,13 +1,14 @@
 model Setup {
   id          String      @id @default(cuid())
-  title       String
-  description String
+  title       String      @db.VarChar(100)
+  description String      @default("") @db.VarChar(500)
   status      SetupStatus @default(PENDING)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  images     SetupImage[]
-  categories SetupCategory[]
+  images      SetupImage[]
+  equipments  Equipment[]
+  categories  SetupCategory[]
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -1,16 +1,18 @@
 model Equipment {
-  id          String   @id @default(cuid())
-  name        String
-  brand       String?
-  model       String?
-  url         String?
-  image       String?
-  description String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String?  @db.VarChar(100)
+  url       String?  @db.VarChar(500)
+  image     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  pins EquipmentPin[]
+  setupId String
+  setup   Setup  @relation(fields: [setupId], references: [id], onDelete: Cascade)
 
+  pin EquipmentPin?
+
+  @@index([setupId])
+  @@index([setupId, order])
   @@map("equipments")
 }

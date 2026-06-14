@@ -19,7 +19,8 @@ type SetupPreviewDialogProps = {
 function SetupPreviewDialog({ open, onOpenChange }: SetupPreviewDialogProps) {
   const { control } = useFormContext<CreateSetupFormValues>()
   const { categories } = Route.useRouteContext()
-  const photo = useWatch({ control, name: 'photo' })
+  const photos = useWatch({ control, name: 'photos' }) ?? []
+  const coverPhoto = photos[0]
   const title = useWatch({ control, name: 'title' })
   const description = useWatch({ control, name: 'description' })
   const categoryId = useWatch({ control, name: 'categoryId' })
@@ -36,12 +37,12 @@ function SetupPreviewDialog({ open, onOpenChange }: SetupPreviewDialogProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="aspect-video w-full bg-muted">
-          {photo?.previewUrl ? (
+        <div className="flex aspect-video w-full items-center justify-center bg-muted">
+          {coverPhoto?.previewUrl ? (
             <img
-              src={photo.previewUrl}
+              src={coverPhoto.previewUrl}
               alt={title || 'Setup cover preview'}
-              className="size-full object-cover object-center"
+              className="block max-h-full max-w-full"
             />
           ) : (
             <div className="flex size-full items-center justify-center text-sm text-muted-foreground">

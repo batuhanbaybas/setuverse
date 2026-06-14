@@ -1,151 +1,155 @@
 import { useEffect, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import Card from '#/shared/components/ui/card'
-import type {
-  CreateSetupFormValues,
-  SetupPhoto,
+import {
+  createSetupPhoto,
+  getSelectedPhoto,
+  reorderPhotos,
 } from '../../lib/create-setup-form'
+import type { CreateSetupFormValues } from '../../lib/create-setup-form'
 import {
   SETUP_PHOTO_ACCEPT_ATTRIBUTE,
+  SETUP_PHOTO_MAX_COUNT,
   validateSetupPhotoFile,
 } from '../../lib/setup-photo-limits'
 import CardHeader from '../../shared/card-header'
 import EmptyState from './empty-state'
-import HasPhoto from './has-photo'
-import PhotoCropDialog from './photo-crop-dialog'
-import SetupPreviewDialog from '../setup-preview-dialog'
-
-type CropState = {
-  sourceFile: File
-  imageSrc: string
-}
+import PhotoGallery from './photo-gallery'
+import UploadFeedback from './upload-feedback'
 
 function AddPhoto() {
-  const { control, setValue } = useFormContext<CreateSetupFormValues>()
+  const { control, setValue, getValues } = useFormContext<CreateSetupFormValues>()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const photo = useWatch({ control, name: 'photo' }) as SetupPhoto | undefined
-  const previewUrlRef = useRef<string | undefined>(undefined)
-  const [cropState, setCropState] = useState<CropState | null>(null)
-  const [previewOpen, setPreviewOpen] = useState(false)
+  const photos = useWatch({ control, name: 'photos' }) ?? []
+  const selectedPhotoId = useWatch({ control, name: 'selectedPhotoId' })
   const [uploadError, setUploadError] = useState<string | null>(null)
-  previewUrlRef.current = photo?.previewUrl
+  const [isValidating, setIsValidating] = useState(false)
 
   useEffect(() => {
     return () => {
-      if (previewUrlRef.current) {
-        URL.revokeObjectURL(previewUrlRef.current)
-      }
+      getValues('photos').forEach((photo) => {
+        URL.revokeObjectURL(photo.previewUrl)
+      })
     }
-  }, [])
-
-  const revokeCropPreview = (state: CropState | null) => {
-    if (state?.imageSrc) {
-      URL.revokeObjectURL(state.imageSrc)
-    }
-  }
-
-  const openCropper = (sourceFile: File) => {
-    revokeCropPreview(cropState)
-    setCropState({
-      sourceFile,
-      imageSrc: URL.createObjectURL(sourceFile),
-    })
-  }
+  }, [getValues])
 
   const handleFileSelected = async (file: File) => {
-    const validation = await validateSetupPhotoFile(file)
-
-    if (!validation.ok) {
-      setUploadError(validation.error)
+    if (photos.length >= SETUP_PHOTO_MAX_COUNT) {
+      setUploadError(`You can upload up to ${SETUP_PHOTO_MAX_COUNT} photos.`)
       return
     }
 
+    setIsValidating(true)
     setUploadError(null)
-    openCropper(file)
+
+    try {
+      const validation = await validateSetupPhotoFile(file)
+
+      if (!validation.ok) {
+        setUploadError(validation.error)
+        return
+      }
+
+      const nextPhoto = createSetupPhoto(file)
+
+      setValue('photos', [...getValues('photos'), nextPhoto], {
+        shouldDirty: true,
+      })
+      setValue('selectedPhotoId', nextPhoto.id, { shouldDirty: true })
+    } finally {
+      setIsValidating(false)
+    }
   }
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
     if (file) {
-      handleFileSelected(file)
+      void handleFileSelected(file)
     }
 
     event.target.value = ''
   }
 
-  const handleCropCancel = () => {
-    revokeCropPreview(cropState)
-    setCropState(null)
-  }
+  const removePhoto = (photoId: string) => {
+    const currentPhotos = getValues('photos')
+    const photoToRemove = currentPhotos.find((photo) => photo.id === photoId)
 
-  const handleCropComplete = (croppedFile: File, previewUrl: string) => {
-    if (!cropState) {
-      return
+    if (photoToRemove) {
+      URL.revokeObjectURL(photoToRemove.previewUrl)
     }
 
-    if (photo?.previewUrl) {
-      URL.revokeObjectURL(photo.previewUrl)
-    }
+    const nextPhotos = currentPhotos.filter((photo) => photo.id !== photoId)
+
+    setValue('photos', nextPhotos, { shouldDirty: true })
 
     setValue(
-      'photo',
-      {
-        file: croppedFile,
-        previewUrl,
-        sourceFile: cropState.sourceFile,
-      },
+      'pins',
+      getValues('pins').filter((pin) => pin.photoId !== photoId),
       { shouldDirty: true },
     )
 
-    revokeCropPreview(cropState)
-    setCropState(null)
+    const nextSelectedPhoto = getSelectedPhoto(nextPhotos, selectedPhotoId)?.id
+
+    setValue('selectedPhotoId', nextSelectedPhoto, { shouldDirty: true })
+    setUploadError(null)
   }
 
-  const handleRemovePhoto = () => {
-    if (photo?.previewUrl) {
-      URL.revokeObjectURL(photo.previewUrl)
-    }
+  const handleReorder = (fromId: string, toId: string) => {
+    setValue('photos', reorderPhotos(getValues('photos'), fromId, toId), {
+      shouldDirty: true,
+    })
+  }
 
-    setValue('photo', undefined, { shouldDirty: true })
-    setUploadError(null)
+  const handleSelectPhoto = (photoId: string) => {
+    setValue('selectedPhotoId', photoId, { shouldDirty: true })
   }
 
   const openFilePicker = () => {
     fileInputRef.current?.click()
   }
 
-  const handleEditCrop = () => {
-    if (!photo) {
-      return
-    }
-
-    openCropper(photo.sourceFile)
-  }
+  const hasPhotos = photos.length > 0
+  const canAddMore = photos.length < SETUP_PHOTO_MAX_COUNT
 
   return (
-    <div className="col-span-12 flex h-full flex-col md:col-span-8">
+    <div className="col-span-12 md:col-span-8">
       <Card
-        wrapperProps={{ className: 'h-full' }}
         cardHeaderProps={{
           className: 'gap-3',
-          children: <CardHeader step={1} title="Add Photo" description="Upload a cover photo for your setup. This will be the first thing people see." />,
+          children: (
+            <CardHeader
+              step={1}
+              title="Photos"
+              description="Upload one or more photos of your setup. Click a photo to tag equipment below."
+            />
+          ),
         }}
         cardContentProps={{
-          className: 'flex min-h-0 flex-1 flex-col',
+          className: hasPhotos ? 'pb-6' : 'flex min-h-72 flex-col',
           children: (
             <>
-              {photo ? (
-                <HasPhoto
-                  photo={photo}
-                  onEditCrop={handleEditCrop}
-                  onPreview={() => setPreviewOpen(true)}
-                  openFilePicker={openFilePicker}
-                  handleRemovePhoto={handleRemovePhoto}
+              {uploadError ? (
+                <UploadFeedback
+                  className="mb-4"
+                  message={uploadError}
+                  onDismiss={() => setUploadError(null)}
+                />
+              ) : null}
+
+              {hasPhotos ? (
+                <PhotoGallery
+                  photos={photos}
+                  selectedPhotoId={selectedPhotoId}
+                  canAddMore={canAddMore}
+                  onAddMore={openFilePicker}
+                  onRemove={removePhoto}
+                  onReorder={handleReorder}
+                  onSelectPhoto={handleSelectPhoto}
                 />
               ) : (
                 <EmptyState
-                  error={uploadError}
+                  isValidating={isValidating}
                   onFileSelect={handleFileSelected}
                 />
               )}
@@ -156,26 +160,13 @@ function AddPhoto() {
                 type="file"
                 accept={SETUP_PHOTO_ACCEPT_ATTRIBUTE}
                 className="sr-only"
+                disabled={isValidating || !canAddMore}
                 onChange={handleAddPhoto}
               />
             </>
           ),
         }}
       />
-
-      {cropState ? (
-        <PhotoCropDialog
-          key={cropState.imageSrc}
-          open
-          imageSrc={cropState.imageSrc}
-          fileName={cropState.sourceFile.name}
-          onOpenChange={() => undefined}
-          onCancel={handleCropCancel}
-          onComplete={handleCropComplete}
-        />
-      ) : null}
-
-      <SetupPreviewDialog open={previewOpen} onOpenChange={setPreviewOpen} />
     </div>
   )
 }

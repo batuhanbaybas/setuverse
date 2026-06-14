@@ -8,10 +8,9 @@ model EquipmentPin {
   setupImageId String
   setupImage   SetupImage @relation(fields: [setupImageId], references: [id], onDelete: Cascade)
 
-  equipmentId String
+  equipmentId String    @unique
   equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
 
-  @@unique([equipmentId, setupImageId])
   @@index([setupImageId])
   @@map("equipment_pins")
 }
