@@ -1,8 +1,23 @@
 import HomePage from '#/features/home/components/home-page'
+import getCategories from '#/features/home/server/get-categories'
 import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'better-auth'
 
-export const Route = createFileRoute('/_main/')({ component: Home })
+
+
+const validateSearchParams = z.object({
+  category: z.string().optional(),
+})
+
+
+export const Route = createFileRoute('/_main/')({ 
+  validateSearch: validateSearchParams,
+  beforeLoad: async () => {
+  const categories = await getCategories()
+  return { categories }
+}, component: Home })
 
 function Home() {
-  return <HomePage />
+  const { categories } = Route.useRouteContext()
+  return <HomePage categories={categories} />
 }
