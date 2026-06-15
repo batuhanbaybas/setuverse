@@ -8,7 +8,41 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
-  // No seed data yet.
+  await prisma.category.createMany({
+    data: [
+      {
+        name: 'All',
+        slug: '/',
+        icon: 'layout-grid',
+        order: 1,
+      },
+      {
+        name: 'Developer',
+        slug: 'developer',
+        icon: 'code',
+        order: 2,
+      },
+      {
+        name: 'Gaming',
+        slug: 'gaming',
+        icon: 'game-pad',
+        order: 3,
+      },
+      {
+        name: 'Minimal',
+        slug: 'minimal',
+        icon: 'leaf',
+        order: 4,
+      },
+      {
+        name: 'Mac Setup',
+        slug: 'mac-setup',
+        icon: 'apple',
+        order: 5,
+      },
+    ],
+    skipDuplicates: true,
+  })
 }
 
 main()

@@ -1,0 +1,15 @@
+model SetupItem {
+    id String @id @default(cuid())
+    name String
+    url String
+    x Float
+    y Float
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    setupId String
+    setup Setup @relation(fields: [setupId], references: [id], onDelete: Cascade)
+
+    @@index([setupId])
+    @@map("setup_items")
+}
