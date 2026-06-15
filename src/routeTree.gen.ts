@@ -12,11 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
-import { Route as MainCreateIndexRouteImport } from './routes/_main/create/index'
+import { Route as MainCreateRouteImport } from './routes/_main/_create'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as MainCreateIdTagsRouteImport } from './routes/_main/create/$id/tags'
-import { Route as MainCreateIdReviewRouteImport } from './routes/_main/create/$id/review'
-import { Route as MainCreateIdInfoRouteImport } from './routes/_main/create/$id/info'
+import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
+import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
+import { Route as MainCreateCreateIdReviewRouteImport } from './routes/_main/_create/create/$id/review'
+import { Route as MainCreateCreateIdInfoRouteImport } from './routes/_main/_create/create/$id/info'
 
 const MainRoute = MainRouteImport.update({
   id: '/_main',
@@ -32,9 +33,8 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any)
-const MainCreateIndexRoute = MainCreateIndexRouteImport.update({
-  id: '/create/',
-  path: '/create/',
+const MainCreateRoute = MainCreateRouteImport.update({
+  id: '/_create',
   getParentRoute: () => MainRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -42,50 +42,57 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MainCreateIdTagsRoute = MainCreateIdTagsRouteImport.update({
+const MainCreateCreateIndexRoute = MainCreateCreateIndexRouteImport.update({
+  id: '/create/',
+  path: '/create/',
+  getParentRoute: () => MainCreateRoute,
+} as any)
+const MainCreateCreateIdTagsRoute = MainCreateCreateIdTagsRouteImport.update({
   id: '/create/$id/tags',
   path: '/create/$id/tags',
-  getParentRoute: () => MainRoute,
+  getParentRoute: () => MainCreateRoute,
 } as any)
-const MainCreateIdReviewRoute = MainCreateIdReviewRouteImport.update({
-  id: '/create/$id/review',
-  path: '/create/$id/review',
-  getParentRoute: () => MainRoute,
-} as any)
-const MainCreateIdInfoRoute = MainCreateIdInfoRouteImport.update({
+const MainCreateCreateIdReviewRoute =
+  MainCreateCreateIdReviewRouteImport.update({
+    id: '/create/$id/review',
+    path: '/create/$id/review',
+    getParentRoute: () => MainCreateRoute,
+  } as any)
+const MainCreateCreateIdInfoRoute = MainCreateCreateIdInfoRouteImport.update({
   id: '/create/$id/info',
   path: '/create/$id/info',
-  getParentRoute: () => MainRoute,
+  getParentRoute: () => MainCreateRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/create/': typeof MainCreateIndexRoute
-  '/create/$id/info': typeof MainCreateIdInfoRoute
-  '/create/$id/review': typeof MainCreateIdReviewRoute
-  '/create/$id/tags': typeof MainCreateIdTagsRoute
+  '/create/': typeof MainCreateCreateIndexRoute
+  '/create/$id/info': typeof MainCreateCreateIdInfoRoute
+  '/create/$id/review': typeof MainCreateCreateIdReviewRoute
+  '/create/$id/tags': typeof MainCreateCreateIdTagsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/create': typeof MainCreateIndexRoute
-  '/create/$id/info': typeof MainCreateIdInfoRoute
-  '/create/$id/review': typeof MainCreateIdReviewRoute
-  '/create/$id/tags': typeof MainCreateIdTagsRoute
+  '/create': typeof MainCreateCreateIndexRoute
+  '/create/$id/info': typeof MainCreateCreateIdInfoRoute
+  '/create/$id/review': typeof MainCreateCreateIdReviewRoute
+  '/create/$id/tags': typeof MainCreateCreateIdTagsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
+  '/_main/_create': typeof MainCreateRouteWithChildren
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_main/create/': typeof MainCreateIndexRoute
-  '/_main/create/$id/info': typeof MainCreateIdInfoRoute
-  '/_main/create/$id/review': typeof MainCreateIdReviewRoute
-  '/_main/create/$id/tags': typeof MainCreateIdTagsRoute
+  '/_main/_create/create/': typeof MainCreateCreateIndexRoute
+  '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
+  '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
+  '/_main/_create/create/$id/tags': typeof MainCreateCreateIdTagsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,13 +116,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_main'
+    | '/_main/_create'
     | '/_main/'
     | '/login/'
     | '/api/auth/$'
-    | '/_main/create/'
-    | '/_main/create/$id/info'
-    | '/_main/create/$id/review'
-    | '/_main/create/$id/tags'
+    | '/_main/_create/create/'
+    | '/_main/_create/create/$id/info'
+    | '/_main/_create/create/$id/review'
+    | '/_main/_create/create/$id/tags'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -147,11 +155,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRoute
     }
-    '/_main/create/': {
-      id: '/_main/create/'
-      path: '/create'
-      fullPath: '/create/'
-      preLoaderRoute: typeof MainCreateIndexRouteImport
+    '/_main/_create': {
+      id: '/_main/_create'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
     }
     '/api/auth/$': {
@@ -161,44 +169,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_main/create/$id/tags': {
-      id: '/_main/create/$id/tags'
+    '/_main/_create/create/': {
+      id: '/_main/_create/create/'
+      path: '/create'
+      fullPath: '/create/'
+      preLoaderRoute: typeof MainCreateCreateIndexRouteImport
+      parentRoute: typeof MainCreateRoute
+    }
+    '/_main/_create/create/$id/tags': {
+      id: '/_main/_create/create/$id/tags'
       path: '/create/$id/tags'
       fullPath: '/create/$id/tags'
-      preLoaderRoute: typeof MainCreateIdTagsRouteImport
-      parentRoute: typeof MainRoute
+      preLoaderRoute: typeof MainCreateCreateIdTagsRouteImport
+      parentRoute: typeof MainCreateRoute
     }
-    '/_main/create/$id/review': {
-      id: '/_main/create/$id/review'
+    '/_main/_create/create/$id/review': {
+      id: '/_main/_create/create/$id/review'
       path: '/create/$id/review'
       fullPath: '/create/$id/review'
-      preLoaderRoute: typeof MainCreateIdReviewRouteImport
-      parentRoute: typeof MainRoute
+      preLoaderRoute: typeof MainCreateCreateIdReviewRouteImport
+      parentRoute: typeof MainCreateRoute
     }
-    '/_main/create/$id/info': {
-      id: '/_main/create/$id/info'
+    '/_main/_create/create/$id/info': {
+      id: '/_main/_create/create/$id/info'
       path: '/create/$id/info'
       fullPath: '/create/$id/info'
-      preLoaderRoute: typeof MainCreateIdInfoRouteImport
-      parentRoute: typeof MainRoute
+      preLoaderRoute: typeof MainCreateCreateIdInfoRouteImport
+      parentRoute: typeof MainCreateRoute
     }
   }
 }
 
+interface MainCreateRouteChildren {
+  MainCreateCreateIndexRoute: typeof MainCreateCreateIndexRoute
+  MainCreateCreateIdInfoRoute: typeof MainCreateCreateIdInfoRoute
+  MainCreateCreateIdReviewRoute: typeof MainCreateCreateIdReviewRoute
+  MainCreateCreateIdTagsRoute: typeof MainCreateCreateIdTagsRoute
+}
+
+const MainCreateRouteChildren: MainCreateRouteChildren = {
+  MainCreateCreateIndexRoute: MainCreateCreateIndexRoute,
+  MainCreateCreateIdInfoRoute: MainCreateCreateIdInfoRoute,
+  MainCreateCreateIdReviewRoute: MainCreateCreateIdReviewRoute,
+  MainCreateCreateIdTagsRoute: MainCreateCreateIdTagsRoute,
+}
+
+const MainCreateRouteWithChildren = MainCreateRoute._addFileChildren(
+  MainCreateRouteChildren,
+)
+
 interface MainRouteChildren {
+  MainCreateRoute: typeof MainCreateRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
-  MainCreateIndexRoute: typeof MainCreateIndexRoute
-  MainCreateIdInfoRoute: typeof MainCreateIdInfoRoute
-  MainCreateIdReviewRoute: typeof MainCreateIdReviewRoute
-  MainCreateIdTagsRoute: typeof MainCreateIdTagsRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainCreateRoute: MainCreateRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
-  MainCreateIndexRoute: MainCreateIndexRoute,
-  MainCreateIdInfoRoute: MainCreateIdInfoRoute,
-  MainCreateIdReviewRoute: MainCreateIdReviewRoute,
-  MainCreateIdTagsRoute: MainCreateIdTagsRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
