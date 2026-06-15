@@ -128,7 +128,6 @@ body,
     @apply border-border outline-ring/50;
   }
 
-
   body {
     margin: 0;
     background-color: var(--background);
@@ -137,4 +136,14 @@ body,
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+.create-flow-stepper #RFS-StepButton {
+  border: 2px solid #e8e8ea !important;
+  box-sizing: border-box;
+}
+
+.create-flow-stepper #RFS-StepButton.active,
+.create-flow-stepper #RFS-StepButton.completed {
+  border-color: #9558f6 !important;
 }

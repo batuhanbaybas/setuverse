@@ -7,8 +7,11 @@ import {
   LuLayoutGrid,
   LuCodeXml,
   LuGamepad2,
+  LuImagePlus,
   LuLeaf,
+  LuLoader,
   LuStar,
+  LuUpload,
   LuX,
   LuPlus,
 } from 'react-icons/lu'
@@ -20,6 +23,9 @@ export const iconList = [
   // general icons
   { name: 'palanet', icon: TbPlanet },
   { name: 'plus', icon: LuPlus },
+  { name: 'upload', icon: LuUpload },
+  { name: 'image-plus', icon: LuImagePlus },
+  { name: 'loader', icon: LuLoader },
   { name: 'x', icon: LuX },
   { name: 'star', icon: LuStar },
   { name: 'circle', icon: LuCircle },
