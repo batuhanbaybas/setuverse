@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_main/_create/create/$id/info')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_main/create/$id/image"!</div>
+  return <div>Setup info step</div>
 }

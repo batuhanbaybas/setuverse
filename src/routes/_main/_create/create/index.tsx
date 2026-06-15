@@ -1,4 +1,3 @@
-import UploadSetupImageScreen from '#/features/upload-setup-image/screen'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main/_create/create/')({
@@ -6,5 +5,5 @@ export const Route = createFileRoute('/_main/_create/create/')({
 })
 
 function RouteComponent() {
-  return <UploadSetupImageScreen />
+  return <div>Upload image step</div>
 }

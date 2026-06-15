@@ -11,4 +11,4 @@ dist-ssr
 .output
 .vinxi
 __unconfig*
-todos.json
+public/uploads
