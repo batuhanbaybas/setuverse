@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_main/_create/create/$id/tags')({
+export const Route = createFileRoute('/_main/_create/create/info')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Tag items step</div>
+  return null
 }

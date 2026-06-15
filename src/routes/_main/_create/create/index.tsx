@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_main/_create/create/')({
 })
 
 function RouteComponent() {
-  return <div>Upload image step</div>
+  return null
 }

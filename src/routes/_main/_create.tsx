@@ -1,3 +1,4 @@
+import CreateFlowShell from '#/features/create-setup/components/create-flow-shell'
 import { getSession } from '#/features/auth/lib/auth.functions'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
@@ -17,8 +18,8 @@ export const Route = createFileRoute('/_main/_create')({
 
 function RouteComponent() {
   return (
-    <div className="py-10">
+    <CreateFlowShell>
       <Outlet />
-    </div>
+    </CreateFlowShell>
   )
 }
