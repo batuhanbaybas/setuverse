@@ -12,37 +12,36 @@ function CreateFlowProgress() {
   return (
     <section
       aria-label="Setup creation progress"
-      className="rounded-xl border bg-card p-4 shadow-sm sm:p-5"
+      className="rounded-xl border bg-card p-3 shadow-sm sm:p-4"
     >
-      <div className="space-y-3">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0 space-y-1">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0 flex items-center gap-2">
             <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              Step {stepNumber} of {totalSteps}
+              Step {stepNumber}/{totalSteps}
             </p>
-            <h2 className="text-lg font-semibold text-foreground">{label}</h2>
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <span className="text-muted-foreground/40">·</span>
+            <h2 className="text-sm font-semibold text-foreground">{label}</h2>
           </div>
-          <span className="shrink-0 text-sm font-semibold text-primary tabular-nums">
+          <span className="shrink-0 text-xs font-semibold text-primary tabular-nums">
             {value}%
           </span>
         </div>
 
         <Progress
           value={value}
-          className="h-2 bg-primary/10"
+          className="h-1.5 bg-primary/10"
           aria-label={`${value}% complete`}
         />
 
-        {nextLabel ? (
-          <p className="text-xs text-muted-foreground">
-            Up next: <span className="font-medium text-foreground">{nextLabel}</span>
-          </p>
-        ) : (
-          <p className="text-xs text-muted-foreground">
-            Final step — review your setup before publishing.
-          </p>
-        )}
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-muted-foreground">{description}</p>
+          {nextLabel ? (
+            <p className="text-xs text-muted-foreground">
+              Next: <span className="font-medium text-foreground">{nextLabel}</span>
+            </p>
+          ) : null}
+        </div>
       </div>
     </section>
   )

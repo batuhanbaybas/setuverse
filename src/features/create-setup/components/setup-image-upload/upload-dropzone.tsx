@@ -27,7 +27,7 @@ function UploadDropzone({ onDrop }: UploadDropzoneProps) {
         <div
           {...getRootProps()}
           className={cn(
-            'group flex min-h-120 cursor-pointer flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed px-6 py-12 text-center transition-all',
+            'group flex min-h-48 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-6 text-center transition-all',
             'hover:border-primary/60 hover:bg-primary/5',
             isDragActive &&
               !isDragReject &&
@@ -39,26 +39,31 @@ function UploadDropzone({ onDrop }: UploadDropzoneProps) {
 
           <div
             className={cn(
-              'flex size-16 items-center justify-center rounded-2xl border bg-background shadow-sm transition-colors',
+              'flex size-12 items-center justify-center rounded-xl border bg-background shadow-sm transition-colors',
               isDragActive && !isDragReject
                 ? 'border-primary/30 bg-primary/10 text-primary'
                 : 'text-muted-foreground group-hover:border-primary/30 group-hover:text-primary',
             )}
           >
-            <Icon name="image-plus" className="size-8" />
+            <Icon name="image-plus" className="size-6" />
           </div>
 
-          <div className="max-w-md space-y-2">
-            <p className="text-base font-medium">
-              {isDragReject
-                ? 'That file type is not supported'
-                : isDragActive
-                  ? 'Release to upload your image'
-                  : 'Drag and drop your setup photo here'}
-            </p>
+          <p className="text-sm font-medium">
+            {isDragReject
+              ? 'That file type is not supported'
+              : isDragActive
+                ? 'Release to upload your image'
+                : 'Drag and drop your setup photo here'}
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-muted-foreground">
+            <span className="rounded-full border bg-muted/40 px-2 py-0.5">JPG, PNG, WEBP</span>
+            <span className="rounded-full border bg-muted/40 px-2 py-0.5">Max 10 MB</span>
           </div>
+
           <Button
             type="button"
+            size="sm"
             variant="secondary"
             onClick={(event) => {
               event.stopPropagation()

@@ -6,7 +6,7 @@ import BrandLogo from '#/features/shell/components/brand-logo'
 function Navbar() {
   const { data: session } = useSession()
   return (
-    <header className="sticky top-0 z-50 border-b h-20 flex items-center">
+    <header className="sticky top-0 z-50 border-b h-20 flex items-center bg-background">
       <div className="container mx-auto flex justify-between items-center">
         <BrandLogo />
 

@@ -113,15 +113,15 @@ function SetupImageUpload() {
         render={({ field }) => <input type="hidden" {...field} />}
       />
 
-      <section className="w-full">
+      <section className="flex flex-1 flex-col">
         <Card
-          wrapperProps={{ className: 'w-full' }}
+          wrapperProps={{ className: 'flex-1' }}
           cardHeaderProps={{
-            className: 'space-y-3 border-b pb-6',
+            className: 'space-y-2 border-b pb-4',
             children: <UploadCardHeader />,
           }}
           cardContentProps={{
-            className: 'space-y-4 pt-2',
+            className: 'flex-1 space-y-3',
             children: (
               <>
                 {!hasFile ? <UploadDropzone onDrop={uploader.addFiles} /> : null}

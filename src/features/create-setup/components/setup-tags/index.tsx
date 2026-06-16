@@ -146,11 +146,11 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
 
   return (
     <>
-      <section className="w-full">
+      <section className="flex flex-1 flex-col">
         <Card
-          wrapperProps={{ className: 'w-full' }}
+          wrapperProps={{ className: 'flex-1' }}
           cardHeaderProps={{
-            className: 'space-y-3 border-b pb-6',
+            className: 'space-y-2 border-b pb-4',
             children: <SetupTagsHeader />,
           }}
           cardContentProps={{

@@ -37,7 +37,7 @@ function UploadPreview({
 
   return (
     <div className="overflow-hidden rounded-xl border bg-muted/20">
-      <div className="relative flex min-h-72 items-center justify-center bg-muted/40 p-6">
+      <div className="relative flex min-h-56 items-center justify-center bg-muted/40 p-4">
         {imageSrc ? (
           <img
             key={imageSrc}
@@ -80,9 +80,9 @@ function UploadPreview({
         ) : null}
       </div>
 
-      <div className="space-y-4 border-t bg-card p-4 sm:p-5">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div className="min-w-0 space-y-1">
+      <div className="space-y-3 border-t bg-card p-3 sm:p-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 space-y-0.5">
             <p className="truncate text-sm font-medium">{file.file.name}</p>
             <p className="text-xs text-muted-foreground">
               {formatFileSize(file.file.size)}
