@@ -13,7 +13,7 @@ function CreateFlowShell({ children }: CreateFlowShellProps) {
     <CreateFlowProvider>
       <div className="flex min-h-[calc(100dvh-5rem)] flex-col gap-4 pt-6 pb-24">
         <CreateFlowProgress />
-        <div className="flex flex-1 flex-col [&>*]:flex-1">{children}</div>
+        <div className="flex flex-1 flex-col">{children}</div>
         <CreateFlowFooter />
       </div>
     </CreateFlowProvider>

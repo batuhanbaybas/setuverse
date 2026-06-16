@@ -121,7 +121,7 @@ function SetupImageUpload() {
             children: <UploadCardHeader />,
           }}
           cardContentProps={{
-            className: 'flex-1 space-y-3',
+            className: 'flex flex-1 flex-col space-y-3',
             children: (
               <>
                 {!hasFile ? <UploadDropzone onDrop={uploader.addFiles} /> : null}
