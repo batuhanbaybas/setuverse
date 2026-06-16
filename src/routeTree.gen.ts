@@ -13,8 +13,6 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainCreateRouteImport } from './routes/_main/_create'
-import { Route as ApiSetupImageUploadRouteImport } from './routes/api/setup-image/upload'
-import { Route as ApiSetupImageDeleteRouteImport } from './routes/api/setup-image/delete'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
 import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
@@ -38,16 +36,6 @@ const MainIndexRoute = MainIndexRouteImport.update({
 const MainCreateRoute = MainCreateRouteImport.update({
   id: '/_create',
   getParentRoute: () => MainRoute,
-} as any)
-const ApiSetupImageUploadRoute = ApiSetupImageUploadRouteImport.update({
-  id: '/api/setup-image/upload',
-  path: '/api/setup-image/upload',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSetupImageDeleteRoute = ApiSetupImageDeleteRouteImport.update({
-  id: '/api/setup-image/delete',
-  path: '/api/setup-image/delete',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -80,8 +68,6 @@ export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/setup-image/delete': typeof ApiSetupImageDeleteRoute
-  '/api/setup-image/upload': typeof ApiSetupImageUploadRoute
   '/create/': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -91,8 +77,6 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/setup-image/delete': typeof ApiSetupImageDeleteRoute
-  '/api/setup-image/upload': typeof ApiSetupImageUploadRoute
   '/create': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -105,8 +89,6 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/setup-image/delete': typeof ApiSetupImageDeleteRoute
-  '/api/setup-image/upload': typeof ApiSetupImageUploadRoute
   '/_main/_create/create/': typeof MainCreateCreateIndexRoute
   '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -118,8 +100,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login/'
     | '/api/auth/$'
-    | '/api/setup-image/delete'
-    | '/api/setup-image/upload'
     | '/create/'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -129,8 +109,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/auth/$'
-    | '/api/setup-image/delete'
-    | '/api/setup-image/upload'
     | '/create'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -142,8 +120,6 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/login/'
     | '/api/auth/$'
-    | '/api/setup-image/delete'
-    | '/api/setup-image/upload'
     | '/_main/_create/create/'
     | '/_main/_create/create/$id/info'
     | '/_main/_create/create/$id/review'
@@ -154,8 +130,6 @@ export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiSetupImageDeleteRoute: typeof ApiSetupImageDeleteRoute
-  ApiSetupImageUploadRoute: typeof ApiSetupImageUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -187,20 +161,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
-    }
-    '/api/setup-image/upload': {
-      id: '/api/setup-image/upload'
-      path: '/api/setup-image/upload'
-      fullPath: '/api/setup-image/upload'
-      preLoaderRoute: typeof ApiSetupImageUploadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/setup-image/delete': {
-      id: '/api/setup-image/delete'
-      path: '/api/setup-image/delete'
-      fullPath: '/api/setup-image/delete'
-      preLoaderRoute: typeof ApiSetupImageDeleteRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -274,8 +234,6 @@ const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiSetupImageDeleteRoute: ApiSetupImageDeleteRoute,
-  ApiSetupImageUploadRoute: ApiSetupImageUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

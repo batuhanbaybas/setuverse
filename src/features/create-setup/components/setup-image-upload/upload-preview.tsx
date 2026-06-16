@@ -1,10 +1,11 @@
 import type { UploadFile } from 'react-upload-kit'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 import Icon from '#/shared/components/icons'
 import { Badge } from '#/shared/components/ui/badge'
 import { Button } from '#/shared/components/ui/button'
 
+import { getFilePreviewUrl } from '../../lib/file-preview-url'
 import type { SetupImageUploadResponse } from '../../lib/setup-image-upload-adapter'
 import { formatFileSize, getUploadStatusMeta } from '../../lib/upload-utils'
 
@@ -26,21 +27,13 @@ function UploadPreview({
   onCancel,
 }: UploadPreviewProps) {
   const status = getUploadStatusMeta(file.status)
-  const [localPreview, setLocalPreview] = useState<string | null>(null)
-  const uploadedUrl =
-    file.status === 'success' ? file.response?.url ?? null : null
+  const localPreview = useMemo(
+    () => getFilePreviewUrl(file.id, file.file),
+    [file.id, file.file],
+  )
 
-  useEffect(() => {
-    const previewUrl = URL.createObjectURL(file.file)
-    setLocalPreview(previewUrl)
-
-    return () => {
-      URL.revokeObjectURL(previewUrl)
-    }
-  }, [file.id, file.file])
-
-  // Prefer local blob preview — R2 public URL may not be readable yet (401).
-  const imageSrc = localPreview ?? uploadedUrl
+  // Local blob preview avoids relying on the R2 public URL during upload.
+  const imageSrc = localPreview
 
   return (
     <div className="overflow-hidden rounded-xl border bg-muted/20">

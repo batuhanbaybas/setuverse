@@ -1,28 +1,12 @@
 import { S3ServiceException } from '@aws-sdk/client-s3'
 
-function parseUploadFile(entry: FormDataEntryValue | null): File | null {
-  if (!entry || typeof entry === 'string') {
-    return null
-  }
-
-  const fileLike = entry as File | Blob
-
-  if (fileLike instanceof File) {
-    return fileLike
-  }
-
-  return new File([fileLike], 'upload', {
-    type: fileLike.type || 'application/octet-stream',
-  })
-}
-
-type UploadErrorDetails = {
+export type UploadErrorDetails = {
   message: string
   code?: string
   status: number
 }
 
-function getUploadErrorDetails(error: unknown): UploadErrorDetails {
+export function getUploadErrorDetails(error: unknown): UploadErrorDetails {
   if (error instanceof S3ServiceException) {
     if (error.name === 'AccessDenied') {
       const bucketName = process.env.R2_BUCKET_NAME ?? 'unknown'
@@ -62,5 +46,7 @@ function getUploadErrorDetails(error: unknown): UploadErrorDetails {
   }
 }
 
-export { getUploadErrorDetails, parseUploadFile }
-export type { UploadErrorDetails }
+export function toUploadError(error: unknown): Error {
+  const { message } = getUploadErrorDetails(error)
+  return new Error(message)
+}

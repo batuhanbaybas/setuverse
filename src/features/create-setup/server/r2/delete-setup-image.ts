@@ -1,10 +1,6 @@
 import { deleteR2Object } from '#/shared/lib/r2'
 
-const SETUP_IMAGE_KEY_PREFIX = 'setups/'
-
-export function isOwnedSetupImageKey(key: string, userId: string) {
-  return key.startsWith(`${SETUP_IMAGE_KEY_PREFIX}${userId}/`)
-}
+import { isOwnedSetupImageKey } from './utils'
 
 export async function deleteSetupImage({
   key,
