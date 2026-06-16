@@ -52,13 +52,9 @@ function ProfileSetupsTab({ setups }: ProfileSetupsTabProps) {
               ) : null}
             </div>
 
-            {setup.categories.length > 0 ? (
+            {setup.category ? (
               <div className="flex flex-wrap gap-1.5">
-                {setup.categories.map(({ category }) => (
-                  <Badge key={category.id} variant="secondary">
-                    {category.name}
-                  </Badge>
-                ))}
+                <Badge variant="secondary">{setup.category.name}</Badge>
               </div>
             ) : null}
           </div>

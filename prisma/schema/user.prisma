@@ -18,6 +18,8 @@ model User {
   profile  Profile?
 
   setups Setup[]
+  setupLikes SetupLike[]
+  setupSaves SetupSave[]
   @@unique([email])
   @@map("user")
 }

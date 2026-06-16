@@ -11,34 +11,28 @@ async function main() {
   await prisma.category.createMany({
     data: [
       {
-        name: 'All',
-        slug: '/',
-        icon: 'layout-grid',
-        order: 1,
-      },
-      {
         name: 'Developer',
         slug: 'developer',
         icon: 'code',
-        order: 2,
+        order: 1,
       },
       {
         name: 'Gaming',
         slug: 'gaming',
         icon: 'game-pad',
-        order: 3,
+        order: 2,
       },
       {
         name: 'Minimal',
         slug: 'minimal',
         icon: 'leaf',
-        order: 4,
+        order: 3,
       },
       {
         name: 'Mac Setup',
         slug: 'mac-setup',
         icon: 'apple',
-        order: 5,
+        order: 4,
       },
     ],
     skipDuplicates: true,

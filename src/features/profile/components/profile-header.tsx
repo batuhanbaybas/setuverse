@@ -32,7 +32,8 @@ function getRoleBadge(role: GetProfileResult['user']['role']) {
 }
 
 function ProfileHeader({ profile }: ProfileHeaderProps) {
-  const { user, bio, links, publishedSetupsCount } = profile
+  const { user, bio, links, publishedSetupsCount, receivedLikesCount, savedSetupsCount } =
+    profile
 
   return (
     <header className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
@@ -85,7 +86,11 @@ function ProfileHeader({ profile }: ProfileHeaderProps) {
         </div>
       </div>
 
-      <ProfileStats publishedSetupsCount={publishedSetupsCount} />
+      <ProfileStats
+        publishedSetupsCount={publishedSetupsCount}
+        receivedLikesCount={receivedLikesCount}
+        savedSetupsCount={savedSetupsCount}
+      />
     </header>
   )
 }

@@ -1,10 +1,15 @@
 import { getRouteApi } from '@tanstack/react-router'
 
+import ProfileEmptyTab from '../components/profile-empty-tab'
 import ProfileHeader from '../components/profile-header'
 import ProfileSetupsTab from '../components/profile-setups-tab'
+import ProfileTabs from '../components/profile-tabs'
 import useGetProfile from '../service/use-get-profile'
 
+const profileRouteApi = getRouteApi('/_main/profile/')
+
 function ProfilePage() {
+  const { tab = 'my-setups' } = profileRouteApi.useSearch()
   const profileQuery = useGetProfile()
 
   if (profileQuery.isLoading) {
@@ -27,9 +32,22 @@ function ProfilePage() {
     <section className="py-8">
       <ProfileHeader profile={profile} />
 
-      <div className="mt-8 space-y-4">
-        <h2 className="text-sm font-medium">Setups</h2>
-        <ProfileSetupsTab setups={profile.setups} />
+      <div className="mt-8 space-y-6">
+        <ProfileTabs />
+
+        {tab === 'liked' ? (
+          <ProfileEmptyTab
+            title="No liked setups yet"
+            description="Setups you like will appear here."
+          />
+        ) : tab === 'saved' ? (
+          <ProfileEmptyTab
+            title="No saved setups yet"
+            description="Setups you save will appear here."
+          />
+        ) : (
+          <ProfileSetupsTab setups={profile.setups} />
+        )}
       </div>
     </section>
   )

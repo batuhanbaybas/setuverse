@@ -18,6 +18,8 @@ model Setup {
     category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
     items SetupItem[]
+    likes SetupLike[]
+    saves SetupSave[]
 
     @@index([status, publishedAt])
     @@index([categoryId])

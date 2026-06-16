@@ -14,7 +14,11 @@ function createPrismaClient() {
 }
 
 function isPrismaClientReady(client: PrismaClient) {
-  return typeof client.setup?.create === 'function'
+  return (
+    typeof client.setup?.create === 'function' &&
+    typeof client.setupLike?.create === 'function' &&
+    typeof client.setupSave?.create === 'function'
+  )
 }
 
 function getPrismaClient() {

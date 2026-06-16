@@ -14,13 +14,11 @@ export type ProfileSetup = {
   imageUrl: string | null
   description: string | null
   publishedAt: Date | null
-  categories: Array<{
-    category: {
-      id: string
-      name: string
-      slug: string
-    }
-  }>
+  category: {
+    id: string
+    name: string
+    slug: string
+  } | null
 }
 
 export type GetProfileResult = {
@@ -38,6 +36,8 @@ export type GetProfileResult = {
     createdAt: Date
   }
   publishedSetupsCount: number
+  receivedLikesCount: number
+  savedSetupsCount: number
   setups: ProfileSetup[]
 }
 
@@ -75,45 +75,55 @@ export const getProfileFn = createServerFn({ method: 'GET' })
       throw new Error('Profile not found')
     }
 
-    const [publishedSetupsCount, setups] = await Promise.all([
-      prisma.setup.count({
-        where: {
-          userId,
-          status: 'PUBLISHED',
-        },
-      }),
-      prisma.setup.findMany({
-        where: {
-          userId,
-          status: 'PUBLISHED',
-        },
-        orderBy: { publishedAt: 'desc' },
-        select: {
-          id: true,
-          title: true,
-          imageUrl: true,
-          description: true,
-          publishedAt: true,
-          categories: {
-            select: {
-              category: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                },
+    const [publishedSetupsCount, receivedLikesCount, savedSetupsCount, setups] =
+      await Promise.all([
+        prisma.setup.count({
+          where: {
+            userId,
+            status: 'PUBLISHED',
+          },
+        }),
+        prisma.setupLike.count({
+          where: {
+            setup: {
+              userId,
+              status: 'PUBLISHED',
+            },
+          },
+        }),
+        prisma.setupSave.count({
+          where: { userId },
+        }),
+        prisma.setup.findMany({
+          where: {
+            userId,
+            status: 'PUBLISHED',
+          },
+          orderBy: { publishedAt: 'desc' },
+          select: {
+            id: true,
+            title: true,
+            imageUrl: true,
+            description: true,
+            publishedAt: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
               },
             },
           },
-        },
-      }),
-    ])
+        }),
+      ])
 
     return {
       bio: profile.bio,
       links: profile.links,
       user: profile.user,
       publishedSetupsCount,
+      receivedLikesCount,
+      savedSetupsCount,
       setups,
     }
   })
