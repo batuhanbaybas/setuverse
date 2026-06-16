@@ -1,8 +1,10 @@
 import Dropdown from '#/shared/components/ui/dropdown'
 import { signOut, useSession } from '#/features/auth/lib/auth-client'
 import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
+import { useNavigate } from '@tanstack/react-router'
 
 function AuthUserDropdown() {
+  const navigate = useNavigate()
   const { data: session } = useSession()
 
   const handleSignOut = async () => {
@@ -24,6 +26,12 @@ function AuthUserDropdown() {
         </Avatar>
         }}
       items={[
+        {
+          label: "Profile",
+          onSelect: () => {
+            void navigate({ to: '/profile' })
+          },
+        },
         {
           label: "Logout",
           onSelect: handleSignOut,

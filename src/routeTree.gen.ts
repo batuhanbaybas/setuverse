@@ -13,7 +13,9 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainCreateRouteImport } from './routes/_main/_create'
+import { Route as MainProfileIndexRouteImport } from './routes/_main/profile/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as MainProfileEditRouteImport } from './routes/_main/profile/edit'
 import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
 import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
 import { Route as MainCreateCreateIdReviewRouteImport } from './routes/_main/_create/create/$id/review'
@@ -37,10 +39,20 @@ const MainCreateRoute = MainCreateRouteImport.update({
   id: '/_create',
   getParentRoute: () => MainRoute,
 } as any)
+const MainProfileIndexRoute = MainProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => MainRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MainProfileEditRoute = MainProfileEditRouteImport.update({
+  id: '/profile/edit',
+  path: '/profile/edit',
+  getParentRoute: () => MainRoute,
 } as any)
 const MainCreateCreateIndexRoute = MainCreateCreateIndexRouteImport.update({
   id: '/create/',
@@ -67,7 +79,9 @@ const MainCreateCreateIdInfoRoute = MainCreateCreateIdInfoRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/profile/': typeof MainProfileIndexRoute
   '/create/': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -76,7 +90,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof LoginIndexRoute
+  '/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/profile': typeof MainProfileIndexRoute
   '/create': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -88,7 +104,9 @@ export interface FileRoutesById {
   '/_main/_create': typeof MainCreateRouteWithChildren
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/_main/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_main/profile/': typeof MainProfileIndexRoute
   '/_main/_create/create/': typeof MainCreateCreateIndexRoute
   '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -99,7 +117,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login/'
+    | '/profile/edit'
     | '/api/auth/$'
+    | '/profile/'
     | '/create/'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -108,7 +128,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/profile/edit'
     | '/api/auth/$'
+    | '/profile'
     | '/create'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -119,7 +141,9 @@ export interface FileRouteTypes {
     | '/_main/_create'
     | '/_main/'
     | '/login/'
+    | '/_main/profile/edit'
     | '/api/auth/$'
+    | '/_main/profile/'
     | '/_main/_create/create/'
     | '/_main/_create/create/$id/info'
     | '/_main/_create/create/$id/review'
@@ -162,12 +186,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/profile/': {
+      id: '/_main/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof MainProfileIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_main/profile/edit': {
+      id: '/_main/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof MainProfileEditRouteImport
+      parentRoute: typeof MainRoute
     }
     '/_main/_create/create/': {
       id: '/_main/_create/create/'
@@ -221,11 +259,15 @@ const MainCreateRouteWithChildren = MainCreateRoute._addFileChildren(
 interface MainRouteChildren {
   MainCreateRoute: typeof MainCreateRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
+  MainProfileEditRoute: typeof MainProfileEditRoute
+  MainProfileIndexRoute: typeof MainProfileIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainCreateRoute: MainCreateRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
+  MainProfileEditRoute: MainProfileEditRoute,
+  MainProfileIndexRoute: MainProfileIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)

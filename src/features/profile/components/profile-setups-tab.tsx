@@ -1,0 +1,71 @@
+import { Badge } from '#/shared/components/ui/badge'
+import SetupImage from '#/shared/components/setup-image'
+
+import type { ProfileSetup } from '../server/get-profile.functions'
+
+type ProfileSetupsTabProps = {
+  setups: ProfileSetup[]
+}
+
+function ProfileSetupsTab({ setups }: ProfileSetupsTabProps) {
+  if (setups.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed px-6 py-16 text-center">
+        <p className="text-sm font-medium">No published setups yet</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Published setups will appear here.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {setups.map((setup) => (
+        <li
+          key={setup.id}
+          className="overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-sm"
+        >
+          <div className="aspect-[4/3] overflow-hidden bg-muted">
+            {setup.imageUrl ? (
+              <SetupImage
+                imageUrl={setup.imageUrl}
+                alt={setup.title ?? 'Setup image'}
+                className="size-full object-cover"
+              />
+            ) : (
+              <div className="flex size-full items-center justify-center text-sm text-muted-foreground">
+                No image
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-3 p-4">
+            <div className="space-y-1">
+              <h3 className="line-clamp-1 font-medium">
+                {setup.title ?? 'Untitled setup'}
+              </h3>
+              {setup.description ? (
+                <p className="line-clamp-2 text-sm text-muted-foreground">
+                  {setup.description}
+                </p>
+              ) : null}
+            </div>
+
+            {setup.categories.length > 0 ? (
+              <div className="flex flex-wrap gap-1.5">
+                {setup.categories.map(({ category }) => (
+                  <Badge key={category.id} variant="secondary">
+                    {category.name}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export default ProfileSetupsTab

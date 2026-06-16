@@ -11,4 +11,6 @@ export const queryKeys = {
   deleteSetupItem: 'delete-setup-item',
   updateSetupImageUrl: 'update-setup-image-url',
   publishSetup: 'publish-setup',
+  getProfile: 'get-profile',
+  updateProfile: 'update-profile',
 }
