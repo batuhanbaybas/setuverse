@@ -50,7 +50,8 @@ function TagItemList({
             <Button
               type="button"
               variant="ghost"
-              size="icon-xs"
+              size="icon-sm"
+              className="shrink-0"
               aria-label={`Remove ${item.name}`}
               disabled={isRemoving}
               onClick={() => onRemove(item.id)}

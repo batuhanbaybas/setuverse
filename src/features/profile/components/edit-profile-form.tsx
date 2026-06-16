@@ -137,7 +137,7 @@ function EditProfileForm() {
                 />
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <h2 className="text-sm font-medium">Links</h2>
                       <p className="text-sm text-muted-foreground">
@@ -234,11 +234,11 @@ function EditProfileForm() {
           <p className="text-sm text-destructive">{errors.root.message}</p>
         ) : null}
 
-        <div className="flex flex-wrap items-center justify-end gap-3">
-          <LinkButton variant="outline" to="/profile">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+          <LinkButton variant="outline" to="/profile" className="w-full sm:w-auto">
             Cancel
           </LinkButton>
-          <Button type="submit" disabled={!isValid || isPending}>
+          <Button type="submit" disabled={!isValid || isPending} className="w-full sm:w-auto">
             {isPending ? 'Saving...' : 'Save changes'}
           </Button>
         </div>

@@ -18,7 +18,7 @@ function ProfilePage() {
 
   if (profileQuery.isError || !profileQuery.data) {
     return (
-      <section className="py-8">
+      <section className="py-6 sm:py-8">
         <p className="text-sm text-destructive">
           {profileQuery.error?.message ?? 'Failed to load profile'}
         </p>
@@ -29,7 +29,7 @@ function ProfilePage() {
   const profile = profileQuery.data
 
   return (
-    <section className="py-8">
+    <section className="py-6 sm:py-8">
       <ProfileHeader profile={profile} />
 
       <div className="mt-8 space-y-6">

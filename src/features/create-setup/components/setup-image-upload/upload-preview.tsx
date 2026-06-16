@@ -43,7 +43,7 @@ function UploadPreview({
             key={imageSrc}
             src={imageSrc}
             alt={file.file.name}
-            className="max-h-80 w-full rounded-lg object-contain shadow-sm"
+            className="max-h-48 w-full rounded-lg object-contain shadow-sm sm:max-h-80"
           />
         ) : (
           <div className="flex size-40 items-center justify-center rounded-lg border bg-background text-sm text-muted-foreground">

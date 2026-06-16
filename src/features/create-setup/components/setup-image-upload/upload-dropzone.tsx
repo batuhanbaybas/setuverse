@@ -27,7 +27,7 @@ function UploadDropzone({ onDrop }: UploadDropzoneProps) {
         <div
           {...getRootProps()}
           className={cn(
-            'group flex flex-1 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-6 text-center transition-all',
+            'group flex min-h-48 flex-1 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-5 text-center transition-all sm:min-h-0 sm:px-6 sm:py-6',
             'hover:border-primary/60 hover:bg-primary/5',
             isDragActive &&
               !isDragReject &&

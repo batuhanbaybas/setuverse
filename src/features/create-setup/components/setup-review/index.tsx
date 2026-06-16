@@ -318,7 +318,8 @@ function SetupReview({ setupId }: SetupReviewProps) {
                       <FormControl>
                         <Textarea
                           placeholder="Tell people about your setup..."
-                          rows={5}
+                          rows={4}
+                          className="min-h-24 sm:min-h-32"
                           maxLength={SETUP_INFO_DESCRIPTION_MAX}
                           {...field}
                         />
@@ -349,7 +350,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
           cardContentProps={{
             className: '',
             children: imageUrl ? (
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,280px)]">
                 <TagCanvas
                   imageUrl={imageUrl}
                   items={items}
@@ -357,7 +358,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
                   onImageClick={handleImageClick}
                   onMarkerClick={handleMarkerClick}
                 />
-                <aside className="flex min-h-0 flex-col gap-3">
+                <aside className="flex max-h-72 flex-col gap-3 md:max-h-none">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium">Items</h3>
                   </div>

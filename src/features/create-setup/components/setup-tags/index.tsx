@@ -127,7 +127,7 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
           cardContentProps={{
             className: '',
             children: (
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,280px)]">
                 <TagCanvas
                   imageUrl={imageUrl}
                   items={items}
@@ -135,7 +135,7 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
                   onImageClick={handleImageClick}
                   onMarkerClick={handleMarkerClick}
                 />
-                <aside className="flex min-h-0 flex-col gap-3">
+                <aside className="flex max-h-72 flex-col gap-3 md:max-h-none">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium">Tagged items</h3>
                     <span className="text-xs text-muted-foreground">

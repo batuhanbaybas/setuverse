@@ -22,7 +22,13 @@ function ProfileTabs() {
   const { tab = 'my-setups' } = profileRouteApi.useSearch()
 
   return (
-    <nav className="flex gap-6 border-b" aria-label="Profile sections">
+    <nav
+      className={cn(
+        'flex gap-4 overflow-x-auto border-b sm:gap-6',
+        '[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+      )}
+      aria-label="Profile sections"
+    >
       {profileTabs.map((item) => {
         const isActive = tab === item.id
 
@@ -32,7 +38,7 @@ function ProfileTabs() {
             to="/profile"
             search={{ tab: item.id }}
             className={cn(
-              '-mb-px border-b-2 px-1 pb-3 text-sm font-medium transition-colors',
+              '-mb-px shrink-0 border-b-2 px-1 pb-3 text-sm font-medium whitespace-nowrap transition-colors',
               isActive
                 ? 'border-foreground text-foreground'
                 : 'border-transparent text-muted-foreground hover:text-foreground',

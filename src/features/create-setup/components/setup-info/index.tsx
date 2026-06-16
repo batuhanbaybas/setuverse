@@ -211,7 +211,8 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                       <FormControl>
                         <Textarea
                           placeholder="Tell people about your setup..."
-                          rows={7}
+                          rows={4}
+                          className="min-h-24 sm:min-h-40"
                           maxLength={SETUP_INFO_DESCRIPTION_MAX}
                           {...field}
                         />

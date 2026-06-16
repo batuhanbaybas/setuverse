@@ -1,13 +1,15 @@
 import Icon from '#/shared/components/icons'
 import LinkButton from '#/shared/components/ui/button/link-button'
+
 import AuthUserDropdown from './auth-user-dropdown'
 
 function AuthArea() {
   return (
-    <nav className=" inline-flex items-center gap-6">
-      <LinkButton to="/create">
+    <nav className="inline-flex items-center gap-4 lg:gap-6">
+      <LinkButton to="/create" size="sm" className="md:h-10 md:px-4">
         <Icon name="plus" />
-        Create Setup
+        <span className="hidden sm:inline">Create Setup</span>
+        <span className="sm:hidden">Create</span>
       </LinkButton>
       <AuthUserDropdown />
     </nav>

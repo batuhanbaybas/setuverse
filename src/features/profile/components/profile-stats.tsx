@@ -32,15 +32,15 @@ function StatItem({ icon, value, label, className }: StatItemProps) {
   return (
     <div
       className={cn(
-        'flex min-w-24 flex-1 flex-col items-center gap-1 px-6 py-2 text-center first:pl-0 last:pr-0',
+        'flex min-w-0 flex-1 flex-col items-center gap-1 px-2 py-2 text-center sm:min-w-20 sm:px-4 lg:px-6',
         className,
       )}
     >
       {icon}
-      <span className="text-2xl font-semibold tabular-nums">
+      <span className="text-xl font-semibold tabular-nums sm:text-2xl">
         {formatStatNumber(value)}
       </span>
-      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-xs text-muted-foreground sm:text-sm">{label}</span>
     </div>
   )
 }
@@ -52,19 +52,19 @@ function ProfileStats({
 }: ProfileStatsProps) {
   return (
     <div className="w-full shrink-0 border-t pt-6 lg:w-auto lg:border-t-0 lg:border-l lg:pt-0 lg:pl-2">
-      <div className="flex items-stretch divide-x">
+      <div className="grid grid-cols-3 divide-x sm:flex sm:items-stretch">
         <StatItem
-          icon={<LuMonitor className="size-5 text-muted-foreground" aria-hidden />}
+          icon={<LuMonitor className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
           value={publishedSetupsCount}
           label="Setups"
         />
         <StatItem
-          icon={<LuHeart className="size-5 text-muted-foreground" aria-hidden />}
+          icon={<LuHeart className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
           value={receivedLikesCount}
           label="Likes"
         />
         <StatItem
-          icon={<LuBookmark className="size-5 text-muted-foreground" aria-hidden />}
+          icon={<LuBookmark className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
           value={savedSetupsCount}
           label="Saved"
         />

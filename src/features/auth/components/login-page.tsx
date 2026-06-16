@@ -8,13 +8,20 @@ type LoginPageProps = {
 
 function LoginPage({ redirectTo }: LoginPageProps) {
   return (
-    <section className="mx-auto flex max-w-md flex-col items-center py-16 text-center">
-      <h1 className="text-3xl font-bold">Sign in to continue</h1>
-      <p className="mt-3 text-muted-foreground">
+    <section className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-12 text-center sm:py-16">
+      <h1 className="text-2xl font-bold sm:text-3xl">Sign in to continue</h1>
+      <p className="mt-3 text-sm text-muted-foreground sm:text-base">
         Create and share your own setups on Setuverse.
       </p>
-      <GoogleSignInButton callbackURL={redirectTo} className="mt-8" />
-      <LinkButton to="/" className="mt-4 gap-2 flex items-center" variant="outline">
+      <GoogleSignInButton
+        callbackURL={redirectTo}
+        className="mt-8 w-full sm:w-auto"
+      />
+      <LinkButton
+        to="/"
+        className="mt-4 flex w-full items-center justify-center gap-2 sm:w-auto"
+        variant="outline"
+      >
         <Icon name="home" />
         Back to homepage
       </LinkButton>

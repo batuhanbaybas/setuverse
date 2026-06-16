@@ -45,7 +45,7 @@ function ProfileHeader({ profile }: ProfileHeaderProps) {
 
         <div className="min-w-0 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">{user.name}</h1>
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{user.name}</h1>
             {getRoleBadge(user.role)}
           </div>
 
