@@ -137,13 +137,3 @@ body,
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
-.create-flow-stepper #RFS-StepButton {
-  border: 2px solid #e8e8ea !important;
-  box-sizing: border-box;
-}
-
-.create-flow-stepper #RFS-StepButton.active,
-.create-flow-stepper #RFS-StepButton.completed {
-  border-color: #9558f6 !important;
-}

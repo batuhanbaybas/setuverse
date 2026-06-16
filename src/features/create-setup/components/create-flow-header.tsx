@@ -1,16 +1,7 @@
-import { lazy, Suspense } from 'react'
-import { ClientOnly } from '@tanstack/react-router'
-
-const CreateFlowStepper = lazy(() => import('./create-flow-stepper'))
+import CreateFlowProgress from './create-flow-progress'
 
 function CreateFlowHeader() {
-  return (
-    <ClientOnly>
-      <Suspense fallback={null}>
-        <CreateFlowStepper />
-      </Suspense>
-    </ClientOnly>
-  )
+  return <CreateFlowProgress />
 }
 
 export default CreateFlowHeader
