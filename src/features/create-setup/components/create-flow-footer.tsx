@@ -1,12 +1,23 @@
 import Icon from '#/shared/components/icons'
 import { Button } from '#/shared/components/ui/button'
 
-import { useCreateFlowContext } from '../context/create-flow-context'
+type CreateFlowFooterProps = {
+  onSubmit: () => void
+  isReady?: boolean
+  isSubmitting?: boolean
+  hint?: string
+  error?: string | null
+  buttonLabel?: string
+}
 
-function CreateFlowFooter() {
-  const { triggerSubmit, submitState } = useCreateFlowContext()
-  const { isReady, isSubmitting, hint, error } = submitState
-
+function CreateFlowFooter({
+  onSubmit,
+  isReady = false,
+  isSubmitting = false,
+  hint,
+  error,
+  buttonLabel = 'Continue',
+}: CreateFlowFooterProps) {
   if (!hint && !error && !isReady) {
     return null
   }
@@ -22,11 +33,11 @@ function CreateFlowFooter() {
         </div>
         <Button
           type="button"
-          onClick={triggerSubmit}
+          onClick={onSubmit}
           disabled={!isReady || isSubmitting}
           className="sm:min-w-36"
         >
-          Continue
+          {buttonLabel}
           <Icon name="chevron-right" />
         </Button>
       </div>

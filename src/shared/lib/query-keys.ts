@@ -9,4 +9,6 @@ export const queryKeys = {
   addSetupItem: 'add-setup-item',
   updateSetupItem: 'update-setup-item',
   deleteSetupItem: 'delete-setup-item',
+  updateSetupImageUrl: 'update-setup-image-url',
+  publishSetup: 'publish-setup',
 }

@@ -43,6 +43,10 @@ export const updateSetupItemsInputSchema = setupIdSchema.extend({
   items: z.array(setupItemInputSchema).min(1, 'Add at least one item'),
 })
 
+export const updateSetupImageUrlInputSchema = setupIdSchema.extend({
+  imageUrl: z.string().trim().url('Image URL must be valid'),
+})
+
 export const publishSetupInputSchema = setupIdSchema
 
 export const getSetupDraftInputSchema = setupIdSchema
@@ -54,5 +58,6 @@ export type AddSetupItemInput = z.infer<typeof addSetupItemInputSchema>
 export type UpdateSetupItemInput = z.infer<typeof updateSetupItemInputSchema>
 export type DeleteSetupItemInput = z.infer<typeof deleteSetupItemInputSchema>
 export type UpdateSetupItemsInput = z.infer<typeof updateSetupItemsInputSchema>
+export type UpdateSetupImageUrlInput = z.infer<typeof updateSetupImageUrlInputSchema>
 export type PublishSetupInput = z.infer<typeof publishSetupInputSchema>
 export type GetSetupDraftInput = z.infer<typeof getSetupDraftInputSchema>

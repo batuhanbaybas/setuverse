@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from '@tanstack/react-router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import useGetCategories from '#/features/home/service/use-get-categories'
@@ -31,26 +31,56 @@ import {
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
+import type { SetupItem } from '../../lib/setup-item'
+import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
+import useAddSetupItem from '../../service/use-add-setup-item'
+import useDeleteSetupItem from '../../service/use-delete-setup-item'
 import useGetSetupDraft from '../../service/use-get-setup-draft'
+import usePublishSetup from '../../service/use-publish-setup'
 import useUpdateSetupInfo from '../../service/use-update-setup-info'
-import CategoryOption from './category-option'
-import SetupInfoHeader from './setup-info-header'
+import useUpdateSetupItem from '../../service/use-update-setup-item'
+import CategoryOption from '../setup-info/category-option'
+import TagCanvas from '../setup-tags/tag-canvas'
+import TagItemDialog from '../setup-tags/tag-item-dialog'
+import TagItemList from '../setup-tags/tag-item-list'
+import ReviewImageSection from './review-image-section'
 
-type SetupInfoFormProps = {
+type SetupReviewProps = {
   setupId: string
 }
 
-function SetupInfoForm({ setupId }: SetupInfoFormProps) {
+type PendingTag = {
+  x: number
+  y: number
+  itemId?: string
+}
+
+function SetupReview({ setupId }: SetupReviewProps) {
   const navigate = useNavigate()
   const draftQuery = useGetSetupDraft(setupId)
   const categoriesQuery = useGetCategories()
   const updateSetupInfo = useUpdateSetupInfo()
+  const publishSetup = usePublishSetup()
+  const addItem = useAddSetupItem(setupId)
+  const updateItem = useUpdateSetupItem(setupId)
+  const deleteItem = useDeleteSetupItem(setupId)
 
   const categories = useMemo(
     () =>
       (categoriesQuery.data ?? []).filter((category) => category.slug !== '/'),
     [categoriesQuery.data],
   )
+
+  const items: SetupItem[] = draftQuery.data?.items ?? []
+  const imageUrl = draftQuery.data?.imageUrl ?? null
+
+  const [activeItemId, setActiveItemId] = useState<string | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [pendingTag, setPendingTag] = useState<PendingTag | null>(null)
+
+  const activeItem = items.find((item) => item.id === activeItemId) ?? null
+  const isItemMutating =
+    addItem.isPending || updateItem.isPending || deleteItem.isPending
 
   const form = useForm<SetupInfoFormValues>({
     resolver: standardSchemaResolver(setupInfoFormSchema),
@@ -79,6 +109,63 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
     [categories, selectedCategoryId],
   )
 
+  // --- Tag handlers ---
+
+  const handleImageClick = useCallback((position: { x: number; y: number }) => {
+    setPendingTag(position)
+    setActiveItemId(null)
+    setDialogOpen(true)
+  }, [])
+
+  const handleMarkerClick = useCallback(
+    (id: string) => {
+      const item = items.find((entry) => entry.id === id)
+      if (!item) return
+
+      setActiveItemId(id)
+      setPendingTag({ x: item.x, y: item.y, itemId: id })
+      setDialogOpen(true)
+    },
+    [items],
+  )
+
+  const handleTagSubmit = useCallback(
+    async (values: SetupTagItemFormValues) => {
+      if (!pendingTag) return
+
+      if (pendingTag.itemId) {
+        const result = await updateItem.mutateAsync({
+          itemId: pendingTag.itemId,
+          name: values.name,
+          url: values.url,
+        })
+        setActiveItemId(result.id)
+      } else {
+        const result = await addItem.mutateAsync({
+          setupId,
+          name: values.name,
+          url: values.url,
+          x: pendingTag.x,
+          y: pendingTag.y,
+        })
+        setActiveItemId(result.id)
+      }
+
+      setPendingTag(null)
+    },
+    [pendingTag, setupId, addItem, updateItem],
+  )
+
+  const handleRemoveItem = useCallback(
+    (id: string) => {
+      deleteItem.mutate(id)
+      setActiveItemId((current) => (current === id ? null : current))
+    },
+    [deleteItem],
+  )
+
+  // --- Publish ---
+
   const onSubmit = useCallback(
     async (values: SetupInfoFormValues) => {
       try {
@@ -89,21 +176,21 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
           categoryId: values.categoryId,
         })
 
-        await navigate({
-          to: '/create/$id/tags',
-          params: { id: setupId },
-        })
+        await publishSetup.mutateAsync({ setupId })
+
+        await navigate({ to: '/' })
       } catch (error) {
         form.setError('root', {
           message:
-            error instanceof Error ? error.message : 'Failed to save setup info',
+            error instanceof Error ? error.message : 'Failed to publish setup',
         })
       }
     },
-    [form, navigate, setupId, updateSetupInfo],
+    [form, navigate, setupId, updateSetupInfo, publishSetup],
   )
 
-  const isPending = isSubmitting || updateSetupInfo.isPending
+  const isPending =
+    isSubmitting || updateSetupInfo.isPending || publishSetup.isPending
 
   if (draftQuery.isLoading) {
     return null
@@ -111,12 +198,32 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
   return (
     <Form {...form}>
-      <section className="flex min-h-0 flex-1 flex-col">
+      <section className="flex min-h-0 flex-1 flex-col gap-6">
+        {/* Image — changeable */}
         <Card
-          wrapperProps={{ className: 'min-h-0 flex-1' }}
+          wrapperProps={{ className: 'w-full' }}
           cardHeaderProps={{
-            className: 'space-y-2 border-b pb-4',
-            children: <SetupInfoHeader />,
+            className: 'space-y-1 border-b pb-4',
+            children: (
+              <h2 className="text-lg font-semibold">Setup image</h2>
+            ),
+          }}
+          cardContentProps={{
+            className: '',
+            children: (
+              <ReviewImageSection setupId={setupId} imageUrl={imageUrl} />
+            ),
+          }}
+        />
+
+        {/* Setup details — editable form */}
+        <Card
+          wrapperProps={{ className: 'w-full' }}
+          cardHeaderProps={{
+            className: 'space-y-1 border-b pb-4',
+            children: (
+              <h2 className="text-lg font-semibold">Setup details</h2>
+            ),
           }}
           cardContentProps={{
             className: 'space-y-6 pt-2',
@@ -211,7 +318,7 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                       <FormControl>
                         <Textarea
                           placeholder="Tell people about your setup..."
-                          rows={7}
+                          rows={5}
                           maxLength={SETUP_INFO_DESCRIPTION_MAX}
                           {...field}
                         />
@@ -224,17 +331,82 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
             ),
           }}
         />
+
+        {/* Tagged items — interactive canvas */}
+        <Card
+          wrapperProps={{ className: 'w-full' }}
+          cardHeaderProps={{
+            className: 'space-y-1 border-b pb-4',
+            children: (
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">Tagged items</h2>
+                <span className="text-sm text-muted-foreground">
+                  {items.length} item{items.length === 1 ? '' : 's'}
+                </span>
+              </div>
+            ),
+          }}
+          cardContentProps={{
+            className: '',
+            children: imageUrl ? (
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+                <TagCanvas
+                  imageUrl={imageUrl}
+                  items={items}
+                  activeItemId={activeItemId}
+                  onImageClick={handleImageClick}
+                  onMarkerClick={handleMarkerClick}
+                />
+                <aside className="flex min-h-0 flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-medium">Items</h3>
+                  </div>
+                  <div className="min-h-0 flex-1 overflow-y-auto">
+                    <TagItemList
+                      items={items}
+                      activeItemId={activeItemId}
+                      onSelect={handleMarkerClick}
+                      onRemove={handleRemoveItem}
+                      isRemoving={deleteItem.isPending}
+                    />
+                  </div>
+                </aside>
+              </div>
+            ) : (
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Upload an image first to manage tagged items.
+              </p>
+            ),
+          }}
+        />
       </section>
+
+      <TagItemDialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open)
+          if (!open) setPendingTag(null)
+        }}
+        isEditing={Boolean(pendingTag?.itemId)}
+        isPending={isItemMutating}
+        initialValues={
+          activeItem
+            ? { name: activeItem.name, url: activeItem.url }
+            : undefined
+        }
+        onSubmit={handleTagSubmit}
+      />
 
       <CreateFlowFooter
         onSubmit={() => form.handleSubmit(onSubmit)()}
-        isReady={isValid && !draftQuery.isLoading}
+        isReady={isValid && !draftQuery.isLoading && items.length > 0}
         isSubmitting={isPending}
-        hint="Fill in the details below to continue to tagging items."
+        hint="Review your setup details below, then publish."
         error={errors.root?.message ?? null}
+        buttonLabel="Publish"
       />
     </Form>
   )
 }
 
-export default SetupInfoForm
+export default SetupReview

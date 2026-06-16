@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import Card from '#/shared/components/ui/card'
 
-import { useCreateFlowSubmit } from '../../context/create-flow-context'
+import CreateFlowFooter from '../create-flow-footer'
 import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
 import type { SetupItem } from '../../lib/setup-item'
 import useAddSetupItem from '../../service/use-add-setup-item'
@@ -115,16 +115,6 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
 
   const isReady = items.length > 0
 
-  useCreateFlowSubmit({
-    submit: handleContinue,
-    isReady,
-    isSubmitting: false,
-    hint: isReady
-      ? `${items.length} item${items.length === 1 ? '' : 's'} tagged. Continue to review.`
-      : 'Click on the image to tag at least one item.',
-    error: null,
-  })
-
   return (
     <>
       <section className="w-full">
@@ -184,6 +174,16 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
             : undefined
         }
         onSubmit={handleDialogSubmit}
+      />
+
+      <CreateFlowFooter
+        onSubmit={handleContinue}
+        isReady={isReady}
+        hint={
+          isReady
+            ? `${items.length} item${items.length === 1 ? '' : 's'} tagged. Continue to review.`
+            : 'Click on the image to tag at least one item.'
+        }
       />
     </>
   )

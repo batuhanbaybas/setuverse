@@ -1,7 +1,6 @@
 import type { MouseEvent } from 'react'
 
 import SetupImage from '#/shared/components/setup-image'
-import { Button } from '#/shared/components/ui/button'
 import { cn } from '#/shared/lib/utils'
 
 import type { SetupItem } from '../../lib/setup-item'
@@ -41,27 +40,30 @@ function TagCanvas({
           className="max-w-full cursor-crosshair rounded-lg object-contain"
           onClick={handleImageClick}
         />
-        {items.map((item, index) => (
-          <Button
-            key={item.id}
-            type="button"
-            size="icon-xs"
-            variant={activeItemId === item.id ? 'default' : 'secondary'}
-            className={cn(
-              'absolute size-7 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-md',
-              activeItemId === item.id &&
-                'ring-2 ring-primary ring-offset-2',
-            )}
-            style={{ left: `${item.x}%`, top: `${item.y}%` }}
-            onClick={(event) => {
-              event.stopPropagation()
-              onMarkerClick(item.id)
-            }}
-            aria-label={`Tag ${index + 1}: ${item.name}`}
-          >
-            <span className="text-xs font-semibold">{index + 1}</span>
-          </Button>
-        ))}
+        {items.map((item, index) => {
+          const isActive = activeItemId === item.id
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              className={cn(
+                'absolute flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform hover:scale-110',
+                isActive
+                  ? 'scale-110 bg-primary ring-2 ring-primary/50 ring-offset-2 ring-offset-background'
+                  : 'bg-primary/85 hover:bg-primary',
+              )}
+              style={{ left: `${item.x}%`, top: `${item.y}%` }}
+              onClick={(event) => {
+                event.stopPropagation()
+                onMarkerClick(item.id)
+              }}
+              aria-label={`Tag ${index + 1}: ${item.name}`}
+            >
+              {index + 1}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

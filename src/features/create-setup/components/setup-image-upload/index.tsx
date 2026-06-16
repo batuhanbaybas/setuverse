@@ -7,7 +7,7 @@ import { useUploader } from 'react-upload-kit'
 import Card from '#/shared/components/ui/card'
 import { Form, FormField } from '#/shared/components/ui/form'
 
-import { useCreateFlowSubmit } from '../../context/create-flow-context'
+import CreateFlowFooter from '../create-flow-footer'
 import { createSetupImageUploadAdapter } from '../../lib/setup-image-upload-adapter'
 import type { SetupImageUploadResponse } from '../../lib/setup-image-upload-adapter'
 import {
@@ -95,15 +95,7 @@ function SetupImageUpload() {
     [createSetup, form, navigate],
   )
 
-  useCreateFlowSubmit({
-    submit: () => form.handleSubmit(onSubmit)(),
-    isReady: isReady && isValid,
-    isSubmitting: isSubmitting || createSetup.isPending,
-    hint: isReady
-      ? 'Image uploaded successfully. You can continue when ready.'
-      : 'Upload an image to continue to setup details.',
-    error: errors.root?.message ?? errors.imageUrl?.message ?? null,
-  })
+  const isPending = isSubmitting || createSetup.isPending
 
   return (
     <Form {...form}>
@@ -137,6 +129,18 @@ function SetupImageUpload() {
           }}
         />
       </section>
+
+      <CreateFlowFooter
+        onSubmit={() => form.handleSubmit(onSubmit)()}
+        isReady={isReady && isValid}
+        isSubmitting={isPending}
+        hint={
+          isReady
+            ? 'Image uploaded successfully. You can continue when ready.'
+            : 'Upload an image to continue to setup details.'
+        }
+        error={errors.root?.message ?? errors.imageUrl?.message ?? null}
+      />
     </Form>
   )
 }
