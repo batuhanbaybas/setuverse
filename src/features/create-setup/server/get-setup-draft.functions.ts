@@ -3,10 +3,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { requireSession } from '#/features/auth/lib/require-session'
 import { prisma } from '#/shared/lib/prisma'
 
-import {
-  getSetupDraftInputSchema,
-  type GetSetupDraftInput,
-} from './lib/setup-input-schemas'
+import { getSetupDraftInputSchema } from './lib/setup-input-schemas'
+import type { GetSetupDraftInput } from './lib/setup-input-schemas'
 
 export type { GetSetupDraftInput }
 

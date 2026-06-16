@@ -5,10 +5,8 @@ import { getR2PublicUrl } from '#/shared/lib/r2'
 import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
-import {
-  createSetupInputSchema,
-  type CreateSetupInput,
-} from './lib/setup-input-schemas'
+import { createSetupInputSchema } from './lib/setup-input-schemas'
+import type { CreateSetupInput } from './lib/setup-input-schemas'
 import { SETUP_FLOW_STEPS } from './lib/setup-flow-steps'
 import { isOwnedSetupImageUrl } from './r2/utils'
 

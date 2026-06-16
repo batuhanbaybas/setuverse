@@ -4,10 +4,8 @@ import { requireSession } from '#/features/auth/lib/require-session'
 import { prisma } from '#/shared/lib/prisma'
 
 import { SETUP_FLOW_STEPS } from './lib/setup-flow-steps'
-import {
-  updateSetupInfoInputSchema,
-  type UpdateSetupInfoInput,
-} from './lib/setup-input-schemas'
+import { updateSetupInfoInputSchema } from './lib/setup-input-schemas'
+import type { UpdateSetupInfoInput } from './lib/setup-input-schemas'
 import { requireOwnedDraftSetup } from './lib/require-owned-draft-setup'
 
 export type { UpdateSetupInfoInput }
