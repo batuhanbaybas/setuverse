@@ -146,17 +146,17 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
 
   return (
     <>
-      <section className="flex flex-1 flex-col">
+      <section className="w-full">
         <Card
-          wrapperProps={{ className: 'flex-1' }}
+          wrapperProps={{ className: 'w-full' }}
           cardHeaderProps={{
             className: 'space-y-2 border-b pb-4',
             children: <SetupTagsHeader />,
           }}
           cardContentProps={{
-            className: 'flex min-h-0 flex-1 flex-col overflow-hidden',
+            className: '',
             children: (
-              <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
                 <TagCanvas
                   imageUrl={imageUrl}
                   items={items}

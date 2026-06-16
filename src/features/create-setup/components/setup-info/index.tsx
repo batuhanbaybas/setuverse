@@ -117,9 +117,9 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
   return (
     <Form {...form}>
-      <section className="flex flex-1 flex-col">
+      <section className="flex min-h-0 flex-1 flex-col">
         <Card
-          wrapperProps={{ className: 'flex-1' }}
+          wrapperProps={{ className: 'min-h-0 flex-1' }}
           cardHeaderProps={{
             className: 'space-y-2 border-b pb-4',
             children: <SetupInfoHeader />,
