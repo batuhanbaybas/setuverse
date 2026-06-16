@@ -5,4 +5,5 @@ export const queryKeys = {
   createSetup: 'create-setup',
   getSetupDraft: 'get-setup-draft',
   updateSetupInfo: 'update-setup-info',
+  updateSetupItems: 'update-setup-items',
 }
