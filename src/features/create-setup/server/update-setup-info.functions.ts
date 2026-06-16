@@ -20,7 +20,7 @@ export const updateSetupInfoFn = createServerFn({ method: 'POST' })
   .handler(async ({ data }): Promise<UpdateSetupInfoResult> => {
     const session = await requireSession()
 
-    await requireOwnedDraftSetup({
+    const draft = await requireOwnedDraftSetup({
       setupId: data.setupId,
       userId: session.user.id,
       minCompletedStep: SETUP_FLOW_STEPS.IMAGE,
@@ -44,7 +44,7 @@ export const updateSetupInfoFn = createServerFn({ method: 'POST' })
         title: data.title,
         description: data.description?.trim() ? data.description.trim() : null,
         categoryId: data.categoryId,
-        completedStep: SETUP_FLOW_STEPS.INFO,
+        completedStep: Math.max(draft.completedStep, SETUP_FLOW_STEPS.INFO),
       },
       select: {
         id: true,

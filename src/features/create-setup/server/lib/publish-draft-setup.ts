@@ -22,7 +22,6 @@ export async function publishDraftSetup({
       status: 'DRAFT',
     },
     select: {
-      completedStep: true,
       imageUrl: true,
       title: true,
       categoryId: true,
@@ -34,10 +33,6 @@ export async function publishDraftSetup({
 
   if (!setup) {
     throw new Error('Setup not found')
-  }
-
-  if (setup.completedStep < SETUP_FLOW_STEPS.ITEMS) {
-    throw new Error('Complete the previous step first')
   }
 
   if (!setup.imageUrl) {
