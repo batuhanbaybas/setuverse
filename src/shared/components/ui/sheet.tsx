@@ -43,7 +43,7 @@ function SheetOverlay({
 }
 
 type SheetContentProps = React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: 'right' | 'left'
+  side?: 'right' | 'left' | 'bottom'
   showCloseButton?: boolean
 }
 
@@ -60,17 +60,19 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          'fixed z-50 flex h-full flex-col border bg-background shadow-xl transition ease-in-out outline-none data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500',
+          'fixed z-50 flex flex-col border bg-background shadow-xl transition ease-in-out outline-none data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500',
           side === 'right' &&
-            'inset-y-0 right-0 w-[min(100%,22rem)] border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
+            'inset-y-0 right-0 h-full w-[min(100%,22rem)] border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
           side === 'left' &&
-            'inset-y-0 left-0 w-[min(100%,22rem)] border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
+            'inset-y-0 left-0 h-full w-[min(100%,22rem)] border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
+          side === 'bottom' &&
+            'inset-x-0 bottom-0 max-h-[85dvh] rounded-t-2xl border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
           className,
         )}
         {...props}
       >
         {children}
-        {showCloseButton ? (
+        {showCloseButton && side !== 'bottom' ? (
           <SheetPrimitive.Close
             data-slot="sheet-close"
             className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-md opacity-70 ring-offset-background transition-opacity hover:bg-accent hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none"

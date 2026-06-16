@@ -1,15 +1,15 @@
 
-import type { ComponentProps } from "react"
+import type { ComponentProps, ReactNode } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./dropdown-menu"
-
+} from './dropdown-menu'
 
 interface DropdownItemProps extends ComponentProps<typeof DropdownMenuItem> {
   label: string
+  icon?: ReactNode
 }
 
 interface Props {
@@ -21,15 +21,17 @@ function Dropdown({ triggerProps, items }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger {...triggerProps} />
-      <DropdownMenuContent>
-        {items.map((item, index) => (
-          <DropdownMenuItem
-            key={index}
-            {...item}
-          >
-            {item.label}
-          </DropdownMenuItem>
-        ))}
+      <DropdownMenuContent align="end">
+        {items.map((item) => {
+          const { label, icon, ...itemProps } = item
+
+          return (
+            <DropdownMenuItem key={label} {...itemProps}>
+              {icon}
+              {label}
+            </DropdownMenuItem>
+          )
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   )
