@@ -12,7 +12,7 @@ function CreateFlowFooter() {
   }
 
   return (
-    <div className="flex flex-col gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+    <div className="sticky bottom-0 z-10 mt-8 flex flex-col gap-3 border-t bg-background/95 pt-6 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur supports-backdrop-filter:bg-background/80 sm:flex-row sm:items-center sm:justify-between">
       <div className="space-y-1">
         {hint ? (
           <p className="text-sm text-muted-foreground">{hint}</p>

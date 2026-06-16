@@ -24,19 +24,17 @@ export const createSetupFn = createServerFn({ method: 'POST' })
   .validator((data: unknown) => createSetupInputSchema.parse(data))
   .handler(async ({ data }): Promise<CreateSetupResult> => {
     const session = await requireSession()
-    const publicUrl = process.env.R2_PUBLIC_URL
+    const imageKey = getSetupImageKeyFromUrl(data.imageUrl)
 
-    if (!publicUrl) {
-      throw new Error('Cloudflare R2 environment variables are not configured')
-    }
-
-    if (!isOwnedSetupImageUrl(data.imageUrl, session.user.id, publicUrl)) {
+    if (!imageKey || !isOwnedSetupImageUrl(data.imageUrl, session.user.id)) {
       throw new Error('Invalid setup image')
     }
 
+    const imageUrl = getR2PublicUrl(imageKey)
+
     return prisma.setup.create({
       data: {
-        imageUrl: data.imageUrl,
+        imageUrl,
         userId: session.user.id,
         completedStep: SETUP_FLOW_STEPS.IMAGE,
         status: 'DRAFT',

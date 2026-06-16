@@ -1,6 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { requireSession } from '#/features/auth/lib/require-session'
+import { getR2PublicUrl } from '#/shared/lib/r2'
+import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
 import {
@@ -56,5 +58,12 @@ export const getSetupDraftFn = createServerFn({ method: 'GET' })
       throw new Error('Setup not found')
     }
 
-    return setup
+    const imageKey = setup.imageUrl
+      ? getSetupImageKeyFromUrl(setup.imageUrl)
+      : null
+
+    return {
+      ...setup,
+      imageUrl: imageKey ? getR2PublicUrl(imageKey) : setup.imageUrl,
+    }
   })

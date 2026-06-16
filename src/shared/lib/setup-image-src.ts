@@ -40,6 +40,8 @@ export function resolveSetupImagePublicUrl(
 
   return `${publicUrl.replace(/\/$/, '')}/${imageKey}`
 }
+
+export function getSetupImageSrc(imageUrl: string | null | undefined) {
   if (!imageUrl) {
     return undefined
   }

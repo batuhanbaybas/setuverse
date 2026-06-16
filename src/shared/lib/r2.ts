@@ -1,24 +1,23 @@
 import {
   DeleteObjectCommand,
-  GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 function getR2Config() {
-  const accountId = process.env.R2_ACCOUNT_ID
+  const endpoint = process.env.R2_ENDPOINT
   const accessKeyId = process.env.R2_ACCESS_KEY_ID
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
   const bucketName = process.env.R2_BUCKET_NAME
   const publicUrl = process.env.R2_PUBLIC_URL
 
-  if (!accountId || !accessKeyId || !secretAccessKey || !bucketName || !publicUrl) {
+  if (!endpoint || !accessKeyId || !secretAccessKey || !bucketName || !publicUrl) {
     throw new Error('Cloudflare R2 environment variables are not configured')
   }
 
   return {
-    accountId,
+    endpoint,
     accessKeyId,
     secretAccessKey,
     bucketName,
@@ -27,11 +26,11 @@ function getR2Config() {
 }
 
 export function getR2Client() {
-  const { accountId, accessKeyId, secretAccessKey } = getR2Config()
+  const { endpoint, accessKeyId, secretAccessKey } = getR2Config()
 
   return new S3Client({
     region: 'auto',
-    endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+    endpoint,
     credentials: {
       accessKeyId,
       secretAccessKey,
