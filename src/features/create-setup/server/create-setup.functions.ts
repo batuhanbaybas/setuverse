@@ -1,12 +1,15 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { requireSession } from '#/features/auth/lib/require-session'
+import { getR2PublicUrl } from '#/shared/lib/r2'
+import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
 import {
-  createSetupInputSchema,
-  type CreateSetupInput,
+  createSetupInputSchema
+  
 } from './lib/setup-input-schemas'
+import type {CreateSetupInput} from './lib/setup-input-schemas';
 import { SETUP_FLOW_STEPS } from './lib/setup-flow-steps'
 import { isOwnedSetupImageUrl } from './r2/utils'
 

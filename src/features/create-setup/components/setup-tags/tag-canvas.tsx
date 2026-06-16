@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 
+import SetupImage from '#/shared/components/setup-image'
 import { Button } from '#/shared/components/ui/button'
 import { cn } from '#/shared/lib/utils'
 
@@ -31,11 +32,12 @@ function TagCanvas({
     })
   }
 
+  console.log('imageUrl', imageUrl)
   return (
     <div className="flex min-h-0 flex-1 items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
       <div className="relative inline-flex max-h-[min(72vh,900px)] max-w-full">
-        <img
-          src={imageUrl}
+        <SetupImage
+          imageUrl={imageUrl}
           alt="Setup preview"
           className="max-h-[min(72vh,900px)] max-w-full cursor-crosshair rounded-lg object-contain"
           onClick={handleImageClick}

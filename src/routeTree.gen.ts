@@ -13,6 +13,7 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainCreateRouteImport } from './routes/_main/_create'
+import { Route as ApiMediaSplatRouteImport } from './routes/api/media/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
 import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
@@ -36,6 +37,11 @@ const MainIndexRoute = MainIndexRouteImport.update({
 const MainCreateRoute = MainCreateRouteImport.update({
   id: '/_create',
   getParentRoute: () => MainRoute,
+} as any)
+const ApiMediaSplatRoute = ApiMediaSplatRouteImport.update({
+  id: '/api/media/$',
+  path: '/api/media/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/media/$': typeof ApiMediaSplatRoute
   '/create/': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/media/$': typeof ApiMediaSplatRoute
   '/create': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/media/$': typeof ApiMediaSplatRoute
   '/_main/_create/create/': typeof MainCreateCreateIndexRoute
   '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login/'
     | '/api/auth/$'
+    | '/api/media/$'
     | '/create/'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/auth/$'
+    | '/api/media/$'
     | '/create'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/login/'
     | '/api/auth/$'
+    | '/api/media/$'
     | '/_main/_create/create/'
     | '/_main/_create/create/$id/info'
     | '/_main/_create/create/$id/review'
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
+    }
+    '/api/media/$': {
+      id: '/api/media/$'
+      path: '/api/media/$'
+      fullPath: '/api/media/$'
+      preLoaderRoute: typeof ApiMediaSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -234,6 +254,7 @@ const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
