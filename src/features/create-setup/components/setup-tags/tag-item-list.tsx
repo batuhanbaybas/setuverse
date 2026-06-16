@@ -2,13 +2,14 @@ import Icon from '#/shared/components/icons'
 import { Button } from '#/shared/components/ui/button'
 import { cn } from '#/shared/lib/utils'
 
-import type { TagItemDraft } from '../../lib/tag-item-draft'
+import type { SetupItem } from '../../lib/setup-item'
 
 type TagItemListProps = {
-  items: TagItemDraft[]
+  items: SetupItem[]
   activeItemId: string | null
-  onSelect: (clientId: string) => void
-  onRemove: (clientId: string) => void
+  onSelect: (id: string) => void
+  onRemove: (id: string) => void
+  isRemoving?: boolean
 }
 
 function TagItemList({
@@ -16,6 +17,7 @@ function TagItemList({
   activeItemId,
   onSelect,
   onRemove,
+  isRemoving = false,
 }: TagItemListProps) {
   if (items.length === 0) {
     return (
@@ -28,17 +30,17 @@ function TagItemList({
   return (
     <ul className="space-y-2">
       {items.map((item, index) => (
-        <li key={item.clientId}>
+        <li key={item.id}>
           <div
             className={cn(
               'flex items-start gap-3 rounded-lg border p-3 transition-colors',
-              activeItemId === item.clientId && 'border-primary bg-primary/5',
+              activeItemId === item.id && 'border-primary bg-primary/5',
             )}
           >
             <button
               type="button"
               className="min-w-0 flex-1 text-left"
-              onClick={() => onSelect(item.clientId)}
+              onClick={() => onSelect(item.id)}
             >
               <p className="text-sm font-medium">
                 {index + 1}. {item.name}
@@ -50,7 +52,8 @@ function TagItemList({
               variant="ghost"
               size="icon-xs"
               aria-label={`Remove ${item.name}`}
-              onClick={() => onRemove(item.clientId)}
+              disabled={isRemoving}
+              onClick={() => onRemove(item.id)}
             >
               <Icon name="x" />
             </Button>

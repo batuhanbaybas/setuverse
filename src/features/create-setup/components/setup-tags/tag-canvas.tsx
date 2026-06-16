@@ -4,14 +4,14 @@ import SetupImage from '#/shared/components/setup-image'
 import { Button } from '#/shared/components/ui/button'
 import { cn } from '#/shared/lib/utils'
 
-import type { TagItemDraft } from '../../lib/tag-item-draft'
+import type { SetupItem } from '../../lib/setup-item'
 
 type TagCanvasProps = {
   imageUrl: string
-  items: TagItemDraft[]
+  items: SetupItem[]
   activeItemId: string | null
   onImageClick: (position: { x: number; y: number }) => void
-  onMarkerClick: (clientId: string) => void
+  onMarkerClick: (id: string) => void
 }
 
 function TagCanvas({
@@ -43,19 +43,19 @@ function TagCanvas({
         />
         {items.map((item, index) => (
           <Button
-            key={item.clientId}
+            key={item.id}
             type="button"
             size="icon-xs"
-            variant={activeItemId === item.clientId ? 'default' : 'secondary'}
+            variant={activeItemId === item.id ? 'default' : 'secondary'}
             className={cn(
               'absolute size-7 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-md',
-              activeItemId === item.clientId &&
+              activeItemId === item.id &&
                 'ring-2 ring-primary ring-offset-2',
             )}
             style={{ left: `${item.x}%`, top: `${item.y}%` }}
             onClick={(event) => {
               event.stopPropagation()
-              onMarkerClick(item.clientId)
+              onMarkerClick(item.id)
             }}
             aria-label={`Tag ${index + 1}: ${item.name}`}
           >

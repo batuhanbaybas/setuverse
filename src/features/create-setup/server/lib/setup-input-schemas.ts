@@ -25,6 +25,20 @@ export const setupItemInputSchema = z.object({
   y: z.number().finite(),
 })
 
+export const addSetupItemInputSchema = setupIdSchema.merge(setupItemInputSchema)
+
+export const updateSetupItemInputSchema = z.object({
+  itemId: z.string().trim().min(1, 'Item id is required'),
+  name: z.string().trim().min(1, 'Item name is required').max(100).optional(),
+  url: z.string().trim().url('Item url must be valid').optional(),
+  x: z.number().finite().optional(),
+  y: z.number().finite().optional(),
+})
+
+export const deleteSetupItemInputSchema = z.object({
+  itemId: z.string().trim().min(1, 'Item id is required'),
+})
+
 export const updateSetupItemsInputSchema = setupIdSchema.extend({
   items: z.array(setupItemInputSchema).min(1, 'Add at least one item'),
 })
@@ -35,7 +49,10 @@ export const getSetupDraftInputSchema = setupIdSchema
 
 export type CreateSetupInput = z.infer<typeof createSetupInputSchema>
 export type UpdateSetupInfoInput = z.infer<typeof updateSetupInfoInputSchema>
-export type UpdateSetupItemsInput = z.infer<typeof updateSetupItemsInputSchema>
 export type SetupItemInput = z.infer<typeof setupItemInputSchema>
+export type AddSetupItemInput = z.infer<typeof addSetupItemInputSchema>
+export type UpdateSetupItemInput = z.infer<typeof updateSetupItemInputSchema>
+export type DeleteSetupItemInput = z.infer<typeof deleteSetupItemInputSchema>
+export type UpdateSetupItemsInput = z.infer<typeof updateSetupItemsInputSchema>
 export type PublishSetupInput = z.infer<typeof publishSetupInputSchema>
 export type GetSetupDraftInput = z.infer<typeof getSetupDraftInputSchema>

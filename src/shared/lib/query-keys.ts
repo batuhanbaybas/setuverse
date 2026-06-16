@@ -6,4 +6,7 @@ export const queryKeys = {
   getSetupDraft: 'get-setup-draft',
   updateSetupInfo: 'update-setup-info',
   updateSetupItems: 'update-setup-items',
+  addSetupItem: 'add-setup-item',
+  updateSetupItem: 'update-setup-item',
+  deleteSetupItem: 'delete-setup-item',
 }

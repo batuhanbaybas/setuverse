@@ -2,6 +2,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import Icon from '#/shared/components/icons'
 import { Button } from '#/shared/components/ui/button'
 import {
   Dialog,
@@ -31,14 +32,16 @@ type TagItemDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   isEditing?: boolean
+  isPending?: boolean
   initialValues?: SetupTagItemFormValues
-  onSubmit: (values: SetupTagItemFormValues) => void
+  onSubmit: (values: SetupTagItemFormValues) => void | Promise<void>
 }
 
 function TagItemDialog({
   open,
   onOpenChange,
   isEditing = false,
+  isPending = false,
   initialValues,
   onSubmit,
 }: TagItemDialogProps) {
@@ -53,9 +56,16 @@ function TagItemDialog({
     }
   }, [form, initialValues, open])
 
-  const handleSubmit = (values: SetupTagItemFormValues) => {
-    onSubmit(values)
-    onOpenChange(false)
+  const handleSubmit = async (values: SetupTagItemFormValues) => {
+    try {
+      await onSubmit(values)
+      onOpenChange(false)
+    } catch (error) {
+      form.setError('root', {
+        message:
+          error instanceof Error ? error.message : 'Something went wrong',
+      })
+    }
   }
 
   return (
@@ -116,15 +126,26 @@ function TagItemDialog({
                 </FormItem>
               )}
             />
+
+            {form.formState.errors.root ? (
+              <p className="text-sm text-destructive">
+                {form.formState.errors.root.message}
+              </p>
+            ) : null}
+
             <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
+                disabled={isPending}
                 onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
-              <Button type="submit">
+              <Button type="submit" disabled={isPending}>
+                {isPending ? (
+                  <Icon name="loader" className="size-4 animate-spin" />
+                ) : null}
                 {isEditing ? 'Save changes' : 'Add tag'}
               </Button>
             </DialogFooter>

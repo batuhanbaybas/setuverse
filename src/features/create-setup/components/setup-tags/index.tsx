@@ -5,13 +5,11 @@ import Card from '#/shared/components/ui/card'
 
 import { useCreateFlowSubmit } from '../../context/create-flow-context'
 import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
-import {
-  createTagItemDraft,
-  tagItemDraftToInput,
-  tagItemsFromDraft,
-} from '../../lib/tag-item-draft'
-import type { TagItemDraft } from '../../lib/tag-item-draft'
-import useUpdateSetupItems from '../../service/use-update-setup-items'
+import type { SetupItem } from '../../lib/setup-item'
+import useAddSetupItem from '../../service/use-add-setup-item'
+import useUpdateSetupItem from '../../service/use-update-setup-item'
+import useDeleteSetupItem from '../../service/use-delete-setup-item'
+import useGetSetupDraft from '../../service/use-get-setup-draft'
 import SetupTagsHeader from './setup-tags-header'
 import TagCanvas from './tag-canvas'
 import TagItemDialog from './tag-item-dialog'
@@ -20,35 +18,31 @@ import TagItemList from './tag-item-list'
 type SetupTagsProps = {
   imageUrl: string
   setupId: string
-  initialItems?: Array<{
-    id: string
-    name: string
-    url: string
-    x: number
-    y: number
-  }>
+  initialItems?: SetupItem[]
 }
 
 type PendingTag = {
   x: number
   y: number
-  clientId?: string
+  itemId?: string
 }
 
 function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
   const navigate = useNavigate()
-  const updateSetupItems = useUpdateSetupItems()
+  const draftQuery = useGetSetupDraft(setupId)
+  const addItem = useAddSetupItem(setupId)
+  const updateItem = useUpdateSetupItem(setupId)
+  const deleteItem = useDeleteSetupItem(setupId)
 
-  const [items, setItems] = useState<TagItemDraft[]>(() =>
-    tagItemsFromDraft(initialItems),
-  )
+  const items: SetupItem[] = draftQuery.data?.items ?? initialItems
+
   const [activeItemId, setActiveItemId] = useState<string | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [pendingTag, setPendingTag] = useState<PendingTag | null>(null)
-  const [submitError, setSubmitError] = useState<string | null>(null)
 
-  const activeItem =
-    items.find((item) => item.clientId === activeItemId) ?? null
+  const activeItem = items.find((item) => item.id === activeItemId) ?? null
+
+  const isMutating = addItem.isPending || updateItem.isPending || deleteItem.isPending
 
   const handleImageClick = useCallback((position: { x: number; y: number }) => {
     setPendingTag(position)
@@ -57,91 +51,78 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
   }, [])
 
   const handleMarkerClick = useCallback(
-    (clientId: string) => {
-      const item = items.find((entry) => entry.clientId === clientId)
+    (id: string) => {
+      const item = items.find((entry) => entry.id === id)
 
       if (!item) {
         return
       }
 
-      setActiveItemId(clientId)
-      setPendingTag({ x: item.x, y: item.y, clientId })
+      setActiveItemId(id)
+      setPendingTag({ x: item.x, y: item.y, itemId: id })
       setDialogOpen(true)
     },
     [items],
   )
 
   const handleDialogSubmit = useCallback(
-    (values: SetupTagItemFormValues) => {
+    async (values: SetupTagItemFormValues) => {
       if (!pendingTag) {
         return
       }
 
-      if (pendingTag.clientId) {
-        setItems((current) =>
-          current.map((item) =>
-            item.clientId === pendingTag.clientId
-              ? { ...item, name: values.name, url: values.url }
-              : item,
-          ),
-        )
-        setActiveItemId(pendingTag.clientId)
+      if (pendingTag.itemId) {
+        const result = await updateItem.mutateAsync({
+          itemId: pendingTag.itemId,
+          name: values.name,
+          url: values.url,
+        })
+        setActiveItemId(result.id)
       } else {
-        const newItem = createTagItemDraft({
+        const result = await addItem.mutateAsync({
+          setupId,
           name: values.name,
           url: values.url,
           x: pendingTag.x,
           y: pendingTag.y,
         })
-        setItems((current) => [...current, newItem])
-        setActiveItemId(newItem.clientId)
+        setActiveItemId(result.id)
       }
 
       setPendingTag(null)
-      setSubmitError(null)
     },
-    [pendingTag],
+    [pendingTag, setupId, addItem, updateItem],
   )
 
-  const handleRemoveItem = useCallback((clientId: string) => {
-    setItems((current) => current.filter((item) => item.clientId !== clientId))
-    setActiveItemId((current) => (current === clientId ? null : current))
-  }, [])
+  const handleRemoveItem = useCallback(
+    (id: string) => {
+      deleteItem.mutate(id)
+      setActiveItemId((current) => (current === id ? null : current))
+    },
+    [deleteItem],
+  )
 
   const handleContinue = useCallback(async () => {
     if (!items.length) {
       return
     }
 
-    try {
-      setSubmitError(null)
-
-      await updateSetupItems.mutateAsync({
-        setupId,
-        items: items.map(tagItemDraftToInput),
-      })
-
-      await navigate({
-        to: '/create/$id/review',
-        params: { id: setupId },
-      })
-    } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : 'Failed to save tagged items',
-      )
-    }
-  }, [items, navigate, setupId, updateSetupItems])
+    await navigate({
+      to: '/create/$id/review',
+      params: { id: setupId },
+    })
+  }, [items.length, navigate, setupId])
 
   const isReady = items.length > 0
 
   useCreateFlowSubmit({
     submit: handleContinue,
     isReady,
-    isSubmitting: updateSetupItems.isPending,
+    isSubmitting: false,
     hint: isReady
       ? `${items.length} item${items.length === 1 ? '' : 's'} tagged. Continue to review.`
       : 'Click on the image to tag at least one item.',
-    error: submitError,
+    error: null,
   })
 
   return (
@@ -177,6 +158,7 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
                       activeItemId={activeItemId}
                       onSelect={handleMarkerClick}
                       onRemove={handleRemoveItem}
+                      isRemoving={deleteItem.isPending}
                     />
                   </div>
                 </aside>
@@ -194,7 +176,8 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
             setPendingTag(null)
           }
         }}
-        isEditing={Boolean(pendingTag?.clientId)}
+        isEditing={Boolean(pendingTag?.itemId)}
+        isPending={isMutating}
         initialValues={
           activeItem
             ? { name: activeItem.name, url: activeItem.url }

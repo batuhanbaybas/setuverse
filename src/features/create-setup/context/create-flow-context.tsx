@@ -5,9 +5,10 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
-  type ReactNode,
+  useState
+  
 } from 'react'
+import type {ReactNode} from 'react';
 
 type CreateFlowSubmitRegistration = {
   submit: () => void | Promise<void>
