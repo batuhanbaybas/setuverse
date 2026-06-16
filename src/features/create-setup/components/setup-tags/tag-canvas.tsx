@@ -32,7 +32,6 @@ function TagCanvas({
     })
   }
 
-  console.log('imageUrl', imageUrl)
   return (
     <div className="flex min-h-0 flex-1 items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
       <div className="relative inline-flex max-h-[min(72vh,900px)] max-w-full">

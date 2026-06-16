@@ -1,20 +1,17 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { requireSession } from '#/features/auth/lib/require-session'
-import { getR2PublicUrl } from '#/shared/lib/r2'
-import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
 import {
-  getSetupDraftInputSchema
-  
+  getSetupDraftInputSchema,
+  type GetSetupDraftInput,
 } from './lib/setup-input-schemas'
-import type {GetSetupDraftInput} from './lib/setup-input-schemas';
 
 export type { GetSetupDraftInput }
 
 export const getSetupDraftFn = createServerFn({ method: 'GET' })
-  .validator((data: unknown) => getSetupDraftInputSchema.parse(data))
+  .validator(getSetupDraftInputSchema)
   .handler(async ({ data }) => {
     const session = await requireSession()
 
@@ -58,12 +55,5 @@ export const getSetupDraftFn = createServerFn({ method: 'GET' })
       throw new Error('Setup not found')
     }
 
-    const imageKey = setup.imageUrl
-      ? getSetupImageKeyFromUrl(setup.imageUrl)
-      : null
-
-    return {
-      ...setup,
-      imageUrl: imageKey ? getR2PublicUrl(imageKey) : setup.imageUrl,
-    }
+    return setup
   })

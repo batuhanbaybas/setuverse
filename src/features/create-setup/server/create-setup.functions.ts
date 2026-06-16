@@ -6,10 +6,9 @@ import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
 import {
-  createSetupInputSchema
-  
+  createSetupInputSchema,
+  type CreateSetupInput,
 } from './lib/setup-input-schemas'
-import type {CreateSetupInput} from './lib/setup-input-schemas';
 import { SETUP_FLOW_STEPS } from './lib/setup-flow-steps'
 import { isOwnedSetupImageUrl } from './r2/utils'
 
@@ -21,7 +20,7 @@ export type CreateSetupResult = {
 }
 
 export const createSetupFn = createServerFn({ method: 'POST' })
-  .validator((data: unknown) => createSetupInputSchema.parse(data))
+  .validator(createSetupInputSchema)
   .handler(async ({ data }): Promise<CreateSetupResult> => {
     const session = await requireSession()
     const imageKey = getSetupImageKeyFromUrl(data.imageUrl)

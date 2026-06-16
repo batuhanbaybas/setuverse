@@ -19,7 +19,7 @@ export type UpdateSetupItemsResult = {
 }
 
 export const updateSetupItemsFn = createServerFn({ method: 'POST' })
-  .validator((data: unknown) => updateSetupItemsInputSchema.parse(data))
+  .validator(updateSetupItemsInputSchema)
   .handler(async ({ data }): Promise<UpdateSetupItemsResult> => {
     const session = await requireSession()
 

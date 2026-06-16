@@ -18,7 +18,7 @@ export type UpdateSetupInfoResult = {
 }
 
 export const updateSetupInfoFn = createServerFn({ method: 'POST' })
-  .validator((data: unknown) => updateSetupInfoInputSchema.parse(data))
+  .validator(updateSetupInfoInputSchema)
   .handler(async ({ data }): Promise<UpdateSetupInfoResult> => {
     const session = await requireSession()
 
