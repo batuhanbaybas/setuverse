@@ -154,9 +154,9 @@ function SetupTags({ imageUrl, setupId, initialItems = [] }: SetupTagsProps) {
             children: <SetupTagsHeader />,
           }}
           cardContentProps={{
-            className: 'pt-2',
+            className: 'flex min-h-0 flex-1 flex-col overflow-hidden',
             children: (
-              <div className="grid min-h-[min(72vh,900px)] gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
                 <TagCanvas
                   imageUrl={imageUrl}
                   items={items}

@@ -33,12 +33,12 @@ function TagCanvas({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
-      <div className="relative inline-flex max-h-[min(72vh,900px)] max-w-full">
+    <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl border bg-muted/20 p-2 sm:p-4">
+      <div className="relative inline-flex max-h-full max-w-full">
         <SetupImage
           imageUrl={imageUrl}
           alt="Setup preview"
-          className="max-h-[min(72vh,900px)] max-w-full cursor-crosshair rounded-lg object-contain"
+          className="max-h-full max-w-full cursor-crosshair rounded-lg object-contain"
           onClick={handleImageClick}
         />
         {items.map((item, index) => (

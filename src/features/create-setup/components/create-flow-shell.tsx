@@ -11,9 +11,9 @@ type CreateFlowShellProps = {
 function CreateFlowShell({ children }: CreateFlowShellProps) {
   return (
     <CreateFlowProvider>
-      <div className="flex min-h-[calc(100dvh-5rem)] flex-col gap-4 pt-6 pb-24">
+      <div className="flex h-dvh flex-col gap-4 pt-6 pb-24">
         <CreateFlowProgress />
-        <div className="flex flex-1 flex-col">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         <CreateFlowFooter />
       </div>
     </CreateFlowProvider>
