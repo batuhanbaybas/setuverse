@@ -24,3 +24,39 @@ export function getFileExtension(fileName: string, contentType: string) {
 export function isOwnedSetupImageKey(key: string, userId: string) {
   return key.startsWith(`${SETUP_IMAGE_KEY_PREFIX}${userId}/`)
 }
+
+export function getSetupImageKeyFromUrl(url: string, publicUrl: string) {
+  try {
+    const normalizedPublicUrl = publicUrl.replace(/\/$/, '')
+    const parsedUrl = new URL(url)
+    const parsedPublicUrl = new URL(normalizedPublicUrl)
+
+    if (parsedUrl.origin !== parsedPublicUrl.origin) {
+      return null
+    }
+
+    const key = parsedUrl.pathname.replace(/^\//, '')
+
+    if (!key.startsWith(SETUP_IMAGE_KEY_PREFIX)) {
+      return null
+    }
+
+    return key
+  } catch {
+    return null
+  }
+}
+
+export function isOwnedSetupImageUrl(
+  url: string,
+  userId: string,
+  publicUrl: string,
+) {
+  const key = getSetupImageKeyFromUrl(url, publicUrl)
+
+  if (!key) {
+    return false
+  }
+
+  return isOwnedSetupImageKey(key, userId)
+}

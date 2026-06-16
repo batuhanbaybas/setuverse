@@ -26,6 +26,9 @@ function UploadCardFooter({ isReady }: UploadCardFooterProps) {
         {errors.imageUrl?.message ? (
           <p className="text-sm text-destructive">{errors.imageUrl.message}</p>
         ) : null}
+        {errors.root?.message ? (
+          <p className="text-sm text-destructive">{errors.root.message}</p>
+        ) : null}
       </div>
       <Button
         type="submit"

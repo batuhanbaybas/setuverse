@@ -1,4 +1,5 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useUploader } from 'react-upload-kit'
@@ -18,6 +19,7 @@ import {
   SETUP_IMAGE_MAX_FILE_SIZE,
   SETUP_IMAGE_MAX_FILES,
 } from '../../lib/upload-config'
+import useCreateSetup from '../../service/use-create-setup'
 import useUploadSetupImage from '../../service/use-upload-setup-image'
 import UploadCardFooter from './upload-card-footer'
 import UploadCardHeader from './upload-card-header'
@@ -26,6 +28,9 @@ import UploadFileList from './upload-file-list'
 import UploadRejections from './upload-rejections'
 
 function SetupImageUpload() {
+  const navigate = useNavigate()
+  const createSetup = useCreateSetup()
+
   const form = useForm<SetupImageFormValues>({
     resolver: standardSchemaResolver(setupImageFormSchema),
     defaultValues: setupImageFormDefaultValues,
@@ -67,8 +72,13 @@ function SetupImageUpload() {
     uploadSetupImage.reset()
   }, [form, uploadSetupImage])
 
-  const onSubmit = (values: SetupImageFormValues) => {
-    console.log(values)
+  const onSubmit = async (values: SetupImageFormValues) => {
+      const setup = await createSetup.mutateAsync({ imageUrl: values.imageUrl })
+
+      await navigate({
+        to: '/create/$id/info',
+        params: { id: setup.id },
+      })
   }
 
   return (
