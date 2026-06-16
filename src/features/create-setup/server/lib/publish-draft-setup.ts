@@ -24,7 +24,7 @@ export async function publishDraftSetup({
     select: {
       completedStep: true,
       imageUrl: true,
-      name: true,
+      title: true,
       categoryId: true,
       _count: {
         select: { items: true },
@@ -44,8 +44,8 @@ export async function publishDraftSetup({
     throw new Error('Setup image is required')
   }
 
-  if (!setup.name?.trim()) {
-    throw new Error('Setup name is required')
+  if (!setup.title?.trim()) {
+    throw new Error('Setup title is required')
   }
 
   if (!setup.categoryId) {

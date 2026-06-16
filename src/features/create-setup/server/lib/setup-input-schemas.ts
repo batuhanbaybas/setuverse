@@ -9,11 +9,11 @@ export const createSetupInputSchema = z.object({
 })
 
 export const updateSetupInfoInputSchema = setupIdSchema.extend({
-  name: z.string().trim().min(1, 'Name is required').max(100),
+  title: z.string().trim().min(1, 'Title is required').max(60),
   description: z
     .string()
     .trim()
-    .max(1000, 'Description must be 1000 characters or less')
+    .max(200, 'Description must be 200 characters or less')
     .optional(),
   categoryId: z.string().trim().min(1, 'Category is required'),
 })

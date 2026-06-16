@@ -43,7 +43,7 @@ export const updateSetupInfoFn = createServerFn({ method: 'POST' })
     return prisma.setup.update({
       where: { id: data.setupId },
       data: {
-        name: data.name,
+        title: data.title,
         description: data.description?.trim() ? data.description.trim() : null,
         categoryId: data.categoryId,
         completedStep: SETUP_FLOW_STEPS.INFO,

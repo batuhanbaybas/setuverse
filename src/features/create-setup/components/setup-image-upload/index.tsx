@@ -7,6 +7,7 @@ import { useUploader } from 'react-upload-kit'
 import Card from '#/shared/components/ui/card'
 import { Form, FormField } from '#/shared/components/ui/form'
 
+import { useCreateFlowSubmit } from '../../context/create-flow-context'
 import { createSetupImageUploadAdapter } from '../../lib/setup-image-upload-adapter'
 import type { SetupImageUploadResponse } from '../../lib/setup-image-upload-adapter'
 import {
@@ -21,7 +22,6 @@ import {
 } from '../../lib/upload-config'
 import useCreateSetup from '../../service/use-create-setup'
 import useUploadSetupImage from '../../service/use-upload-setup-image'
-import UploadCardFooter from './upload-card-footer'
 import UploadCardHeader from './upload-card-header'
 import UploadDropzone from './upload-dropzone'
 import UploadFileList from './upload-file-list'
@@ -34,7 +34,7 @@ function SetupImageUpload() {
   const form = useForm<SetupImageFormValues>({
     resolver: standardSchemaResolver(setupImageFormSchema),
     defaultValues: setupImageFormDefaultValues,
-    mode: 'onSubmit',
+    mode: 'onChange',
   })
 
   const uploadSetupImage = useUploadSetupImage({
@@ -64,6 +64,10 @@ function SetupImageUpload() {
   const selectedFile = uploader.files[0]
   const isReady = hasFile && selectedFile.status === 'success'
 
+  const {
+    formState: { isValid, isSubmitting, errors },
+  } = form
+
   const handleImageRemoved = useCallback(() => {
     form.setValue('imageUrl', '', {
       shouldDirty: true,
@@ -72,56 +76,67 @@ function SetupImageUpload() {
     uploadSetupImage.reset()
   }, [form, uploadSetupImage])
 
-  const onSubmit = async (values: SetupImageFormValues) => {
-      const setup = await createSetup.mutateAsync({ imageUrl: values.imageUrl })
+  const onSubmit = useCallback(
+    async (values: SetupImageFormValues) => {
+      try {
+        const setup = await createSetup.mutateAsync({ imageUrl: values.imageUrl })
 
-      await navigate({
-        to: '/create/$id/info',
-        params: { id: setup.id },
-      })
-  }
+        await navigate({
+          to: '/create/$id/info',
+          params: { id: setup.id },
+        })
+      } catch (error) {
+        form.setError('root', {
+          message:
+            error instanceof Error ? error.message : 'Failed to create setup',
+        })
+      }
+    },
+    [createSetup, form, navigate],
+  )
+
+  useCreateFlowSubmit({
+    submit: () => form.handleSubmit(onSubmit)(),
+    isReady: isReady && isValid,
+    isSubmitting: isSubmitting || createSetup.isPending,
+    hint: isReady
+      ? 'Image uploaded successfully. You can continue when ready.'
+      : 'Upload an image to continue to setup details.',
+    error: errors.root?.message ?? errors.imageUrl?.message ?? null,
+  })
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => <input type="hidden" {...field} />}
-        />
+      <FormField
+        control={form.control}
+        name="imageUrl"
+        render={({ field }) => <input type="hidden" {...field} />}
+      />
 
-        <section className="w-full">
-          <Card
-            wrapperProps={{ className: 'w-full' }}
-            cardHeaderProps={{
-              className: 'space-y-3 border-b pb-6',
-              children: <UploadCardHeader />,
-            }}
-            cardContentProps={{
-              className: 'space-y-4 pt-2',
-              children: (
-                <>
-                  {!hasFile ? (
-                    <UploadDropzone onDrop={uploader.addFiles} />
-                  ) : null}
-                  <UploadRejections rejections={uploader.rejections} />
-                  {hasFile ? (
-                    <UploadFileList
-                      uploader={uploader}
-                      onImageRemoved={handleImageRemoved}
-                    />
-                  ) : null}
-                </>
-              ),
-            }}
-            cardFooterProps={{
-              className:
-                'flex flex-col gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between',
-              children: <UploadCardFooter isReady={isReady} />,
-            }}
-          />
-        </section>
-      </form>
+      <section className="w-full">
+        <Card
+          wrapperProps={{ className: 'w-full' }}
+          cardHeaderProps={{
+            className: 'space-y-3 border-b pb-6',
+            children: <UploadCardHeader />,
+          }}
+          cardContentProps={{
+            className: 'space-y-4 pt-2',
+            children: (
+              <>
+                {!hasFile ? <UploadDropzone onDrop={uploader.addFiles} /> : null}
+                <UploadRejections rejections={uploader.rejections} />
+                {hasFile ? (
+                  <UploadFileList
+                    uploader={uploader}
+                    onImageRemoved={handleImageRemoved}
+                  />
+                ) : null}
+              </>
+            ),
+          }}
+        />
+      </section>
     </Form>
   )
 }

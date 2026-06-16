@@ -24,7 +24,7 @@ export const getSetupDraftFn = createServerFn({ method: 'GET' })
       },
       select: {
         id: true,
-        name: true,
+        title: true,
         description: true,
         imageUrl: true,
         completedStep: true,

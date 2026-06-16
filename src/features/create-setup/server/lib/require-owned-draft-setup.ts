@@ -21,7 +21,7 @@ export async function requireOwnedDraftSetup({
       id: true,
       completedStep: true,
       imageUrl: true,
-      name: true,
+      title: true,
       description: true,
       categoryId: true,
     },
