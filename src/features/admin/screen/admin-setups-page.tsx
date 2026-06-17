@@ -1,5 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 
+import ErrorState from '#/shared/components/error-state'
+
 import { AdminSetupsDetail } from '../components/admin-list-details'
 import useGetAdminSetups from '../service/use-get-admin-setups'
 
@@ -11,11 +13,7 @@ function AdminSetupsPage() {
 
   if (setupsQuery.error) {
     return (
-      <section>
-        <p className="text-sm text-destructive">
-          {setupsQuery.error.message ?? 'Failed to load setups'}
-        </p>
-      </section>
+      <ErrorState error={setupsQuery.error} message="Failed to load setups" />
     )
   }
 

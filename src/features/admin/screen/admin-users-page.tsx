@@ -1,5 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 
+import ErrorState from '#/shared/components/error-state'
+
 import { AdminUsersDetail } from '../components/admin-list-details'
 import useGetAdminUsers from '../service/use-get-admin-users'
 
@@ -11,11 +13,7 @@ function AdminUsersPage() {
 
   if (usersQuery.error) {
     return (
-      <section>
-        <p className="text-sm text-destructive">
-          {usersQuery.error.message ?? 'Failed to load users'}
-        </p>
-      </section>
+      <ErrorState error={usersQuery.error} message="Failed to load users" />
     )
   }
 

@@ -1,5 +1,7 @@
 import { Link } from '@tanstack/react-router'
 
+import Icon from '#/shared/components/icons'
+import { Button } from '#/shared/components/ui/button'
 import { cn } from '#/shared/lib/utils'
 
 import type {
@@ -113,27 +115,34 @@ export function CategoryTableFilters({
   ]
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {filters.map((filter) => {
-        const isActive = search.categoryStatus === filter.id
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap gap-2">
+        {filters.map((filter) => {
+          const isActive = search.categoryStatus === filter.id
 
-        return (
-          <Link
-            key={filter.id}
-            to="/admin/categories"
-            search={{
-              page: 1,
-              categoryStatus: isActive ? undefined : filter.id,
-            }}
-            className={getFilterBadgeClassName(isActive)}
-          >
-            <CategoryStatusBadge
-              isActive={filter.isActive}
-              count={filter.count}
-            />
-          </Link>
-        )
-      })}
+          return (
+            <Link
+              key={filter.id}
+              to="/admin/categories"
+              search={{
+                page: 1,
+                categoryStatus: isActive ? undefined : filter.id,
+              }}
+              className={getFilterBadgeClassName(isActive)}
+            >
+              <CategoryStatusBadge
+                isActive={filter.isActive}
+                count={filter.count}
+              />
+            </Link>
+          )
+        })}
+      </div>
+
+      <Button type="button" size="sm">
+        <Icon name="plus" className="size-4" aria-hidden />
+        New Category
+      </Button>
     </div>
   )
 }

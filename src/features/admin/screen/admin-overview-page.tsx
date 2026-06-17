@@ -1,4 +1,5 @@
 import { useSession } from '#/features/auth/lib/auth-client'
+import ErrorState from '#/shared/components/error-state'
 
 import AdminOverview from '../components/admin-overview'
 import useGetAdminOverview from '../service/use-get-admin-overview'
@@ -10,11 +11,10 @@ function AdminOverviewPage() {
 
   if (overviewQuery.error) {
     return (
-      <section>
-        <p className="text-sm text-destructive">
-          {overviewQuery.error.message ?? 'Failed to load admin overview'}
-        </p>
-      </section>
+      <ErrorState
+        error={overviewQuery.error}
+        message="Failed to load admin overview"
+      />
     )
   }
 
