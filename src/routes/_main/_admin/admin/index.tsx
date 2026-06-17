@@ -1,14 +1,12 @@
+import AdminPage from '#/features/admin/screen/admin-page'
 import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'zod'
 
-export const Route = createFileRoute('/_main/_admin/admin/')({
-  component: AdminDashboardPage,
+const validateSearch = z.object({
+  view: z.enum(['users', 'setups', 'categories']).optional(),
 })
 
-function AdminDashboardPage() {
-  return (
-    <section className="py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Admin</h1>
-      <p className="mt-2 text-muted-foreground">Admin paneli yakinda burada olacak.</p>
-    </section>
-  )
-}
+export const Route = createFileRoute('/_main/_admin/admin/')({
+  validateSearch,
+  component: AdminPage,
+})

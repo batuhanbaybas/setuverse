@@ -13,4 +13,8 @@ export const queryKeys = {
   publishSetup: 'publish-setup',
   getProfile: 'get-profile',
   updateProfile: 'update-profile',
+  getAdminSetups: 'get-admin-setups',
+  getAdminOverview: 'get-admin-overview',
+  getAdminUsers: 'get-admin-users',
+  getAdminCategories: 'get-admin-categories',
 }
