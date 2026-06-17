@@ -1,14 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import {
-  LuChevronRight,
-  LuLogOut,
-  LuMenu,
-  LuPlus,
-  LuShield,
-  LuUser,
-} from 'react-icons/lu'
 
 import { signOut, useSession } from '#/features/auth/lib/auth-client'
 import { isAdminRole } from '#/features/auth/lib/roles'
@@ -92,9 +84,10 @@ function MobileNavItem({
           </span>
         ) : null}
       </span>
-      <LuChevronRight
+      <Icon
+        name="chevron-right"
         className={cn(
-          'size-4 shrink-0',
+          'shrink-0',
           variant === 'primary'
             ? 'text-primary-foreground/70'
             : 'text-muted-foreground',
@@ -163,7 +156,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
         aria-label="Open menu"
         onClick={() => setOpen(true)}
       >
-        <LuMenu className="size-5" />
+        <Icon name="menu" className="size-5" />
       </Button>
 
       <Sheet open={open} onOpenChange={setOpen}>
@@ -201,7 +194,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                 <>
                   <MobileNavItem
                     to="/create"
-                    icon={<LuPlus className="size-4" aria-hidden />}
+                    icon={<Icon name="plus" aria-hidden />}
                     label="Create Setup"
                     description="Start a new setup"
                     onClick={close}
@@ -209,7 +202,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                   />
                   <MobileNavItem
                     to="/profile"
-                    icon={<LuUser className="size-4" aria-hidden />}
+                    icon={<Icon name="user" aria-hidden />}
                     label="Profile"
                     description="Your setups and links"
                     onClick={close}
@@ -217,7 +210,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                   {isAdmin ? (
                     <MobileNavItem
                       to="/admin"
-                      icon={<LuShield className="size-4" aria-hidden />}
+                      icon={<Icon name="shield" aria-hidden />}
                       label="Admin"
                       description="Manage the platform"
                       onClick={close}
@@ -245,7 +238,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                   className="h-11 w-full justify-center gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
                   onClick={() => void handleSignOut()}
                 >
-                  <LuLogOut className="size-4" aria-hidden />
+                  <Icon name="log-out" aria-hidden />
                   Log out
                 </Button>
               </div>

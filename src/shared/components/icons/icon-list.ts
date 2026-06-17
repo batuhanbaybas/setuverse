@@ -10,8 +10,12 @@ import {
   LuImagePlus,
   LuLeaf,
   LuLoader,
+  LuLogOut,
+  LuMenu,
+  LuShield,
   LuStar,
   LuUpload,
+  LuUser,
   LuX,
   LuPlus,
 } from 'react-icons/lu'
@@ -32,6 +36,10 @@ export const iconList = [
   { name: 'check', icon: LuCheck },
   { name: 'chevron-right', icon: LuChevronRight },
   { name: 'home', icon: IoHome },
+  { name: 'user', icon: LuUser },
+  { name: 'shield', icon: LuShield },
+  { name: 'log-out', icon: LuLogOut },
+  { name: 'menu', icon: LuMenu },
   // category icons
   { name: 'layout-grid', icon: LuLayoutGrid },
   { name: 'code', icon: LuCodeXml },

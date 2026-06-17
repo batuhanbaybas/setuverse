@@ -1,15 +1,16 @@
-
-import type { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu'
+import Icon from '#/shared/components/icons'
+import type { IconName } from '#/shared/components/icons/icon-list'
 
 interface DropdownItemProps extends ComponentProps<typeof DropdownMenuItem> {
   label: string
-  icon?: ReactNode
+  icon?: IconName
 }
 
 interface Props {
@@ -27,7 +28,7 @@ function Dropdown({ triggerProps, items }: Props) {
 
           return (
             <DropdownMenuItem key={label} {...itemProps}>
-              {icon}
+              {icon ? <Icon name={icon} aria-hidden /> : null}
               {label}
             </DropdownMenuItem>
           )
@@ -38,3 +39,4 @@ function Dropdown({ triggerProps, items }: Props) {
 }
 
 export default Dropdown
+export type { DropdownItemProps }
