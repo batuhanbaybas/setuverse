@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 
+import { useSession } from '#/features/auth/lib/auth-client'
+import { isAdminRole } from '#/features/auth/lib/roles'
 import Icon from '#/shared/components/icons'
 import { Button } from '#/shared/components/ui/button'
 import {
@@ -17,6 +20,17 @@ type AdminLayoutProps = {
 
 function AdminLayout({ children }: AdminLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const navigate = useNavigate()
+  const { data: session, isPending } = useSession()
+
+  if (isPending) {
+    return null
+  }
+
+  if (!isAdminRole(session?.user.role)) {
+    void navigate({ to: session ? '/' : '/login', search: session ? undefined : { redirect: '/admin' } })
+    return null
+  }
 
   return (
     <div className="flex min-h-screen">
