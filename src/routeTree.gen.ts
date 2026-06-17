@@ -13,10 +13,12 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainCreateRouteImport } from './routes/_main/_create'
+import { Route as MainAdminRouteImport } from './routes/_main/_admin'
 import { Route as MainProfileIndexRouteImport } from './routes/_main/profile/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as MainProfileEditRouteImport } from './routes/_main/profile/edit'
 import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
+import { Route as MainAdminAdminIndexRouteImport } from './routes/_main/_admin/admin/index'
 import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
 import { Route as MainCreateCreateIdReviewRouteImport } from './routes/_main/_create/create/$id/review'
 import { Route as MainCreateCreateIdInfoRouteImport } from './routes/_main/_create/create/$id/info'
@@ -39,6 +41,10 @@ const MainCreateRoute = MainCreateRouteImport.update({
   id: '/_create',
   getParentRoute: () => MainRoute,
 } as any)
+const MainAdminRoute = MainAdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainProfileIndexRoute = MainProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
@@ -58,6 +64,11 @@ const MainCreateCreateIndexRoute = MainCreateCreateIndexRouteImport.update({
   id: '/create/',
   path: '/create/',
   getParentRoute: () => MainCreateRoute,
+} as any)
+const MainAdminAdminIndexRoute = MainAdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => MainAdminRoute,
 } as any)
 const MainCreateCreateIdTagsRoute = MainCreateCreateIdTagsRouteImport.update({
   id: '/create/$id/tags',
@@ -82,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/profile/': typeof MainProfileIndexRoute
+  '/admin/': typeof MainAdminAdminIndexRoute
   '/create/': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -93,6 +105,7 @@ export interface FileRoutesByTo {
   '/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/profile': typeof MainProfileIndexRoute
+  '/admin': typeof MainAdminAdminIndexRoute
   '/create': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -101,12 +114,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
+  '/_main/_admin': typeof MainAdminRouteWithChildren
   '/_main/_create': typeof MainCreateRouteWithChildren
   '/_main/': typeof MainIndexRoute
   '/login/': typeof LoginIndexRoute
   '/_main/profile/edit': typeof MainProfileEditRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_main/profile/': typeof MainProfileIndexRoute
+  '/_main/_admin/admin/': typeof MainAdminAdminIndexRoute
   '/_main/_create/create/': typeof MainCreateCreateIndexRoute
   '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -120,6 +135,7 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/api/auth/$'
     | '/profile/'
+    | '/admin/'
     | '/create/'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -131,6 +147,7 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/api/auth/$'
     | '/profile'
+    | '/admin'
     | '/create'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -138,12 +155,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_main'
+    | '/_main/_admin'
     | '/_main/_create'
     | '/_main/'
     | '/login/'
     | '/_main/profile/edit'
     | '/api/auth/$'
     | '/_main/profile/'
+    | '/_main/_admin/admin/'
     | '/_main/_create/create/'
     | '/_main/_create/create/$id/info'
     | '/_main/_create/create/$id/review'
@@ -186,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreateRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/_admin': {
+      id: '/_main/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MainAdminRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/profile/': {
       id: '/_main/profile/'
       path: '/profile'
@@ -214,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreateCreateIndexRouteImport
       parentRoute: typeof MainCreateRoute
     }
+    '/_main/_admin/admin/': {
+      id: '/_main/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof MainAdminAdminIndexRouteImport
+      parentRoute: typeof MainAdminRoute
+    }
     '/_main/_create/create/$id/tags': {
       id: '/_main/_create/create/$id/tags'
       path: '/create/$id/tags'
@@ -238,6 +271,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface MainAdminRouteChildren {
+  MainAdminAdminIndexRoute: typeof MainAdminAdminIndexRoute
+}
+
+const MainAdminRouteChildren: MainAdminRouteChildren = {
+  MainAdminAdminIndexRoute: MainAdminAdminIndexRoute,
+}
+
+const MainAdminRouteWithChildren = MainAdminRoute._addFileChildren(
+  MainAdminRouteChildren,
+)
+
 interface MainCreateRouteChildren {
   MainCreateCreateIndexRoute: typeof MainCreateCreateIndexRoute
   MainCreateCreateIdInfoRoute: typeof MainCreateCreateIdInfoRoute
@@ -257,6 +302,7 @@ const MainCreateRouteWithChildren = MainCreateRoute._addFileChildren(
 )
 
 interface MainRouteChildren {
+  MainAdminRoute: typeof MainAdminRouteWithChildren
   MainCreateRoute: typeof MainCreateRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
   MainProfileEditRoute: typeof MainProfileEditRoute
@@ -264,6 +310,7 @@ interface MainRouteChildren {
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainAdminRoute: MainAdminRouteWithChildren,
   MainCreateRoute: MainCreateRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
   MainProfileEditRoute: MainProfileEditRoute,

@@ -1,5 +1,5 @@
 
-import Categories from '../components/categories'
+import Categories from '../components/categories/index'
 
 
 function HomePage() {

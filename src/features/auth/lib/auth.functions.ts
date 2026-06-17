@@ -1,13 +1,17 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 import { auth } from '#/features/auth/lib/auth'
-import { requireSession } from '#/features/auth/lib/require-session'
+import { adminMiddleware, authMiddleware } from '#/features/auth/middleware'
 
 export const getSession = createServerFn({ method: 'GET' }).handler(async () => {
   const headers = getRequestHeaders()
   return auth.api.getSession({ headers })
 })
 
-export const ensureSession = createServerFn({ method: 'GET' }).handler(async () => {
-  return requireSession()
-})
+export const ensureSession = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
+  .handler(async ({ context }) => context.session)
+
+export const ensureAdmin = createServerFn({ method: 'GET' })
+  .middleware([adminMiddleware])
+  .handler(async ({ context }) => context.session)
