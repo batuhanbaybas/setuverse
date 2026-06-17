@@ -5,6 +5,7 @@ import { CategoryStatusBadge } from './category-status-badge'
 import { formatAdminDate } from './format-admin-date'
 import { SetupStatusBadge } from './setup-status-badge'
 import { UserRoleBadge } from './user-role-badge'
+import AdminSetupPreviewCell from '../components/admin-setup-preview-cell'
 import type { AdminTableColumn } from '../components/admin-data-table'
 import type { AdminCategory } from '../server/get-admin-categories.functions'
 import type { AdminSetup } from '../server/get-admin-setups.functions'
@@ -53,6 +54,12 @@ export function getAdminSetupColumns({
 }: GetAdminSetupColumnsOptions = {}): AdminTableColumn<AdminSetup>[] {
   const columns: AdminTableColumn<AdminSetup>[] = [
     {
+      id: 'preview',
+      header: '',
+      cellClassName: 'w-24',
+      render: (setup) => <AdminSetupPreviewCell setup={setup} />,
+    },
+    {
       id: 'title',
       header: 'Title',
       cellClassName: 'max-w-[240px] truncate font-medium',
@@ -88,6 +95,12 @@ export function getAdminSetupColumns({
         setup.category?.name ?? (
           <span className="text-muted-foreground">—</span>
         ),
+    },
+    {
+      id: 'items',
+      header: 'Items',
+      cellClassName: 'text-muted-foreground',
+      render: (setup) => setup.items.length.toLocaleString(),
     },
     {
       id: 'updated',

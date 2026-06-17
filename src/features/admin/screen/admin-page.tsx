@@ -1,7 +1,6 @@
-import { Link, getRouteApi } from '@tanstack/react-router'
+import { getRouteApi } from '@tanstack/react-router'
 
 import { useSession } from '#/features/auth/lib/auth-client'
-import Icon from '#/shared/components/icons'
 
 import {
   AdminCategoriesDetail,
@@ -74,7 +73,7 @@ function AdminPage() {
 
   if (activeQuery.error) {
     return (
-      <section className="py-8">
+      <section>
         <p className="text-sm text-destructive">
           {activeQuery.error.message ?? 'Failed to load admin data'}
         </p>
@@ -83,46 +82,13 @@ function AdminPage() {
   }
 
   return (
-    <section className="py-8">
+    <section>
       {view === 'users' && usersQuery.data ? (
-        <>
-          <Link
-            to="/admin"
-            search={{}}
-            className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Icon name="chevron-right" className="size-4 rotate-180" />
-            Back to overview
-          </Link>
-
-          <AdminUsersDetail search={search} data={usersQuery.data} />
-        </>
+        <AdminUsersDetail search={search} data={usersQuery.data} />
       ) : view === 'setups' && setupsQuery.data ? (
-        <>
-          <Link
-            to="/admin"
-            search={{}}
-            className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Icon name="chevron-right" className="size-4 rotate-180" />
-            Back to overview
-          </Link>
-
-          <AdminSetupsDetail search={search} data={setupsQuery.data} />
-        </>
+        <AdminSetupsDetail search={search} data={setupsQuery.data} />
       ) : view === 'categories' && categoriesQuery.data ? (
-        <>
-          <Link
-            to="/admin"
-            search={{}}
-            className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Icon name="chevron-right" className="size-4 rotate-180" />
-            Back to overview
-          </Link>
-
-          <AdminCategoriesDetail search={search} data={categoriesQuery.data} />
-        </>
+        <AdminCategoriesDetail search={search} data={categoriesQuery.data} />
       ) : overviewQuery.data ? (
         <>
           <header className="mb-8">

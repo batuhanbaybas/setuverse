@@ -1,9 +1,11 @@
+import AdminSetupActions from './admin-setup-actions'
 import {
   CategoryTableFilters,
   SetupTableFilters,
   UserTableFilters,
 } from './admin-table-filters'
 import AdminTableSection from './admin-table-section'
+import type { AdminTableColumn } from './admin-data-table'
 import {
   getAdminCategoryColumns,
   getAdminSetupColumns,
@@ -42,13 +44,22 @@ type AdminSetupsDetailProps = {
 }
 
 export function AdminSetupsDetail({ search, data }: AdminSetupsDetailProps) {
+  const setupColumns: AdminTableColumn<(typeof data.setups)[number]>[] = [
+    ...getAdminSetupColumns({ showStatus: true }),
+    {
+      id: 'actions',
+      header: 'Actions',
+      render: (setup) => <AdminSetupActions setup={setup} />,
+    },
+  ]
+
   return (
     <AdminTableSection
       title="Setups"
       description="All submitted setups including pending review."
       filters={<SetupTableFilters search={search} counts={data.counts} />}
       data={data.setups}
-      columns={getAdminSetupColumns({ showStatus: true })}
+      columns={setupColumns}
       getRowKey={(setup) => setup.id}
       pagination={data.pagination}
       search={search}

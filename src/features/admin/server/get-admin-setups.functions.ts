@@ -21,13 +21,24 @@ export type AdminSetupCounts = {
   rejected: number
 }
 
+export type AdminSetupItem = {
+  id: string
+  name: string
+  url: string
+  x: number
+  y: number
+}
+
 export type AdminSetup = {
   id: string
   title: string | null
+  description: string | null
+  imageUrl: string | null
   status: AdminSetupStatus
   createdAt: Date
   updatedAt: Date
   publishedAt: Date | null
+  items: AdminSetupItem[]
   user: {
     id: string
     name: string
@@ -80,10 +91,22 @@ export const getAdminSetupsFn = createServerFn({ method: 'GET' })
         select: {
           id: true,
           title: true,
+          description: true,
+          imageUrl: true,
           status: true,
           createdAt: true,
           updatedAt: true,
           publishedAt: true,
+          items: {
+            orderBy: { createdAt: 'asc' },
+            select: {
+              id: true,
+              name: true,
+              url: true,
+              x: true,
+              y: true,
+            },
+          },
           user: {
             select: {
               id: true,
