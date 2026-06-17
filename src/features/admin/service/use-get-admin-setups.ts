@@ -1,18 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import type { AdminSetupsSearch } from '../lib/admin-list-search'
+import {
+  adminSetupsQueryOptions,
+  getAdminSetupsInput,
+} from '../lib/admin-queries'
 
-import { adminQueryStaleTime } from '../lib/admin-query-options'
-import type { GetAdminSetupsInput } from '../server/get-admin-setups.functions'
-import type { GetAdminSetupsResult } from '../server/get-admin-setups.functions'
-import { getAdminSetupsFn } from '../server/get-admin-setups.functions'
+const useGetAdminSetups = (search: AdminSetupsSearch) => {
+  const input = getAdminSetupsInput(search)
 
-const useGetAdminSetups = (input: GetAdminSetupsInput, enabled = true) => {
-  return useQuery<GetAdminSetupsResult, Error>({
-    queryKey: [queryKeys.getAdminSetups, input],
-    queryFn: () => getAdminSetupsFn({ data: input }),
-    enabled,
-    staleTime: adminQueryStaleTime,
+  return useQuery({
+    ...adminSetupsQueryOptions(input),
     placeholderData: (previousData) => previousData,
   })
 }

@@ -1,21 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import type { AdminCategoriesSearch } from '../lib/admin-list-search'
+import {
+  adminCategoriesQueryOptions,
+  getAdminCategoriesInput,
+} from '../lib/admin-queries'
 
-import { adminQueryStaleTime } from '../lib/admin-query-options'
-import type { GetAdminCategoriesInput } from '../server/get-admin-categories.functions'
-import type { GetAdminCategoriesResult } from '../server/get-admin-categories.functions'
-import { getAdminCategoriesFn } from '../server/get-admin-categories.functions'
+const useGetAdminCategories = (search: AdminCategoriesSearch) => {
+  const input = getAdminCategoriesInput(search)
 
-const useGetAdminCategories = (
-  input: GetAdminCategoriesInput,
-  enabled = true,
-) => {
-  return useQuery<GetAdminCategoriesResult, Error>({
-    queryKey: [queryKeys.getAdminCategories, input],
-    queryFn: () => getAdminCategoriesFn({ data: input }),
-    enabled,
-    staleTime: adminQueryStaleTime,
+  return useQuery({
+    ...adminCategoriesQueryOptions(input),
     placeholderData: (previousData) => previousData,
   })
 }

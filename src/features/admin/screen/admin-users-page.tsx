@@ -1,28 +1,13 @@
 import { getRouteApi } from '@tanstack/react-router'
 
 import { AdminUsersDetail } from '../components/admin-list-details'
-import {
-  getAdminListPage,
-  mapUserRoleFilter,
-} from '../lib/admin-list-search'
-import { ADMIN_PAGE_SIZE } from '../lib/admin-pagination'
 import useGetAdminUsers from '../service/use-get-admin-users'
 
 const adminUsersRouteApi = getRouteApi('/_admin/admin/users/')
 
 function AdminUsersPage() {
   const search = adminUsersRouteApi.useSearch()
-  const page = getAdminListPage(search)
-
-  const usersQuery = useGetAdminUsers({
-    page,
-    pageSize: ADMIN_PAGE_SIZE,
-    role: mapUserRoleFilter(search.userRole),
-  })
-
-  if (usersQuery.isLoading) {
-    return null
-  }
+  const usersQuery = useGetAdminUsers(search)
 
   if (usersQuery.error) {
     return (

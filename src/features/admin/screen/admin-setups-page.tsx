@@ -1,28 +1,13 @@
 import { getRouteApi } from '@tanstack/react-router'
 
 import { AdminSetupsDetail } from '../components/admin-list-details'
-import {
-  getAdminListPage,
-  mapSetupStatusFilter,
-} from '../lib/admin-list-search'
-import { ADMIN_PAGE_SIZE } from '../lib/admin-pagination'
 import useGetAdminSetups from '../service/use-get-admin-setups'
 
 const adminSetupsRouteApi = getRouteApi('/_admin/admin/setups/')
 
 function AdminSetupsPage() {
   const search = adminSetupsRouteApi.useSearch()
-  const page = getAdminListPage(search)
-
-  const setupsQuery = useGetAdminSetups({
-    page,
-    pageSize: ADMIN_PAGE_SIZE,
-    status: mapSetupStatusFilter(search.setupStatus),
-  })
-
-  if (setupsQuery.isLoading) {
-    return null
-  }
+  const setupsQuery = useGetAdminSetups(search)
 
   if (setupsQuery.error) {
     return (

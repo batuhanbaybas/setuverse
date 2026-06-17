@@ -1,17 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import type { AdminUsersSearch } from '../lib/admin-list-search'
+import {
+  adminUsersQueryOptions,
+  getAdminUsersInput,
+} from '../lib/admin-queries'
 
-import { adminQueryStaleTime } from '../lib/admin-query-options'
-import type { GetAdminUsersInput, GetAdminUsersResult } from '../server/get-admin-users.functions'
-import { getAdminUsersFn } from '../server/get-admin-users.functions'
+const useGetAdminUsers = (search: AdminUsersSearch) => {
+  const input = getAdminUsersInput(search)
 
-const useGetAdminUsers = (input: GetAdminUsersInput, enabled = true) => {
-  return useQuery<GetAdminUsersResult, Error>({
-    queryKey: [queryKeys.getAdminUsers, input],
-    queryFn: () => getAdminUsersFn({ data: input }),
-    enabled,
-    staleTime: adminQueryStaleTime,
+  return useQuery({
+    ...adminUsersQueryOptions(input),
     placeholderData: (previousData) => previousData,
   })
 }

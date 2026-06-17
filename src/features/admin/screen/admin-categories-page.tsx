@@ -1,36 +1,22 @@
 import { getRouteApi } from '@tanstack/react-router'
 
+import ErrorState from '#/shared/components/error-state'
+
 import { AdminCategoriesDetail } from '../components/admin-list-details'
-import {
-  getAdminListPage,
-  mapCategoryStatusFilter,
-} from '../lib/admin-list-search'
-import { ADMIN_PAGE_SIZE } from '../lib/admin-pagination'
 import useGetAdminCategories from '../service/use-get-admin-categories'
 
 const adminCategoriesRouteApi = getRouteApi('/_admin/admin/categories/')
 
 function AdminCategoriesPage() {
   const search = adminCategoriesRouteApi.useSearch()
-  const page = getAdminListPage(search)
-
-  const categoriesQuery = useGetAdminCategories({
-    page,
-    pageSize: ADMIN_PAGE_SIZE,
-    isActive: mapCategoryStatusFilter(search.categoryStatus),
-  })
-
-  if (categoriesQuery.isLoading) {
-    return null
-  }
+  const categoriesQuery = useGetAdminCategories(search)
 
   if (categoriesQuery.error) {
     return (
-      <section>
-        <p className="text-sm text-destructive">
-          {categoriesQuery.error.message ?? 'Failed to load categories'}
-        </p>
-      </section>
+      <ErrorState
+        error={categoriesQuery.error}
+        message="Failed to load categories"
+      />
     )
   }
 

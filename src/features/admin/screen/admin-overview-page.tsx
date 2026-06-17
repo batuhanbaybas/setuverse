@@ -8,10 +8,6 @@ function AdminOverviewPage() {
   const welcomeName = session?.user.name.split(' ')[0] ?? 'there'
   const overviewQuery = useGetAdminOverview()
 
-  if (overviewQuery.isLoading) {
-    return null
-  }
-
   if (overviewQuery.error) {
     return (
       <section>
