@@ -3,15 +3,20 @@ import { useQuery } from '@tanstack/react-query'
 import { queryKeys } from '#/shared/lib/query-keys'
 
 import { adminQueryStaleTime } from '../lib/admin-query-options'
+import type { GetAdminCategoriesInput } from '../server/get-admin-categories.functions'
 import type { GetAdminCategoriesResult } from '../server/get-admin-categories.functions'
 import { getAdminCategoriesFn } from '../server/get-admin-categories.functions'
 
-const useGetAdminCategories = (enabled = true) => {
+const useGetAdminCategories = (
+  input: GetAdminCategoriesInput,
+  enabled = true,
+) => {
   return useQuery<GetAdminCategoriesResult, Error>({
-    queryKey: [queryKeys.getAdminCategories],
-    queryFn: () => getAdminCategoriesFn(),
+    queryKey: [queryKeys.getAdminCategories, input],
+    queryFn: () => getAdminCategoriesFn({ data: input }),
     enabled,
     staleTime: adminQueryStaleTime,
+    placeholderData: (previousData) => previousData,
   })
 }
 

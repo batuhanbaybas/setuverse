@@ -3,10 +3,19 @@ import { Link, getRouteApi } from '@tanstack/react-router'
 import { useSession } from '#/features/auth/lib/auth-client'
 import Icon from '#/shared/components/icons'
 
-import AdminCategoriesDetail from '../components/admin-categories-detail'
+import {
+  AdminCategoriesDetail,
+  AdminSetupsDetail,
+  AdminUsersDetail,
+} from '../components/admin-list-details'
 import AdminOverview from '../components/admin-overview'
-import AdminSetupsDetail from '../components/admin-setups-detail'
-import AdminUsersDetail from '../components/admin-users-detail'
+import {
+  getAdminListPage,
+  mapCategoryStatusFilter,
+  mapSetupStatusFilter,
+  mapUserRoleFilter,
+} from '../lib/admin-list-search'
+import { ADMIN_PAGE_SIZE } from '../lib/admin-pagination'
 import useGetAdminCategories from '../service/use-get-admin-categories'
 import useGetAdminOverview from '../service/use-get-admin-overview'
 import useGetAdminSetups from '../service/use-get-admin-setups'
@@ -15,15 +24,40 @@ import useGetAdminUsers from '../service/use-get-admin-users'
 const adminRouteApi = getRouteApi('/_main/_admin/admin/')
 
 function AdminPage() {
-  const { view } = adminRouteApi.useSearch()
+  const search = adminRouteApi.useSearch()
+  const { view } = search
   const { data: session } = useSession()
   const isOverview = !view
   const welcomeName = session?.user.name.split(' ')[0] ?? 'there'
+  const page = getAdminListPage(search)
+
+  const listInput = {
+    page,
+    pageSize: ADMIN_PAGE_SIZE,
+  }
 
   const overviewQuery = useGetAdminOverview(isOverview)
-  const setupsQuery = useGetAdminSetups(view === 'setups')
-  const usersQuery = useGetAdminUsers(view === 'users')
-  const categoriesQuery = useGetAdminCategories(view === 'categories')
+  const setupsQuery = useGetAdminSetups(
+    {
+      ...listInput,
+      status: mapSetupStatusFilter(search.setupStatus),
+    },
+    view === 'setups',
+  )
+  const usersQuery = useGetAdminUsers(
+    {
+      ...listInput,
+      role: mapUserRoleFilter(search.userRole),
+    },
+    view === 'users',
+  )
+  const categoriesQuery = useGetAdminCategories(
+    {
+      ...listInput,
+      isActive: mapCategoryStatusFilter(search.categoryStatus),
+    },
+    view === 'categories',
+  )
 
   const activeQuery =
     view === 'users'
@@ -50,7 +84,7 @@ function AdminPage() {
 
   return (
     <section className="py-8">
-      {view === 'users' ? (
+      {view === 'users' && usersQuery.data ? (
         <>
           <Link
             to="/admin"
@@ -61,7 +95,7 @@ function AdminPage() {
             Back to overview
           </Link>
 
-          <AdminUsersDetail users={usersQuery.data?.users ?? []} />
+          <AdminUsersDetail search={search} data={usersQuery.data} />
         </>
       ) : view === 'setups' && setupsQuery.data ? (
         <>
@@ -74,12 +108,7 @@ function AdminPage() {
             Back to overview
           </Link>
 
-          <AdminSetupsDetail
-            title="Setups"
-            description="All submitted setups including pending review."
-            setups={setupsQuery.data.setups}
-            showStatus
-          />
+          <AdminSetupsDetail search={search} data={setupsQuery.data} />
         </>
       ) : view === 'categories' && categoriesQuery.data ? (
         <>
@@ -92,7 +121,7 @@ function AdminPage() {
             Back to overview
           </Link>
 
-          <AdminCategoriesDetail categories={categoriesQuery.data.categories} />
+          <AdminCategoriesDetail search={search} data={categoriesQuery.data} />
         </>
       ) : overviewQuery.data ? (
         <>
@@ -112,9 +141,6 @@ function AdminPage() {
             totalUsers={overviewQuery.data.totalUsers}
             totalSetups={overviewQuery.data.totalSetups}
             totalCategories={overviewQuery.data.totalCategories}
-            setupCounts={overviewQuery.data.setupCounts}
-            roleCounts={overviewQuery.data.roleCounts}
-            categoryCounts={overviewQuery.data.categoryCounts}
           />
         </>
       ) : null}
