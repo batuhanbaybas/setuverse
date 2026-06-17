@@ -1,8 +1,9 @@
-import { guardAdminRoute } from '#/features/auth/lib/guard-admin-route'
-import AdminLayout from '#/features/admin/components/admin-layout'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_main/_admin')({
+import AdminLayout from '#/features/admin/components/admin-layout'
+import { guardAdminRoute } from '#/features/auth/lib/guard-admin-route'
+
+export const Route = createFileRoute('/_admin')({
   beforeLoad: async ({ location }) => guardAdminRoute(location),
   component: RouteComponent,
 })

@@ -7,7 +7,7 @@ import { cn } from '#/shared/lib/utils'
 import { adminNavItems } from '../../lib/admin-nav-items'
 import AdminSidebarUser from './sidebar-user'
 
-const adminRouteApi = getRouteApi('/_main/_admin/admin/')
+const adminRouteApi = getRouteApi('/_admin/admin/')
 
 type AdminSidebarPanelProps = {
   onNavigate?: () => void

@@ -20,7 +20,7 @@ import useGetAdminOverview from '../service/use-get-admin-overview'
 import useGetAdminSetups from '../service/use-get-admin-setups'
 import useGetAdminUsers from '../service/use-get-admin-users'
 
-const adminRouteApi = getRouteApi('/_main/_admin/admin/')
+const adminRouteApi = getRouteApi('/_admin/admin/')
 
 function AdminPage() {
   const search = adminRouteApi.useSearch()
