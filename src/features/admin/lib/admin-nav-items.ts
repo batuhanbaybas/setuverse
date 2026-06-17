@@ -1,37 +1,44 @@
 import type { IconName } from '#/shared/components/icons/icon-list'
 
-import type { AdminListSearch } from './admin-list-search'
-
 export type AdminNavItem = {
   label: string
   icon: IconName
-  search: AdminListSearch
-  isActive: (search: AdminListSearch) => boolean
+  to: '/admin' | '/admin/users' | '/admin/setups' | '/admin/categories'
+  isActive: (pathname: string) => boolean
+}
+
+function normalizeAdminPath(pathname: string) {
+  return pathname.endsWith('/') && pathname.length > 1
+    ? pathname.slice(0, -1)
+    : pathname
 }
 
 export const adminNavItems: AdminNavItem[] = [
   {
     label: 'Overview',
     icon: 'shield',
-    search: {},
-    isActive: (search) => !search.view,
+    to: '/admin',
+    isActive: (pathname) => normalizeAdminPath(pathname) === '/admin',
   },
   {
     label: 'Users',
     icon: 'user',
-    search: { view: 'users' },
-    isActive: (search) => search.view === 'users',
+    to: '/admin/users',
+    isActive: (pathname) =>
+      normalizeAdminPath(pathname).startsWith('/admin/users'),
   },
   {
     label: 'Setups',
     icon: 'layout-grid',
-    search: { view: 'setups' },
-    isActive: (search) => search.view === 'setups',
+    to: '/admin/setups',
+    isActive: (pathname) =>
+      normalizeAdminPath(pathname).startsWith('/admin/setups'),
   },
   {
     label: 'Categories',
     icon: 'star',
-    search: { view: 'categories' },
-    isActive: (search) => search.view === 'categories',
+    to: '/admin/categories',
+    isActive: (pathname) =>
+      normalizeAdminPath(pathname).startsWith('/admin/categories'),
   },
 ]

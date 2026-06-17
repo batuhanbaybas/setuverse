@@ -1,21 +1,32 @@
 import { z } from 'zod'
 
-export const adminListSearchSchema = z.object({
-  view: z.enum(['users', 'setups', 'categories']).optional(),
-  page: z.coerce.number().int().min(1).catch(1).optional(),
-  setupStatus: z.enum(['pending', 'published', 'rejected']).optional(),
+const adminPageSchema = z.coerce.number().int().min(1).catch(1).optional()
+
+export const adminUsersSearchSchema = z.object({
+  page: adminPageSchema,
   userRole: z.enum(['admin', 'user']).optional(),
+})
+
+export const adminSetupsSearchSchema = z.object({
+  page: adminPageSchema,
+  setupStatus: z.enum(['pending', 'published', 'rejected']).optional(),
+})
+
+export const adminCategoriesSearchSchema = z.object({
+  page: adminPageSchema,
   categoryStatus: z.enum(['active', 'inactive']).optional(),
 })
 
-export type AdminListSearch = z.infer<typeof adminListSearchSchema>
+export type AdminUsersSearch = z.infer<typeof adminUsersSearchSchema>
+export type AdminSetupsSearch = z.infer<typeof adminSetupsSearchSchema>
+export type AdminCategoriesSearch = z.infer<typeof adminCategoriesSearchSchema>
 
-export function getAdminListPage(search: AdminListSearch) {
+export function getAdminListPage(search: { page?: number }) {
   return search.page ?? 1
 }
 
 export function mapSetupStatusFilter(
-  status?: AdminListSearch['setupStatus'],
+  status?: AdminSetupsSearch['setupStatus'],
 ): 'PENDING' | 'PUBLISHED' | 'REJECTED' | undefined {
   if (!status) return undefined
 
@@ -29,7 +40,7 @@ export function mapSetupStatusFilter(
 }
 
 export function mapUserRoleFilter(
-  role?: AdminListSearch['userRole'],
+  role?: AdminUsersSearch['userRole'],
 ): 'ADMIN' | 'USER' | undefined {
   if (!role) return undefined
 
@@ -37,7 +48,7 @@ export function mapUserRoleFilter(
 }
 
 export function mapCategoryStatusFilter(
-  status?: AdminListSearch['categoryStatus'],
+  status?: AdminCategoriesSearch['categoryStatus'],
 ): boolean | undefined {
   if (!status) return undefined
 

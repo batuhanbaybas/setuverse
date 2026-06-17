@@ -1,9 +1,12 @@
-import type { ReactNode } from 'react'
 import { Link } from '@tanstack/react-router'
 
 import { cn } from '#/shared/lib/utils'
 
-import type { AdminListSearch } from '../lib/admin-list-search'
+import type {
+  AdminCategoriesSearch,
+  AdminSetupsSearch,
+  AdminUsersSearch,
+} from '../lib/admin-list-search'
 import { CategoryStatusBadge } from '../lib/category-status-badge'
 import { SetupStatusBadge } from '../lib/setup-status-badge'
 import { UserRoleBadge } from '../lib/user-role-badge'
@@ -11,29 +14,15 @@ import type { AdminCategoryCounts } from '../server/get-admin-categories.functio
 import type { AdminSetupCounts } from '../server/get-admin-setups.functions'
 import type { AdminUserRoleCounts } from '../server/get-admin-users.functions'
 
-type FilterBadgeLinkProps = {
-  isActive: boolean
-  search: AdminListSearch
-  children: ReactNode
-}
-
-function FilterBadgeLink({ isActive, search, children }: FilterBadgeLinkProps) {
-  return (
-    <Link
-      to="/admin"
-      search={search}
-      className={cn(
-        'rounded-full transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-        isActive && 'ring-2 ring-foreground/25',
-      )}
-    >
-      {children}
-    </Link>
+function getFilterBadgeClassName(isActive: boolean) {
+  return cn(
+    'rounded-full transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    isActive && 'ring-2 ring-foreground/25',
   )
 }
 
 type SetupTableFiltersProps = {
-  search: AdminListSearch
+  search: AdminSetupsSearch
   counts: AdminSetupCounts
 }
 
@@ -58,17 +47,17 @@ export function SetupTableFilters({ search, counts }: SetupTableFiltersProps) {
         const isActive = search.setupStatus === filter.id
 
         return (
-          <FilterBadgeLink
+          <Link
             key={filter.id}
-            isActive={isActive}
+            to="/admin/setups"
             search={{
-              view: 'setups',
               page: 1,
               setupStatus: isActive ? undefined : filter.id,
             }}
+            className={getFilterBadgeClassName(isActive)}
           >
             <SetupStatusBadge status={filter.status} count={filter.count} />
-          </FilterBadgeLink>
+          </Link>
         )
       })}
     </div>
@@ -76,7 +65,7 @@ export function SetupTableFilters({ search, counts }: SetupTableFiltersProps) {
 }
 
 type UserTableFiltersProps = {
-  search: AdminListSearch
+  search: AdminUsersSearch
   counts: AdminUserRoleCounts
 }
 
@@ -92,17 +81,17 @@ export function UserTableFilters({ search, counts }: UserTableFiltersProps) {
         const isActive = search.userRole === filter.id
 
         return (
-          <FilterBadgeLink
+          <Link
             key={filter.id}
-            isActive={isActive}
+            to="/admin/users"
             search={{
-              view: 'users',
               page: 1,
               userRole: isActive ? undefined : filter.id,
             }}
+            className={getFilterBadgeClassName(isActive)}
           >
             <UserRoleBadge role={filter.role} count={filter.count} />
-          </FilterBadgeLink>
+          </Link>
         )
       })}
     </div>
@@ -110,7 +99,7 @@ export function UserTableFilters({ search, counts }: UserTableFiltersProps) {
 }
 
 type CategoryTableFiltersProps = {
-  search: AdminListSearch
+  search: AdminCategoriesSearch
   counts: AdminCategoryCounts
 }
 
@@ -129,20 +118,20 @@ export function CategoryTableFilters({
         const isActive = search.categoryStatus === filter.id
 
         return (
-          <FilterBadgeLink
+          <Link
             key={filter.id}
-            isActive={isActive}
+            to="/admin/categories"
             search={{
-              view: 'categories',
               page: 1,
               categoryStatus: isActive ? undefined : filter.id,
             }}
+            className={getFilterBadgeClassName(isActive)}
           >
             <CategoryStatusBadge
               isActive={filter.isActive}
               count={filter.count}
             />
-          </FilterBadgeLink>
+          </Link>
         )
       })}
     </div>

@@ -1,4 +1,4 @@
-import { Link, getRouteApi } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 
 import Icon from '#/shared/components/icons'
 import { Badge } from '#/shared/components/ui/badge'
@@ -7,25 +7,20 @@ import { cn } from '#/shared/lib/utils'
 import { adminNavItems } from '../../lib/admin-nav-items'
 import AdminSidebarUser from './sidebar-user'
 
-const adminRouteApi = getRouteApi('/_admin/admin/')
-
 type AdminSidebarPanelProps = {
   onNavigate?: () => void
   className?: string
 }
 
 function AdminSidebarPanel({ onNavigate, className }: AdminSidebarPanelProps) {
-  const search = adminRouteApi.useSearch()
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
 
   return (
     <div className={cn('flex h-full flex-col', className)}>
       <div className="border-b px-4 py-5">
-        <Link
-          to="/admin"
-          search={{}}
-          onClick={onNavigate}
-          className="flex min-w-0 items-center gap-2"
-        >
+        <Link to="/admin" onClick={onNavigate} className="flex min-w-0 items-center gap-2">
           <Icon name="palanet" className="size-8 shrink-0 text-primary" />
           <div className="min-w-0">
             <p className="truncate text-lg font-bold leading-tight">Setuverse</p>
@@ -42,13 +37,12 @@ function AdminSidebarPanel({ onNavigate, className }: AdminSidebarPanelProps) {
         </p>
 
         {adminNavItems.map((item) => {
-          const isActive = item.isActive(search)
+          const isActive = item.isActive(pathname)
 
           return (
             <Link
               key={item.label}
-              to="/admin"
-              search={item.search}
+              to={item.to}
               onClick={onNavigate}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',

@@ -1,9 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { adminListSearchSchema } from '#/features/admin/lib/admin-list-search'
-import AdminPage from '#/features/admin/screen/admin-page'
+import AdminOverviewPage from '#/features/admin/screen/admin-overview-page'
 
 export const Route = createFileRoute('/_admin/admin/')({
-  validateSearch: adminListSearchSchema,
-  component: AdminPage,
+  component: AdminOverviewPage,
 })

@@ -19,6 +19,9 @@ import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as MainProfileEditRouteImport } from './routes/_main/profile/edit'
 import { Route as MainCreateCreateIndexRouteImport } from './routes/_main/_create/create/index'
+import { Route as AdminAdminUsersIndexRouteImport } from './routes/_admin/admin/users/index'
+import { Route as AdminAdminSetupsIndexRouteImport } from './routes/_admin/admin/setups/index'
+import { Route as AdminAdminCategoriesIndexRouteImport } from './routes/_admin/admin/categories/index'
 import { Route as MainCreateCreateIdTagsRouteImport } from './routes/_main/_create/create/$id/tags'
 import { Route as MainCreateCreateIdReviewRouteImport } from './routes/_main/_create/create/$id/review'
 import { Route as MainCreateCreateIdInfoRouteImport } from './routes/_main/_create/create/$id/info'
@@ -70,6 +73,22 @@ const MainCreateCreateIndexRoute = MainCreateCreateIndexRouteImport.update({
   path: '/create/',
   getParentRoute: () => MainCreateRoute,
 } as any)
+const AdminAdminUsersIndexRoute = AdminAdminUsersIndexRouteImport.update({
+  id: '/admin/users/',
+  path: '/admin/users/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminSetupsIndexRoute = AdminAdminSetupsIndexRouteImport.update({
+  id: '/admin/setups/',
+  path: '/admin/setups/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminCategoriesIndexRoute =
+  AdminAdminCategoriesIndexRouteImport.update({
+    id: '/admin/categories/',
+    path: '/admin/categories/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const MainCreateCreateIdTagsRoute = MainCreateCreateIdTagsRouteImport.update({
   id: '/create/$id/tags',
   path: '/create/$id/tags',
@@ -94,6 +113,9 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/profile/': typeof MainProfileIndexRoute
+  '/admin/categories/': typeof AdminAdminCategoriesIndexRoute
+  '/admin/setups/': typeof AdminAdminSetupsIndexRoute
+  '/admin/users/': typeof AdminAdminUsersIndexRoute
   '/create/': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -106,6 +128,9 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin': typeof AdminAdminIndexRoute
   '/profile': typeof MainProfileIndexRoute
+  '/admin/categories': typeof AdminAdminCategoriesIndexRoute
+  '/admin/setups': typeof AdminAdminSetupsIndexRoute
+  '/admin/users': typeof AdminAdminUsersIndexRoute
   '/create': typeof MainCreateCreateIndexRoute
   '/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -122,6 +147,9 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_main/profile/': typeof MainProfileIndexRoute
+  '/_admin/admin/categories/': typeof AdminAdminCategoriesIndexRoute
+  '/_admin/admin/setups/': typeof AdminAdminSetupsIndexRoute
+  '/_admin/admin/users/': typeof AdminAdminUsersIndexRoute
   '/_main/_create/create/': typeof MainCreateCreateIndexRoute
   '/_main/_create/create/$id/info': typeof MainCreateCreateIdInfoRoute
   '/_main/_create/create/$id/review': typeof MainCreateCreateIdReviewRoute
@@ -136,6 +164,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/admin/'
     | '/profile/'
+    | '/admin/categories/'
+    | '/admin/setups/'
+    | '/admin/users/'
     | '/create/'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -148,6 +179,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/admin'
     | '/profile'
+    | '/admin/categories'
+    | '/admin/setups'
+    | '/admin/users'
     | '/create'
     | '/create/$id/info'
     | '/create/$id/review'
@@ -163,6 +197,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/_admin/admin/'
     | '/_main/profile/'
+    | '/_admin/admin/categories/'
+    | '/_admin/admin/setups/'
+    | '/_admin/admin/users/'
     | '/_main/_create/create/'
     | '/_main/_create/create/$id/info'
     | '/_main/_create/create/$id/review'
@@ -248,6 +285,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreateCreateIndexRouteImport
       parentRoute: typeof MainCreateRoute
     }
+    '/_admin/admin/users/': {
+      id: '/_admin/admin/users/'
+      path: '/admin/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/setups/': {
+      id: '/_admin/admin/setups/'
+      path: '/admin/setups'
+      fullPath: '/admin/setups/'
+      preLoaderRoute: typeof AdminAdminSetupsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/categories/': {
+      id: '/_admin/admin/categories/'
+      path: '/admin/categories'
+      fullPath: '/admin/categories/'
+      preLoaderRoute: typeof AdminAdminCategoriesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_main/_create/create/$id/tags': {
       id: '/_main/_create/create/$id/tags'
       path: '/create/$id/tags'
@@ -274,10 +332,16 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+  AdminAdminCategoriesIndexRoute: typeof AdminAdminCategoriesIndexRoute
+  AdminAdminSetupsIndexRoute: typeof AdminAdminSetupsIndexRoute
+  AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminIndexRoute: AdminAdminIndexRoute,
+  AdminAdminCategoriesIndexRoute: AdminAdminCategoriesIndexRoute,
+  AdminAdminSetupsIndexRoute: AdminAdminSetupsIndexRoute,
+  AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

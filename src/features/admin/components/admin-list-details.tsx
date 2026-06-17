@@ -11,13 +11,17 @@ import {
   getAdminSetupColumns,
   getAdminUserColumns,
 } from '../lib/admin-table-columns'
-import type { AdminListSearch } from '../lib/admin-list-search'
+import type {
+  AdminCategoriesSearch,
+  AdminSetupsSearch,
+  AdminUsersSearch,
+} from '../lib/admin-list-search'
 import type { GetAdminCategoriesResult } from '../server/get-admin-categories.functions'
 import type { GetAdminSetupsResult } from '../server/get-admin-setups.functions'
 import type { GetAdminUsersResult } from '../server/get-admin-users.functions'
 
 type AdminUsersDetailProps = {
-  search: AdminListSearch
+  search: AdminUsersSearch
   data: GetAdminUsersResult
 }
 
@@ -31,6 +35,7 @@ export function AdminUsersDetail({ search, data }: AdminUsersDetailProps) {
       columns={getAdminUserColumns()}
       getRowKey={(user) => user.id}
       pagination={data.pagination}
+      paginationTo="/admin/users"
       search={search}
       emptyTitle="No users found"
       emptyDescription="Registered users will appear here."
@@ -39,7 +44,7 @@ export function AdminUsersDetail({ search, data }: AdminUsersDetailProps) {
 }
 
 type AdminSetupsDetailProps = {
-  search: AdminListSearch
+  search: AdminSetupsSearch
   data: GetAdminSetupsResult
 }
 
@@ -62,6 +67,7 @@ export function AdminSetupsDetail({ search, data }: AdminSetupsDetailProps) {
       columns={setupColumns}
       getRowKey={(setup) => setup.id}
       pagination={data.pagination}
+      paginationTo="/admin/setups"
       search={search}
       emptyTitle="No setups found"
       emptyDescription="Setups will appear here once they leave draft status."
@@ -70,7 +76,7 @@ export function AdminSetupsDetail({ search, data }: AdminSetupsDetailProps) {
 }
 
 type AdminCategoriesDetailProps = {
-  search: AdminListSearch
+  search: AdminCategoriesSearch
   data: GetAdminCategoriesResult
 }
 
@@ -87,6 +93,7 @@ export function AdminCategoriesDetail({
       columns={getAdminCategoryColumns()}
       getRowKey={(category) => category.id}
       pagination={data.pagination}
+      paginationTo="/admin/categories"
       search={search}
       emptyTitle="No categories found"
       emptyDescription="Categories will appear here once they are created."

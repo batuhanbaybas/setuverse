@@ -12,10 +12,14 @@ import AdminDataTable, {
   type AdminTableColumn,
 } from './admin-data-table'
 import AdminTablePagination from './admin-table-pagination'
-import type { AdminListSearch } from '../lib/admin-list-search'
+import type {
+  AdminCategoriesSearch,
+  AdminSetupsSearch,
+  AdminUsersSearch,
+} from '../lib/admin-list-search'
 import type { AdminPagination } from '../lib/admin-pagination'
 
-type AdminTableSectionProps<T> = {
+type AdminUsersTableSectionProps<T> = {
   title: string
   description: string
   filters?: ReactNode
@@ -23,10 +27,44 @@ type AdminTableSectionProps<T> = {
   columns: AdminTableColumn<T>[]
   getRowKey: (row: T) => string
   pagination: AdminPagination
-  search: AdminListSearch
+  paginationTo: '/admin/users'
+  search: AdminUsersSearch
   emptyTitle?: string
   emptyDescription?: string
 }
+
+type AdminSetupsTableSectionProps<T> = {
+  title: string
+  description: string
+  filters?: ReactNode
+  data: T[]
+  columns: AdminTableColumn<T>[]
+  getRowKey: (row: T) => string
+  pagination: AdminPagination
+  paginationTo: '/admin/setups'
+  search: AdminSetupsSearch
+  emptyTitle?: string
+  emptyDescription?: string
+}
+
+type AdminCategoriesTableSectionProps<T> = {
+  title: string
+  description: string
+  filters?: ReactNode
+  data: T[]
+  columns: AdminTableColumn<T>[]
+  getRowKey: (row: T) => string
+  pagination: AdminPagination
+  paginationTo: '/admin/categories'
+  search: AdminCategoriesSearch
+  emptyTitle?: string
+  emptyDescription?: string
+}
+
+type AdminTableSectionProps<T> =
+  | AdminUsersTableSectionProps<T>
+  | AdminSetupsTableSectionProps<T>
+  | AdminCategoriesTableSectionProps<T>
 
 function AdminTableSection<T>({
   title,
@@ -36,6 +74,7 @@ function AdminTableSection<T>({
   columns,
   getRowKey,
   pagination,
+  paginationTo,
   search,
   emptyTitle,
   emptyDescription,
@@ -59,7 +98,25 @@ function AdminTableSection<T>({
           bordered={false}
         />
 
-        <AdminTablePagination pagination={pagination} search={search} />
+        {paginationTo === '/admin/users' ? (
+          <AdminTablePagination
+            to="/admin/users"
+            pagination={pagination}
+            search={search as AdminUsersSearch}
+          />
+        ) : paginationTo === '/admin/setups' ? (
+          <AdminTablePagination
+            to="/admin/setups"
+            pagination={pagination}
+            search={search as AdminSetupsSearch}
+          />
+        ) : (
+          <AdminTablePagination
+            to="/admin/categories"
+            pagination={pagination}
+            search={search as AdminCategoriesSearch}
+          />
+        )}
       </CardContent>
     </CardContainer>
   )

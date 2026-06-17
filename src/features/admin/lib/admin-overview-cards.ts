@@ -6,7 +6,7 @@ export type AdminOverviewCard = {
   id: AdminOverviewView
   label: string
   icon: IconName
-  search: { view: AdminOverviewView }
+  to: '/admin/users' | '/admin/setups' | '/admin/categories'
 }
 
 export const adminOverviewCards: AdminOverviewCard[] = [
@@ -14,19 +14,19 @@ export const adminOverviewCards: AdminOverviewCard[] = [
     id: 'users',
     label: 'Total Users',
     icon: 'user',
-    search: { view: 'users' },
+    to: '/admin/users',
   },
   {
     id: 'setups',
     label: 'Setups',
     icon: 'layout-grid',
-    search: { view: 'setups' },
+    to: '/admin/setups',
   },
   {
     id: 'categories',
     label: 'Categories',
     icon: 'star',
-    search: { view: 'categories' },
+    to: '/admin/categories',
   },
 ]
 

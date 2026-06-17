@@ -17,8 +17,7 @@ type AdminStatCardProps = {
 function AdminStatCard({ card, count }: AdminStatCardProps) {
   return (
     <Link
-      to="/admin"
-      search={card.search}
+      to={card.to}
       className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <CardContainer
