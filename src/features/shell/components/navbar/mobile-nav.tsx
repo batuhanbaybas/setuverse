@@ -6,10 +6,12 @@ import {
   LuLogOut,
   LuMenu,
   LuPlus,
+  LuShield,
   LuUser,
 } from 'react-icons/lu'
 
 import { signOut, useSession } from '#/features/auth/lib/auth-client'
+import { isAdminRole } from '#/features/auth/lib/roles'
 import Icon from '#/shared/components/icons'
 import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
 import { Button } from '#/shared/components/ui/button'
@@ -149,6 +151,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
   const userName = session?.user?.name ?? 'Your account'
   const userEmail = session?.user?.email ?? ''
   const userImage = session?.user?.image
+  const isAdmin = isAdminRole(session?.user.role)
 
   return (
     <>
@@ -211,6 +214,15 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                     description="Your setups and links"
                     onClick={close}
                   />
+                  {isAdmin ? (
+                    <MobileNavItem
+                      to="/admin"
+                      icon={<LuShield className="size-4" aria-hidden />}
+                      label="Admin"
+                      description="Manage the platform"
+                      onClick={close}
+                    />
+                  ) : null}
                 </>
               ) : (
                 <div className="px-1">
