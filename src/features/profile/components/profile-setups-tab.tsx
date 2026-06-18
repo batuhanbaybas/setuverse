@@ -1,30 +1,23 @@
 import { Badge } from '#/shared/components/ui/badge'
 import SetupImage from '#/features/setup/components/setup-image'
 
-import type { ProfileSetup } from '../server/get-profile.functions'
 import useGetProfileSetups from '../service/use-get-profile-setups'
 import ErrorState from '#/shared/components/error-state'
-
-type ProfileSetupsTabProps = {
-  setups: ProfileSetup[]
-}
+import EmptyState from '#/shared/components/empty-state'
 
 function ProfileSetupsTab() {
   const { data: setups, isError, error } = useGetProfileSetups()
 
-if (isError) {
-  return <ErrorState message="Failed to load setups" error={error} />
-}
-
+  if (isError) {
+    return <ErrorState message="Failed to load setups" error={error} />
+  }
 
   if (!setups || setups.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed px-6 py-16 text-center">
-        <p className="text-sm font-medium">No published setups yet</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Published setups will appear here.
-        </p>
-      </div>
+      <EmptyState
+        title="No published setups yet"
+        description="Published setups will appear here."
+      />
     )
   }
 
