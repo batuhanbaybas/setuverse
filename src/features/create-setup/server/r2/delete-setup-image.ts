@@ -1,4 +1,4 @@
-import { deleteR2Object } from '#/shared/lib/r2'
+import { deleteR2Object } from '#/features/setup/lib/r2'
 
 import { isOwnedSetupImageKey } from './utils'
 

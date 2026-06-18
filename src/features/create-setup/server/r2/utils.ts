@@ -1,4 +1,4 @@
-import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
+import { getSetupImageKeyFromUrl } from '#/features/setup/lib/setup-image-src'
 
 import { SETUP_IMAGE_KEY_PREFIX } from './constants'
 

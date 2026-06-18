@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
 import { deleteSetupImageFn } from '../server/delete-setup-image.functions'
 

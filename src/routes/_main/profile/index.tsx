@@ -1,5 +1,5 @@
 import ProfilePage from '#/features/profile/screen/profile-page'
-import { getSession } from '#/features/auth/lib/auth.functions'
+import { getSession } from '#/features/auth/server/session.functions'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { z } from 'zod'
 

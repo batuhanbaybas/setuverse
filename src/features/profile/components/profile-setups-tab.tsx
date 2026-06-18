@@ -1,5 +1,5 @@
 import { Badge } from '#/shared/components/ui/badge'
-import SetupImage from '#/shared/components/setup-image'
+import SetupImage from '#/features/setup/components/setup-image'
 
 import type { ProfileSetup } from '../server/get-profile.functions'
 

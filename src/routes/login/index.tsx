@@ -1,5 +1,5 @@
-import LoginPage from '#/features/auth/components/login-page'
-import { getSession } from '#/features/auth/lib/auth.functions'
+import LoginPage from '#/features/auth/screen/login-page'
+import { getSession } from '#/features/auth/server/session.functions'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 type LoginSearch = {

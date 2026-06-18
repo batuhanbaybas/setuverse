@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/admin/lib/query-keys'
 
 import { adminQueryStaleTime } from './admin-query-options'
 import {

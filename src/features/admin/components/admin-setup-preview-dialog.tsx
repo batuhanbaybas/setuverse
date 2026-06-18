@@ -10,7 +10,7 @@ import {
 import { cn } from '#/shared/lib/utils'
 
 import AdminSetupPreviewCanvas from './admin-setup-preview-canvas'
-import { SetupStatusBadge } from '../lib/setup-status-badge'
+import { SetupStatusBadge } from './setup-status-badge'
 import type { AdminSetup } from '../server/get-admin-setups.functions'
 
 type AdminSetupPreviewDialogProps = {

@@ -1,7 +1,7 @@
 import { prisma } from '#/shared/lib/prisma'
 import { createServerFn } from '@tanstack/react-start'
 
-const getCategories = createServerFn({
+export const getCategories = createServerFn({
   method: 'GET',
 }).handler(async () => {
   const categories = await prisma.category.findMany({
@@ -12,5 +12,3 @@ const getCategories = createServerFn({
 
   return categories
 })
-
-export default getCategories

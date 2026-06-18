@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
 import { getSetupDraftFn } from '../server/get-setup-draft.functions'
 

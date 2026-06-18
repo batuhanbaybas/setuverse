@@ -1,6 +1,6 @@
 import { redirect } from '@tanstack/react-router'
 
-import { ensureAdmin, getSession } from '#/features/auth/lib/auth.functions'
+import { ensureAdmin, getSession } from '#/features/auth/server/session.functions'
 
 export async function guardAdminRoute(location: { pathname: string }) {
   try {

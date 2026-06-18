@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react'
 
-import SetupImage from '#/shared/components/setup-image'
+import SetupImage from '#/features/setup/components/setup-image'
 import { cn } from '#/shared/lib/utils'
 
 import type { SetupItem } from '../../lib/setup-item'

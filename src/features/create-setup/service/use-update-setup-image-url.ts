@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
 import { updateSetupImageUrlFn } from '../server/update-setup-image-url.functions'
 import type { UpdateSetupImageUrlInput } from '../server/update-setup-image-url.functions'

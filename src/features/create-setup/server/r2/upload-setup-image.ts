@@ -1,4 +1,4 @@
-import { putR2Object } from '#/shared/lib/r2'
+import { putR2Object } from '#/features/setup/lib/r2'
 
 import { SETUP_IMAGE_MAX_FILE_SIZE } from '../../lib/upload-config'
 import { resolveImageContentType } from '../../lib/upload-utils'

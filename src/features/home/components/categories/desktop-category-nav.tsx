@@ -2,7 +2,7 @@ import Icon from '#/shared/components/icons'
 import type { IconName } from '#/shared/components/icons/icon-list'
 import LinkButton from '#/shared/components/ui/button/link-button'
 
-import { homeRouteApi } from './lib/home-route'
+import { homeRouteApi } from '#/features/home/lib/home-route'
 
 function DesktopCategoryNav() {
   const { categories } = homeRouteApi.useRouteContext()

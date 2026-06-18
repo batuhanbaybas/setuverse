@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
 import type { CreateSetupInput, CreateSetupResult } from '../server/create-setup.functions'
 import { createSetupFn } from '../server/create-setup.functions'

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/profile/lib/query-keys'
 
 import type { GetProfileResult } from '../server/get-profile.functions'
 import { getProfileFn } from '../server/get-profile.functions'

@@ -9,9 +9,9 @@ import type {
   AdminSetupsSearch,
   AdminUsersSearch,
 } from '../lib/admin-list-search'
-import { CategoryStatusBadge } from '../lib/category-status-badge'
-import { SetupStatusBadge } from '../lib/setup-status-badge'
-import { UserRoleBadge } from '../lib/user-role-badge'
+import { CategoryStatusBadge } from './category-status-badge'
+import { SetupStatusBadge } from './setup-status-badge'
+import { UserRoleBadge } from './user-role-badge'
 import type { AdminCategoryCounts } from '../server/get-admin-categories.functions'
 import type { AdminSetupCounts } from '../server/get-admin-setups.functions'
 import type { AdminUserRoleCounts } from '../server/get-admin-users.functions'

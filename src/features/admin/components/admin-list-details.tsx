@@ -10,7 +10,7 @@ import {
   getAdminCategoryColumns,
   getAdminSetupColumns,
   getAdminUserColumns,
-} from '../lib/admin-table-columns'
+} from './admin-table-columns'
 import type {
   AdminCategoriesSearch,
   AdminSetupsSearch,

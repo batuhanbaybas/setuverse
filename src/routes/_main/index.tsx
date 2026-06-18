@@ -1,5 +1,5 @@
 import HomePage from '#/features/home/screen/home-page'
-import getCategories from '#/features/home/server/get-categories'
+import { getCategories } from '#/features/home/server/get-categories.functions'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 

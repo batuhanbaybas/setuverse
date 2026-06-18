@@ -1,7 +1,7 @@
 import { Badge } from '#/shared/components/ui/badge'
 import { cn } from '#/shared/lib/utils'
 
-import { adminBadgeClassName } from './admin-badge-styles'
+import { adminBadgeClassName } from '../lib/admin-badge-styles'
 
 type CategoryStatusBadgeProps = {
   isActive: boolean

@@ -1,5 +1,4 @@
 export const queryKeys = {
-  getAllCategories: 'categories',
   uploadSetupImage: 'upload-setup-image',
   deleteSetupImage: 'delete-setup-image',
   createSetup: 'create-setup',
@@ -11,13 +10,4 @@ export const queryKeys = {
   deleteSetupItem: 'delete-setup-item',
   updateSetupImageUrl: 'update-setup-image-url',
   publishSetup: 'publish-setup',
-  getProfile: 'get-profile',
-  updateProfile: 'update-profile',
-  getAdminSetups: 'get-admin-setups',
-  getAdminOverview: 'get-admin-overview',
-  getAdminUsers: 'get-admin-users',
-  getAdminCategories: 'get-admin-categories',
-  adminApproveSetup: 'admin-approve-setup',
-  adminRejectSetup: 'admin-reject-setup',
-  adminDeleteSetup: 'admin-delete-setup',
-}
+} as const

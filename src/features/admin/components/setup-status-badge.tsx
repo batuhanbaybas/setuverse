@@ -4,7 +4,7 @@ import { cn } from '#/shared/lib/utils'
 import {
   adminBadgeClassName,
   pendingBadgeClassName,
-} from './admin-badge-styles'
+} from '../lib/admin-badge-styles'
 import type { AdminSetupStatus } from '../server/get-admin-setups.functions'
 
 const statusLabels: Record<AdminSetupStatus, string> = {

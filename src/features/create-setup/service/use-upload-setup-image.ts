@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query'
 
-import { queryKeys } from '#/shared/lib/query-keys'
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
 import type { SetupImageUploadResponse } from '../lib/setup-image-upload-adapter'
 import { uploadSetupImageFn } from '../server/upload-setup-image.functions'

@@ -2,8 +2,8 @@ import { createServerFn } from '@tanstack/react-start'
 
 import { requireAdmin } from '#/features/auth/lib/require-admin'
 import { adminMiddleware } from '#/features/auth/middleware/admin.middleware'
-import { deleteR2Object } from '#/shared/lib/r2'
-import { getSetupImageKeyFromUrl } from '#/shared/lib/setup-image-src'
+import { deleteR2Object } from '#/features/setup/lib/r2'
+import { getSetupImageKeyFromUrl } from '#/features/setup/lib/setup-image-src'
 import { prisma } from '#/shared/lib/prisma'
 
 import { adminSetupIdInputSchema } from './lib/admin-setup-input-schemas'

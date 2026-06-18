@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import type { IconName } from '#/shared/components/icons/icon-list'
 
-import { homeRouteApi } from './lib/home-route'
+import { homeRouteApi } from '#/features/home/lib/home-route'
 import type { CategoryItem } from './types'
 
 const ALL_CATEGORY: CategoryItem = {

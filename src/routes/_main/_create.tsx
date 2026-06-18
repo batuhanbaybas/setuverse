@@ -1,5 +1,5 @@
 import CreateFlowShell from '#/features/create-setup/components/create-flow-shell'
-import { getSession } from '#/features/auth/lib/auth.functions'
+import { getSession } from '#/features/auth/server/session.functions'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main/_create')({
