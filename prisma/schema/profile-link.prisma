@@ -2,7 +2,6 @@ model ProfileLink {
   id        String   @id @default(cuid())
   label     String
   url       String
-  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

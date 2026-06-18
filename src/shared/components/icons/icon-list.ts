@@ -19,6 +19,8 @@ import {
   LuUser,
   LuX,
   LuPlus,
+  LuPencil,
+  LuCalendar,
 } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
 import { IoHome } from 'react-icons/io5'
@@ -41,6 +43,8 @@ export const iconList = [
   { name: 'user', icon: LuUser },
   { name: 'shield', icon: LuShield },
   { name: 'log-out', icon: LuLogOut },
+  { name: 'pencil', icon: LuPencil },
+  { name: 'calendar', icon: LuCalendar },
   { name: 'menu', icon: LuMenu },
   // category icons
   { name: 'layout-grid', icon: LuLayoutGrid },

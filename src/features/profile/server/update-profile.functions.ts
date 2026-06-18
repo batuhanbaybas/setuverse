@@ -51,10 +51,9 @@ export const updateProfileFn = createServerFn({ method: 'POST' })
         bio: data.bio.trim() ? data.bio.trim() : null,
         links: {
           deleteMany: {},
-          create: links.map((link, index) => ({
+          create: links.map((link) => ({
             label: link.label,
             url: link.url,
-            order: index,
           })),
         },
       },

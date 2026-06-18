@@ -1,36 +1,18 @@
 import { getRouteApi } from '@tanstack/react-router'
 
 import ProfileEmptyTab from '../components/profile-empty-tab'
-import ProfileHeader from '../components/profile-header'
+import ProfileHeader from '../components/profil-header'
 import ProfileSetupsTab from '../components/profile-setups-tab'
 import ProfileTabs from '../components/profile-tabs'
-import useGetProfile from '../service/use-get-profile'
 
 const profileRouteApi = getRouteApi('/_main/profile/')
 
 function ProfilePage() {
   const { tab = 'my-setups' } = profileRouteApi.useSearch()
-  const profileQuery = useGetProfile()
-
-  if (profileQuery.isLoading) {
-    return null
-  }
-
-  if (profileQuery.isError || !profileQuery.data) {
-    return (
-      <section className="py-6 sm:py-8">
-        <p className="text-sm text-destructive">
-          {profileQuery.error?.message ?? 'Failed to load profile'}
-        </p>
-      </section>
-    )
-  }
-
-  const profile = profileQuery.data
 
   return (
     <section className="py-6 sm:py-8">
-      <ProfileHeader profile={profile} />
+      <ProfileHeader  />
 
       <div className="mt-8 space-y-6">
         <ProfileTabs />
@@ -46,7 +28,7 @@ function ProfilePage() {
             description="Setups you save will appear here."
           />
         ) : (
-          <ProfileSetupsTab setups={profile.setups} />
+          <ProfileSetupsTab  />
         )}
       </div>
     </section>

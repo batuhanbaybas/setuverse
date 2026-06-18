@@ -2,12 +2,8 @@ import type { ReactNode } from 'react'
 import { LuBookmark, LuHeart, LuMonitor } from 'react-icons/lu'
 
 import { cn } from '#/shared/lib/utils'
-
-type ProfileStatsProps = {
-  publishedSetupsCount: number
-  receivedLikesCount: number
-  savedSetupsCount: number
-}
+import useGetProfileStats from '../service/use-get-profile-stats'
+import ErrorState from '#/shared/components/error-state'
 
 type StatItemProps = {
   icon: ReactNode
@@ -45,27 +41,29 @@ function StatItem({ icon, value, label, className }: StatItemProps) {
   )
 }
 
-function ProfileStats({
-  publishedSetupsCount,
-  receivedLikesCount,
-  savedSetupsCount,
-}: ProfileStatsProps) {
+function ProfileStats() {
+  const { data: stats, isError, error } = useGetProfileStats()
+
+  if (isError) {
+    return <ErrorState message="Failed to load stats" error={error} />
+  }
+
   return (
     <div className="w-full shrink-0 border-t pt-6 lg:w-auto lg:border-t-0 lg:border-l lg:pt-0 lg:pl-2">
       <div className="grid grid-cols-3 divide-x sm:flex sm:items-stretch">
         <StatItem
           icon={<LuMonitor className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
-          value={publishedSetupsCount}
+          value={stats?.publishedSetupsCount ?? 0}
           label="Setups"
         />
         <StatItem
           icon={<LuHeart className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
-          value={receivedLikesCount}
+          value={stats?.receivedLikesCount ?? 0}
           label="Likes"
         />
         <StatItem
           icon={<LuBookmark className="size-4 text-muted-foreground sm:size-5" aria-hidden />}
-          value={savedSetupsCount}
+          value={stats?.savedSetupsCount ?? 0}
           label="Saved"
         />
       </div>
