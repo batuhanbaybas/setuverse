@@ -7,13 +7,15 @@ import type {
   UpdateProfileResult,
 } from '../server/update-profile.functions'
 import { updateProfileFn } from '../server/update-profile.functions'
+import { useServerFn } from '@tanstack/react-start'
 
 const useUpdateProfile = () => {
   const queryClient = useQueryClient()
 
+  const updateProfile = useServerFn(updateProfileFn)
   return useMutation<UpdateProfileResult, Error, UpdateProfileInput>({
     mutationKey: [queryKeys.updateProfile],
-    mutationFn: (input) => updateProfileFn({ data: input }),
+    mutationFn: (input) => updateProfile({ data: input }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [queryKeys.getProfile] })
     },

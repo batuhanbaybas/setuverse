@@ -1,4 +1,4 @@
-import EditProfileForm from '../components/edit-profile-form'
+import EditProfileForm from '../components/edite-profile-form'
 
 function EditProfilePage() {
   return (
