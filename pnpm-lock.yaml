@@ -63,7 +63,7 @@ dependencies:
     version: 2.1.1
   nitro:
     specifier: npm:nitro-nightly@latest
-    version: /nitro-nightly@3.0.1-20260617-160837-7765bcb7(@electric-sql/pglite@0.3.15)(vite@8.0.0)
+    version: /nitro-nightly@3.0.1-20260619-111502-ca57c6e5(@electric-sql/pglite@0.3.15)(vite@8.0.0)
   prisma:
     specifier: ^7.4.2
     version: 7.4.2(@types/react@19.2.0)(react-dom@19.2.0)(react@19.2.0)(typescript@6.0.2)
@@ -3614,7 +3614,7 @@ packages:
     resolution: {integrity: sha512-DoR7U1P7iYhw16qJ49fgXUlry1t4CpXeErJHnQ44JgTSKMaZUdf17cfn5mHchfJ4KRBZRFA/Coo+MUF5+gOaCQ==}
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.23.0
+      enhanced-resolve: 5.24.0
       jiti: 2.7.0
       lightningcss: 1.30.2
       magic-string: 0.30.21
@@ -4808,26 +4808,12 @@ packages:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
-  /acorn-jsx@5.3.2(acorn@8.16.0):
-    resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
-    peerDependencies:
-      acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
-    dependencies:
-      acorn: 8.16.0
-    dev: true
-
   /acorn-jsx@5.3.2(acorn@8.17.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       acorn: 8.17.0
-    dev: true
-
-  /acorn@8.16.0:
-    resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
     dev: true
 
   /acorn@8.17.0:
@@ -5455,21 +5441,12 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /enhanced-resolve@5.23.0:
-    resolution: {integrity: sha512-yJN/BOOLxcOW2aQgeif9mSnaUB8KtvmMMp56oA1kx1CRfBKbhZm2pJ+NBY+3eOboHxix8lfjWpHE0Ei5U8RbSA==}
-    engines: {node: '>=10.13.0'}
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.3.3
-    dev: false
-
   /enhanced-resolve@5.24.0:
     resolution: {integrity: sha512-SkE2t82KlkkxQRVMVLAGKxLfORGQfrkx5dkj+vlgXRVNEdPc4eZcR+J/Fvj8C+yKSFH5L0q3NFlyufOVQnCcYQ==}
     engines: {node: '>=10.13.0'}
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
-    dev: true
 
   /entities@8.0.0:
     resolution: {integrity: sha512-zwfzJecQ/Uej6tusMqwAqU/6KL2XaB2VZ2Jg54Je6ahNBGNH6Ek6g3jjNCF0fG9EWQKGZNddNjU5F1ZQn/sBnA==}
@@ -5717,8 +5694,8 @@ packages:
     resolution: {integrity: sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dependencies:
-      acorn: 8.16.0
-      acorn-jsx: 5.3.2(acorn@8.16.0)
+      acorn: 8.17.0
+      acorn-jsx: 5.3.2(acorn@8.17.0)
       eslint-visitor-keys: 4.2.1
     dev: true
 
@@ -6584,8 +6561,8 @@ packages:
     resolution: {integrity: sha512-N9zEWySuJFw+gR0lhS5863YsvNeudOdqRyFvNb+jMXbeTJOdrjDqkCpDginIZfUm0LzT1t1nCRiDeqQm/8kirQ==}
     dev: false
 
-  /nitro-nightly@3.0.1-20260617-160837-7765bcb7(@electric-sql/pglite@0.3.15)(vite@8.0.0):
-    resolution: {integrity: sha512-3u2yin8pQZrVY+aGCAbFal8KYg9herHXv/CJpELqo9GVDM85iLemiQxxRwXwHLQ0239QltF57dRJgBG3kcw5vQ==}
+  /nitro-nightly@3.0.1-20260619-111502-ca57c6e5(@electric-sql/pglite@0.3.15)(vite@8.0.0):
+    resolution: {integrity: sha512-btP0u2l8UFQ737NJUngP6qJfCAN/ll58dYakcLURuO/cV8Ib8EYdMxOCM8KAf1fODz7Bgm3f4F2Uhafw8jT02w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:

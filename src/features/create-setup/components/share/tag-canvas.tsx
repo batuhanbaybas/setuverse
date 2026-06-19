@@ -47,19 +47,28 @@ function TagCanvas({ setupId }: Props) {
         />
         {items?.map((item, index) => {
           return (
-            <Button
-              key={item.id}
-              variant="outline"
-              size="icon"
-              className={cn(
-                'absolute flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
-                'bg-primary/85 hover:scale-110 hover:bg-primary focus:scale-110 focus:bg-primary/85 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background',
-              )}
-              style={{ left: `${item.x}%`, top: `${item.y}%` }}
-              aria-label={`Tag ${index + 1}: ${item.name}`}
-            >
-              {index + 1}
-            </Button>
+            <TagItemDialog
+              setupId={setupId}
+              itemId={item.id}
+              itemsPositions={itemsPositions}
+              triggerProps={{
+                children: (
+                  <Button
+                    key={item.id}
+                    variant="outline"
+                    size="icon"
+                    className={cn(
+                      'absolute flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
+                      'bg-primary/85 hover:scale-110 hover:bg-primary focus:scale-110 focus:bg-primary/85 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background',
+                    )}
+                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
+                    aria-label={`Tag ${index + 1}: ${item.name}`}
+                  >
+                    {index + 1}
+                  </Button>
+                ),
+              }}
+            />
           )
         })}
       </div>

@@ -11,31 +11,38 @@ import {
 import { Input } from '#/shared/components/ui/input'
 import { useFormContext } from 'react-hook-form'
 import type { TagItemPositions } from '../../share/tag-canvas'
+import useUpdateSetupItem from '#/features/create-setup/service/setup-items/use-update-setup-item'
 
-function SetupItemForm({
-  itemsPositions,
-  setupId,
-}: {
+interface Props {
   setupId: string
   itemsPositions: TagItemPositions
-}) {
+  itemId?: string
+}
+
+function SetupItemForm({ setupId, itemsPositions, itemId }: Props) {
   const form = useFormContext<SetupTagItemFormValues>()
   const addItem = useAddSetupItem(setupId)
+  const updateItem = useUpdateSetupItem(setupId)
 
-  const {
-    reset,
-    formState: { isSubmitSuccessful },
-  } = form
+  const isEditing = Boolean(itemId)
+
+  const { reset } = form
 
   const handleSubmit = async (values: SetupTagItemFormValues) => {
-    await addItem.mutateAsync({
-      setupId: setupId,
-      name: values.name,
-      url: values.url,
-      x: Number(itemsPositions.x),
-      y: Number(itemsPositions.y),
-    })
-    if (isSubmitSuccessful) {
+    if (isEditing && itemId) {
+      await updateItem.mutateAsync({
+        itemId: itemId,
+        name: values.name,
+        url: values.url,
+      })
+    } else {
+      await addItem.mutateAsync({
+        setupId: setupId,
+        name: values.name,
+        url: values.url,
+        x: Number(itemsPositions.x),
+        y: Number(itemsPositions.y),
+      })
       reset()
     }
   }
