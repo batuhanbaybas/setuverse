@@ -13,18 +13,27 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import getSetupItemDetail from '#/features/create-setup/server/setup-item/get-setup-item-detail'
 import SetupItemForm from './setup-item-form'
 
+interface SetupItemProps {
+  name: string
+  url: string
+}
+
+
+
 type TagItemDialogProps = {
   isEditing?: boolean
   triggerProps: ComponentProps<typeof Modal>['triggerProps']
   itemsPositions?: TagItemPositions
   setupId: string
   itemId?: string
+  item?: SetupItemProps
 }
 
 function TagItemDialog({
   triggerProps,
   setupId,
   itemId,
+  item,
   itemsPositions,
 }: TagItemDialogProps) {
   const isEditing = Boolean(itemId)
@@ -38,6 +47,12 @@ function TagItemDialog({
             name: setupItem.name,
             url: setupItem.url,
           }
+        }
+      }
+      if (item) {
+        return {
+          name: item.name,
+          url: item.url,
         }
       }
       return setupTagItemFormDefaultValues

@@ -4,9 +4,6 @@ import { useCallback } from 'react'
 import Card from '#/shared/components/ui/card'
 
 import CreateFlowFooter from '../create-flow-footer'
-import useAddSetupItem from '../../service/setup-items/use-add-setup-item'
-import useUpdateSetupItem from '../../service/setup-items/use-update-setup-item'
-import useDeleteSetupItem from '../../service/setup-items/use-delete-setup-item'
 import SetupTagsHeader from './setup-tags-header'
 import TagCanvas from '../share/tag-canvas'
 import TagItemList from '../share/tag-item-list'
@@ -19,8 +16,6 @@ type SetupTagsProps = {
 function SetupTags({ setupId }: SetupTagsProps) {
   const navigate = useNavigate()
   const itemsQuery = useGetSetupItem(setupId)
-  const updateItem = useUpdateSetupItem(setupId)
-  const deleteItem = useDeleteSetupItem(setupId)
 
   const handleContinue = useCallback(async () => {
     if (!itemsQuery.data?.length) {

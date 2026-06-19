@@ -50,6 +50,7 @@ function TagCanvas({ setupId }: Props) {
             <TagItemDialog
               setupId={setupId}
               itemId={item.id}
+              item={item}
               itemsPositions={itemsPositions}
               triggerProps={{
                 children: (
