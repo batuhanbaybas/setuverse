@@ -1,7 +1,7 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 
 import useGetCategories from '#/features/home/service/use-get-categories'
 import Card from '#/shared/components/ui/card'
@@ -27,14 +27,13 @@ import CreateFlowFooter from '../create-flow-footer'
 import {
   SETUP_INFO_DESCRIPTION_MAX,
   SETUP_INFO_TITLE_MAX,
-  setupInfoFormDefaultValues,
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
-import useGetSetupDraft from '../../service/use-get-setup-draft'
 import useUpdateSetupInfo from '../../service/use-update-setup-info'
 import CategoryOption from './category-option'
 import SetupInfoHeader from './setup-info-header'
+import { getSetupDraftFn } from '../../server/get-setup-draft.functions'
 
 type SetupInfoFormProps = {
   setupId: string
@@ -42,7 +41,6 @@ type SetupInfoFormProps = {
 
 function SetupInfoForm({ setupId }: SetupInfoFormProps) {
   const navigate = useNavigate()
-  const draftQuery = useGetSetupDraft(setupId)
   const categoriesQuery = useGetCategories()
   const updateSetupInfo = useUpdateSetupInfo()
 
@@ -54,25 +52,24 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
   const form = useForm<SetupInfoFormValues>({
     resolver: standardSchemaResolver(setupInfoFormSchema),
-    defaultValues: setupInfoFormDefaultValues,
-    values: draftQuery.data
-      ? {
-          title: draftQuery.data.title ?? '',
-          description: draftQuery.data.description ?? '',
-          categoryId: draftQuery.data.categoryId ?? '',
-        }
-      : undefined,
-    mode: 'onChange',
+    defaultValues:  async () => {
+      const draft = await getSetupDraftFn({ data: { setupId } })
+      return {
+        title: draft.title ?? '',
+        description: draft.description ?? '',
+        categoryId: draft.categoryId ?? '',
+      }
+    },
   })
 
   const {
     formState: { isValid, isSubmitting, errors },
-    watch,
   } = form
 
-  const titleValue = watch('title')
-  const descriptionValue = watch('description')
-  const selectedCategoryId = watch('categoryId')
+  const selectedCategoryId = useWatch({
+    control: form.control,
+    name: 'categoryId',
+  })
 
   const selectedCategory = useMemo(
     () => categories.find((category) => category.id === selectedCategoryId),
@@ -105,9 +102,6 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
   const isPending = isSubmitting || updateSetupInfo.isPending
 
-  if (draftQuery.isLoading) {
-    return null
-  }
 
   return (
     <Form {...form}>
@@ -136,7 +130,7 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                             </span>
                           </FormLabel>
                           <span className="text-xs text-muted-foreground tabular-nums">
-                            {titleValue.length}/{SETUP_INFO_TITLE_MAX}
+                            {field.value.length}/{SETUP_INFO_TITLE_MAX}
                           </span>
                         </div>
                         <FormControl>
@@ -205,13 +199,13 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                       <div className="flex items-center justify-between gap-2">
                         <FormLabel>Description</FormLabel>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {descriptionValue.length}/{SETUP_INFO_DESCRIPTION_MAX}
+                          {field.value.length}/{SETUP_INFO_DESCRIPTION_MAX}
                         </span>
                       </div>
                       <FormControl>
                         <Textarea
                           placeholder="Tell people about your setup..."
-                          rows={4}
+                          rows={5}
                           className="min-h-24 sm:min-h-40"
                           maxLength={SETUP_INFO_DESCRIPTION_MAX}
                           {...field}
@@ -229,7 +223,7 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
       <CreateFlowFooter
         onSubmit={() => form.handleSubmit(onSubmit)()}
-        isReady={isValid && !draftQuery.isLoading}
+        isReady={isValid}
         isSubmitting={isPending}
         hint="Fill in the details below to continue to tagging items."
         error={errors.root?.message ?? null}

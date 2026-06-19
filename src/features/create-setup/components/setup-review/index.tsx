@@ -1,7 +1,7 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 
 import useGetCategories from '#/features/home/service/use-get-categories'
 import Card from '#/shared/components/ui/card'
@@ -27,7 +27,6 @@ import CreateFlowFooter from '../create-flow-footer'
 import {
   SETUP_INFO_DESCRIPTION_MAX,
   SETUP_INFO_TITLE_MAX,
-  setupInfoFormDefaultValues,
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
@@ -35,7 +34,6 @@ import type { SetupItem } from '../../lib/setup-item'
 import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
 import useAddSetupItem from '../../service/use-add-setup-item'
 import useDeleteSetupItem from '../../service/use-delete-setup-item'
-import useGetSetupDraft from '../../service/use-get-setup-draft'
 import usePublishSetup from '../../service/use-publish-setup'
 import useUpdateSetupInfo from '../../service/use-update-setup-info'
 import useUpdateSetupItem from '../../service/use-update-setup-item'
@@ -44,6 +42,7 @@ import TagCanvas from '../setup-tags/tag-canvas'
 import TagItemDialog from '../setup-tags/tag-item-dialog'
 import TagItemList from '../setup-tags/tag-item-list'
 import ReviewImageSection from './review-image-section'
+import { getSetupDraftFn } from '../../server/get-setup-draft.functions'
 
 type SetupReviewProps = {
   setupId: string
@@ -57,7 +56,6 @@ type PendingTag = {
 
 function SetupReview({ setupId }: SetupReviewProps) {
   const navigate = useNavigate()
-  const draftQuery = useGetSetupDraft(setupId)
   const categoriesQuery = useGetCategories()
   const updateSetupInfo = useUpdateSetupInfo()
   const publishSetup = usePublishSetup()
@@ -84,25 +82,25 @@ function SetupReview({ setupId }: SetupReviewProps) {
 
   const form = useForm<SetupInfoFormValues>({
     resolver: standardSchemaResolver(setupInfoFormSchema),
-    defaultValues: setupInfoFormDefaultValues,
-    values: draftQuery.data
-      ? {
-          title: draftQuery.data.title ?? '',
-          description: draftQuery.data.description ?? '',
-          categoryId: draftQuery.data.categoryId ?? '',
-        }
-      : undefined,
+    defaultValues: async () => {
+      const draft = await getSetupDraftFn({ data: { setupId } })
+      return {
+        title: draft.title ?? '',
+        description: draft.description ?? '',
+        categoryId: draft.categoryId ?? '',
+      }
+    },
     mode: 'onChange',
   })
 
   const {
     formState: { isValid, isSubmitting, errors },
-    watch,
   } = form
 
-  const titleValue = watch('title')
-  const descriptionValue = watch('description')
-  const selectedCategoryId = watch('categoryId')
+  const selectedCategoryId = useWatch({
+    control: form.control,
+    name: 'categoryId',
+  })
 
   const selectedCategory = useMemo(
     () => categories.find((category) => category.id === selectedCategoryId),
@@ -192,10 +190,6 @@ function SetupReview({ setupId }: SetupReviewProps) {
   const isPending =
     isSubmitting || updateSetupInfo.isPending || publishSetup.isPending
 
-  if (draftQuery.isLoading) {
-    return null
-  }
-
   return (
     <Form {...form}>
       <section className="flex min-h-0 flex-1 flex-col gap-6">
@@ -243,7 +237,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
                             </span>
                           </FormLabel>
                           <span className="text-xs text-muted-foreground tabular-nums">
-                            {titleValue.length}/{SETUP_INFO_TITLE_MAX}
+                            {field.value.length}/{SETUP_INFO_TITLE_MAX}
                           </span>
                         </div>
                         <FormControl>
@@ -312,7 +306,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
                       <div className="flex items-center justify-between gap-2">
                         <FormLabel>Description</FormLabel>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {descriptionValue.length}/{SETUP_INFO_DESCRIPTION_MAX}
+                          {field.value.length}/{SETUP_INFO_DESCRIPTION_MAX}
                         </span>
                       </div>
                       <FormControl>
@@ -400,7 +394,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
 
       <CreateFlowFooter
         onSubmit={() => form.handleSubmit(onSubmit)()}
-        isReady={isValid && !draftQuery.isLoading && items.length > 0}
+        isReady={isValid && items.length > 0}
         isSubmitting={isPending}
         hint="Review your setup details below, then publish."
         error={errors.root?.message ?? null}
