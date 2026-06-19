@@ -21,7 +21,7 @@ function SetupCard({ imageUrl, title, category, publisherInfo }: Props) {
     <Card
       wrapperProps={{
         className:
-          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[400px] cursor-pointer',
+          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[400px] cursor-pointer hover:scale-105 transition-all duration-300',
       }}
       cardContentProps={{
         className: 'space-y-3 sm:p-0',
