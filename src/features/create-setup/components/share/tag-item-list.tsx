@@ -22,43 +22,57 @@ function TagItemList({ setupId }: TagItemListProps) {
   }
 
   return (
-    <ul className="space-y-2">
+    <ul className="w-full space-y-2">
       {items?.map((item, index) => (
-        <li key={item.id}>
-          <div className="flex items-start gap-3 rounded-lg border p-3 transition-colors">
+        <li key={item.id} className="w-full min-w-0">
+          <div className="flex w-full min-w-0 items-center gap-1 rounded-lg border bg-card pr-1">
             <TagItemDialog
               itemId={item.id}
               setupId={setupId}
               triggerProps={{
+                asChild: true,
                 children: (
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
-                    className="min-w-0 flex-1 text-left"
+                    className="h-auto min-w-0 w-full flex-1 justify-start gap-3 overflow-hidden whitespace-normal rounded-md px-3 py-2.5 text-left hover:bg-muted/60"
                   >
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+                      {index + 1}
+                    </span>
                     <Tooltip
                       triggerProps={{
+                        asChild: true,
                         children: (
-                          <div className="min-w-0 flex-1 truncate text-left flex flex-col gap-1 p-2">
-                            <p className="text-sm font-medium truncate">
-                              {index + 1}. {item.name}
+                          <div className="min-w-0 flex-1 overflow-hidden text-left">
+                            <p className="truncate text-sm font-medium leading-tight">
+                              {item.name}
                             </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {item.url}
-                            </p>
+                            {item.url ? (
+                              <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                {item.url}
+                              </p>
+                            ) : null}
                           </div>
                         ),
                       }}
                       contentProps={{
+                        sideOffset: 8,
+                        className: 'max-w-xs px-3.5 py-2.5 text-left',
                         children: (
-                          <>
-                            <p className="text-sm font-medium ">
-                              {index + 1}. {item.name}
+                          <div className="space-y-2">
+                            <p className="text-sm leading-snug font-medium wrap-break-word">
+                              {item.name}
                             </p>
-                            <p className="text-xs text-muted-foreground ">
-                              {item.url}
-                            </p>
-                          </>
+                            {item.url ? (
+                              <>
+                                <div className="h-px bg-background/20" />
+                                <p className="text-xs leading-relaxed text-background/75 break-all">
+                                  {item.url}
+                                </p>
+                              </>
+                            ) : null}
+                          </div>
                         ),
                       }}
                     />
@@ -71,7 +85,7 @@ function TagItemList({ setupId }: TagItemListProps) {
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="shrink-0"
+              className="shrink-0 text-muted-foreground hover:text-destructive"
               aria-label={`Remove ${item.name}`}
               onClick={() => deleteItem.mutate(item.id)}
             >

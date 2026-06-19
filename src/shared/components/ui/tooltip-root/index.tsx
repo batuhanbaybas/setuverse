@@ -3,7 +3,6 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipRoot,
-  TooltipProvider,
 } from './tooltip-root'
 
 interface Props {
@@ -14,12 +13,10 @@ interface Props {
 
 function Tooltip({ rootProps, triggerProps, contentProps }: Props) {
   return (
-    <TooltipProvider>
-      <TooltipRoot {...rootProps}>
-        <TooltipTrigger {...triggerProps} />
-        <TooltipContent {...contentProps} />
-      </TooltipRoot>
-    </TooltipProvider>
+    <TooltipRoot {...rootProps}>
+      <TooltipTrigger {...triggerProps} />
+      <TooltipContent {...contentProps} />
+    </TooltipRoot>
   )
 }
 
