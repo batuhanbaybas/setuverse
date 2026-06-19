@@ -30,7 +30,7 @@ import {
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
-import useUpdateSetupInfo from '../../service/use-update-setup-info'
+import useUpdateSetupInfo from '../../service/setup-info/use-update-setup-info'
 import CategoryOption from './category-option'
 import SetupInfoHeader from './setup-info-header'
 import { getSetupDraftFn } from '../../server/get-setup-draft.functions'
@@ -52,7 +52,7 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
 
   const form = useForm<SetupInfoFormValues>({
     resolver: standardSchemaResolver(setupInfoFormSchema),
-    defaultValues:  async () => {
+    defaultValues: async () => {
       const draft = await getSetupDraftFn({ data: { setupId } })
       return {
         title: draft.title ?? '',
@@ -93,7 +93,9 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
       } catch (error) {
         form.setError('root', {
           message:
-            error instanceof Error ? error.message : 'Failed to save setup info',
+            error instanceof Error
+              ? error.message
+              : 'Failed to save setup info',
         })
       }
     },
@@ -101,7 +103,6 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
   )
 
   const isPending = isSubmitting || updateSetupInfo.isPending
-
 
   return (
     <Form {...form}>
@@ -130,7 +131,8 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                             </span>
                           </FormLabel>
                           <span className="text-xs text-muted-foreground tabular-nums">
-                            {field.value.length}/{SETUP_INFO_TITLE_MAX}
+                            {field.value ? field.value.length : 0}/
+                            {SETUP_INFO_TITLE_MAX}
                           </span>
                         </div>
                         <FormControl>
@@ -199,7 +201,8 @@ function SetupInfoForm({ setupId }: SetupInfoFormProps) {
                       <div className="flex items-center justify-between gap-2">
                         <FormLabel>Description</FormLabel>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {field.value.length}/{SETUP_INFO_DESCRIPTION_MAX}
+                          {field.value ? field.value.length : 0}/
+                          {SETUP_INFO_DESCRIPTION_MAX}
                         </span>
                       </div>
                       <FormControl>

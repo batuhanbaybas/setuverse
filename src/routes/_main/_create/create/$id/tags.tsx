@@ -1,4 +1,6 @@
+import { queryKeys } from '#/features/create-setup/lib/query-keys'
 import { getSetupDraftFn } from '#/features/create-setup/server/get-setup-draft.functions'
+import getSetupItem from '#/features/create-setup/server/setup-item/get-setup-item'
 import { ClientOnly, createFileRoute } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
@@ -7,33 +9,26 @@ const SetupTags = lazy(
 )
 
 export const Route = createFileRoute('/_main/_create/create/$id/tags')({
-  loader: async ({ params }) => {
-    const draft = await getSetupDraftFn({ data: { setupId: params.id } })
-
-    return {
-      imageUrl: draft.imageUrl,
-      items: draft.items,
-    }
+  loader: async ({ params, context }) => {
+    await context.queryClient.ensureQueryData({
+      queryKey: ['get-setup-draft', params.id],
+      queryFn: () => getSetupDraftFn({ data: { setupId: params.id } }),
+    })
+    await context.queryClient.ensureQueryData({
+      queryKey: ['get-setup-items', params.id],
+      queryFn: () => getSetupItem({ data: { setupId: params.id } }),
+    })
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { imageUrl, items } = Route.useLoaderData()
   const { id } = Route.useParams()
-
-  if (!imageUrl) {
-    return (
-      <section className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
-        No setup image found. Upload an image first to start tagging items.
-      </section>
-    )
-  }
 
   return (
     <ClientOnly>
       <Suspense fallback={null}>
-        <SetupTags imageUrl={imageUrl} setupId={id} initialItems={items} />
+        <SetupTags setupId={id} />
       </Suspense>
     </ClientOnly>
   )

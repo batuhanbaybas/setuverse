@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '#/shared/components/ui/dialog'
+} from '#/shared/components/modal/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,

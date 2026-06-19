@@ -5,8 +5,8 @@ import { queryKeys } from '#/features/create-setup/lib/query-keys'
 import type {
   UpdateSetupInfoInput,
   UpdateSetupInfoResult,
-} from '../server/update-setup-info.functions'
-import { updateSetupInfoFn } from '../server/update-setup-info.functions'
+} from '../../server/update-setup-info.functions'
+import { updateSetupInfoFn } from '../../server/update-setup-info.functions'
 
 const useUpdateSetupInfo = () => {
   return useMutation<UpdateSetupInfoResult, Error, UpdateSetupInfoInput>({

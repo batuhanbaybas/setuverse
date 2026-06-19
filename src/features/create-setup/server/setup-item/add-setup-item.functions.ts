@@ -3,10 +3,10 @@ import { createServerFn } from '@tanstack/react-start'
 import { requireSession } from '#/features/auth/lib/require-session'
 import { prisma } from '#/shared/lib/prisma'
 
-import { SETUP_FLOW_STEPS } from './lib/setup-flow-steps'
-import { addSetupItemInputSchema } from './lib/setup-input-schemas'
-import type { AddSetupItemInput } from './lib/setup-input-schemas'
-import { requireOwnedDraftSetup } from './lib/require-owned-draft-setup'
+import { SETUP_FLOW_STEPS } from '../lib/setup-flow-steps'
+import { addSetupItemInputSchema } from '../lib/setup-input-schemas'
+import type { AddSetupItemInput } from '../lib/setup-input-schemas'
+import { requireOwnedDraftSetup } from '../lib/require-owned-draft-setup'
 
 export type { AddSetupItemInput }
 

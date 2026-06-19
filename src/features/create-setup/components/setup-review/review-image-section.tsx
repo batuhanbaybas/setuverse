@@ -11,19 +11,19 @@ import {
   SETUP_IMAGE_MAX_FILE_SIZE,
   SETUP_IMAGE_MAX_FILES,
 } from '../../lib/upload-config'
-import useUploadSetupImage from '../../service/use-upload-setup-image'
-import useUpdateSetupImageUrl from '../../service/use-update-setup-image-url'
+import useUploadSetupImage from '../../service/setup-image/use-upload-setup-image'
+import useUpdateSetupImageUrl from '../../service/setup-image/use-update-setup-image-url'
 import UploadDropzone from '../setup-image-upload/upload-dropzone'
+import { useParams } from '@tanstack/react-router'
+import useGetSetupDraft from '../../service/use-get-setup-draft'
 
-type ReviewImageSectionProps = {
-  setupId: string
-  imageUrl: string | null
-}
-
-function ReviewImageSection({ setupId, imageUrl }: ReviewImageSectionProps) {
+function ReviewImageSection() {
+  const { id: setupId } = useParams({
+    from: '/_main/_create/create/$id/review',
+  })
   const [isChanging, setIsChanging] = useState(false)
   const updateImageUrl = useUpdateSetupImageUrl(setupId)
-
+  const {data: setup} = useGetSetupDraft(setupId)
   const uploadSetupImage = useUploadSetupImage({
     onSuccess: async (response) => {
       await updateImageUrl.mutateAsync({
@@ -86,7 +86,7 @@ function ReviewImageSection({ setupId, imageUrl }: ReviewImageSectionProps) {
     <div className="space-y-3">
       <div className="flex items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
         <SetupImage
-          imageUrl={imageUrl}
+          imageUrl={setup?.imageUrl}
           alt="Setup preview"
           className="max-w-full rounded-lg object-contain"
         />

@@ -21,7 +21,7 @@ import {
   SETUP_IMAGE_MAX_FILES,
 } from '../../lib/upload-config'
 import useCreateSetup from '../../service/use-create-setup'
-import useUploadSetupImage from '../../service/use-upload-setup-image'
+import useUploadSetupImage from '../../service/setup-image/use-upload-setup-image'
 import UploadCardHeader from './upload-card-header'
 import UploadDropzone from './upload-dropzone'
 import UploadFileList from './upload-file-list'

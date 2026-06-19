@@ -1,6 +1,6 @@
 import type { UploaderInstance } from 'react-upload-kit'
 
-import useDeleteSetupImage from '../../service/use-delete-setup-image'
+import useDeleteSetupImage from '../../service/setup-image/use-delete-setup-image'
 import type { SetupImageUploadResponse } from '../../lib/setup-image-upload-adapter'
 import { revokeFilePreviewUrl } from '../../lib/file-preview-url'
 import UploadPreview from './upload-preview'

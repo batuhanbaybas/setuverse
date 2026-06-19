@@ -3,8 +3,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { requireSession } from '#/features/auth/lib/require-session'
 import { prisma } from '#/shared/lib/prisma'
 
-import { deleteSetupItemInputSchema } from './lib/setup-input-schemas'
-import type { DeleteSetupItemInput } from './lib/setup-input-schemas'
+import { deleteSetupItemInputSchema } from '../lib/setup-input-schemas'
+import type { DeleteSetupItemInput } from '../lib/setup-input-schemas'
 
 export type { DeleteSetupItemInput }
 

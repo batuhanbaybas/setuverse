@@ -3,8 +3,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { requireSession } from '#/features/auth/lib/require-session'
 import { prisma } from '#/shared/lib/prisma'
 
-import { updateSetupItemInputSchema } from './lib/setup-input-schemas'
-import type { UpdateSetupItemInput } from './lib/setup-input-schemas'
+import { updateSetupItemInputSchema } from '../lib/setup-input-schemas'
+import type { UpdateSetupItemInput } from '../lib/setup-input-schemas'
 
 export type { UpdateSetupItemInput }
 

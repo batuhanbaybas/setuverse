@@ -30,28 +30,22 @@ import {
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
-import type { SetupItem } from '../../lib/setup-item'
 import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
-import useAddSetupItem from '../../service/use-add-setup-item'
-import useDeleteSetupItem from '../../service/use-delete-setup-item'
+import useAddSetupItem from '../../service/setup-items/use-add-setup-item'
+import useDeleteSetupItem from '../../service/setup-items/use-delete-setup-item'
 import usePublishSetup from '../../service/use-publish-setup'
-import useUpdateSetupInfo from '../../service/use-update-setup-info'
-import useUpdateSetupItem from '../../service/use-update-setup-item'
+import useUpdateSetupInfo from '../../service/setup-info/use-update-setup-info'
+import useUpdateSetupItem from '../../service/setup-items/use-update-setup-item'
 import CategoryOption from '../setup-info/category-option'
-import TagCanvas from '../setup-tags/tag-canvas'
-import TagItemDialog from '../setup-tags/tag-item-dialog'
-import TagItemList from '../setup-tags/tag-item-list'
+import TagCanvas from '../share/tag-canvas'
+import TagItemDialog from '../setup-tags/tag-item-dialog/tag-item-dialog'
+import TagItemList from '../share/tag-item-list'
 import ReviewImageSection from './review-image-section'
 import { getSetupDraftFn } from '../../server/get-setup-draft.functions'
+import TagedItemsSection from './tag-image-card/taged-items-section'
 
 type SetupReviewProps = {
   setupId: string
-}
-
-type PendingTag = {
-  x: number
-  y: number
-  itemId?: string
 }
 
 function SetupReview({ setupId }: SetupReviewProps) {
@@ -68,17 +62,6 @@ function SetupReview({ setupId }: SetupReviewProps) {
       (categoriesQuery.data ?? []).filter((category) => category.slug !== '/'),
     [categoriesQuery.data],
   )
-
-  const items: SetupItem[] = draftQuery.data?.items ?? []
-  const imageUrl = draftQuery.data?.imageUrl ?? null
-
-  const [activeItemId, setActiveItemId] = useState<string | null>(null)
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [pendingTag, setPendingTag] = useState<PendingTag | null>(null)
-
-  const activeItem = items.find((item) => item.id === activeItemId) ?? null
-  const isItemMutating =
-    addItem.isPending || updateItem.isPending || deleteItem.isPending
 
   const form = useForm<SetupInfoFormValues>({
     resolver: standardSchemaResolver(setupInfoFormSchema),
@@ -105,61 +88,6 @@ function SetupReview({ setupId }: SetupReviewProps) {
   const selectedCategory = useMemo(
     () => categories.find((category) => category.id === selectedCategoryId),
     [categories, selectedCategoryId],
-  )
-
-  // --- Tag handlers ---
-
-  const handleImageClick = useCallback((position: { x: number; y: number }) => {
-    setPendingTag(position)
-    setActiveItemId(null)
-    setDialogOpen(true)
-  }, [])
-
-  const handleMarkerClick = useCallback(
-    (id: string) => {
-      const item = items.find((entry) => entry.id === id)
-      if (!item) return
-
-      setActiveItemId(id)
-      setPendingTag({ x: item.x, y: item.y, itemId: id })
-      setDialogOpen(true)
-    },
-    [items],
-  )
-
-  const handleTagSubmit = useCallback(
-    async (values: SetupTagItemFormValues) => {
-      if (!pendingTag) return
-
-      if (pendingTag.itemId) {
-        const result = await updateItem.mutateAsync({
-          itemId: pendingTag.itemId,
-          name: values.name,
-          url: values.url,
-        })
-        setActiveItemId(result.id)
-      } else {
-        const result = await addItem.mutateAsync({
-          setupId,
-          name: values.name,
-          url: values.url,
-          x: pendingTag.x,
-          y: pendingTag.y,
-        })
-        setActiveItemId(result.id)
-      }
-
-      setPendingTag(null)
-    },
-    [pendingTag, setupId, addItem, updateItem],
-  )
-
-  const handleRemoveItem = useCallback(
-    (id: string) => {
-      deleteItem.mutate(id)
-      setActiveItemId((current) => (current === id ? null : current))
-    },
-    [deleteItem],
   )
 
   // --- Publish ---
@@ -198,15 +126,10 @@ function SetupReview({ setupId }: SetupReviewProps) {
           wrapperProps={{ className: 'w-full' }}
           cardHeaderProps={{
             className: 'space-y-1 border-b pb-4',
-            children: (
-              <h2 className="text-lg font-semibold">Setup image</h2>
-            ),
+            children: <h2 className="text-lg font-semibold">Setup image</h2>,
           }}
           cardContentProps={{
-            className: '',
-            children: (
-              <ReviewImageSection setupId={setupId} imageUrl={imageUrl} />
-            ),
+            children: <ReviewImageSection />,
           }}
         />
 
@@ -215,9 +138,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
           wrapperProps={{ className: 'w-full' }}
           cardHeaderProps={{
             className: 'space-y-1 border-b pb-4',
-            children: (
-              <h2 className="text-lg font-semibold">Setup details</h2>
-            ),
+            children: <h2 className="text-lg font-semibold">Setup details</h2>,
           }}
           cardContentProps={{
             className: 'space-y-6 pt-2',
@@ -237,7 +158,8 @@ function SetupReview({ setupId }: SetupReviewProps) {
                             </span>
                           </FormLabel>
                           <span className="text-xs text-muted-foreground tabular-nums">
-                            {field.value.length}/{SETUP_INFO_TITLE_MAX}
+                            {field.value ? field.value.length : 0}/
+                            {SETUP_INFO_TITLE_MAX}
                           </span>
                         </div>
                         <FormControl>
@@ -306,7 +228,8 @@ function SetupReview({ setupId }: SetupReviewProps) {
                       <div className="flex items-center justify-between gap-2">
                         <FormLabel>Description</FormLabel>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {field.value.length}/{SETUP_INFO_DESCRIPTION_MAX}
+                          {field.value ? field.value.length : 0}/
+                          {SETUP_INFO_DESCRIPTION_MAX}
                         </span>
                       </div>
                       <FormControl>
@@ -332,69 +255,29 @@ function SetupReview({ setupId }: SetupReviewProps) {
           wrapperProps={{ className: 'w-full' }}
           cardHeaderProps={{
             className: 'space-y-1 border-b pb-4',
-            children: (
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Tagged items</h2>
-                <span className="text-sm text-muted-foreground">
-                  {items.length} item{items.length === 1 ? '' : 's'}
-                </span>
-              </div>
-            ),
+            children: <TagedItemsSection setupId={setupId} />,
           }}
           cardContentProps={{
-            className: '',
-            children: imageUrl ? (
+            children: (
               <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,280px)]">
-                <TagCanvas
-                  imageUrl={imageUrl}
-                  items={items}
-                  activeItemId={activeItemId}
-                  onImageClick={handleImageClick}
-                  onMarkerClick={handleMarkerClick}
-                />
+                <TagCanvas setupId={setupId} />
                 <aside className="flex max-h-72 flex-col gap-3 md:max-h-none">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium">Items</h3>
                   </div>
                   <div className="min-h-0 flex-1 overflow-y-auto">
-                    <TagItemList
-                      items={items}
-                      activeItemId={activeItemId}
-                      onSelect={handleMarkerClick}
-                      onRemove={handleRemoveItem}
-                      isRemoving={deleteItem.isPending}
-                    />
+                    <TagItemList setupId={setupId} />
                   </div>
                 </aside>
               </div>
-            ) : (
-              <p className="py-4 text-center text-sm text-muted-foreground">
-                Upload an image first to manage tagged items.
-              </p>
             ),
           }}
         />
       </section>
 
-      <TagItemDialog
-        open={dialogOpen}
-        onOpenChange={(open) => {
-          setDialogOpen(open)
-          if (!open) setPendingTag(null)
-        }}
-        isEditing={Boolean(pendingTag?.itemId)}
-        isPending={isItemMutating}
-        initialValues={
-          activeItem
-            ? { name: activeItem.name, url: activeItem.url }
-            : undefined
-        }
-        onSubmit={handleTagSubmit}
-      />
-
       <CreateFlowFooter
         onSubmit={() => form.handleSubmit(onSubmit)()}
-        isReady={isValid && items.length > 0}
+        isReady={isValid}
         isSubmitting={isPending}
         hint="Review your setup details below, then publish."
         error={errors.root?.message ?? null}

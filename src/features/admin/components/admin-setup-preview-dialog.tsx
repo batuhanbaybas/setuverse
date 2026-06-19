@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '#/shared/components/ui/dialog'
+} from '#/shared/components/modal/dialog'
 import { cn } from '#/shared/lib/utils'
 
 import AdminSetupPreviewCanvas from './admin-setup-preview-canvas'

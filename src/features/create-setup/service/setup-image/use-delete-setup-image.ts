@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryKeys } from '#/features/create-setup/lib/query-keys'
 
-import { deleteSetupImageFn } from '../server/delete-setup-image.functions'
+import { deleteSetupImageFn } from '../../server/delete-setup-image.functions'
 
 const useDeleteSetupImage = () => {
   return useMutation({
