@@ -2,18 +2,26 @@ import SetupImage from '#/shared/components/setup-card/setup-image'
 import Card from '../ui/card'
 import SetupCardInfo from './setup-card-info'
 
+
+export type PublisherInfo = {
+  name: string
+  avatarUrl: string
+}
+
+
 interface Props {
   imageUrl: string
   title: string
   category: string
+  publisherInfo?: PublisherInfo
 }
 
-function SetupCard({ imageUrl, title, category }: Props) {
+function SetupCard({ imageUrl, title, category, publisherInfo }: Props) {
   return (
     <Card
       wrapperProps={{
         className:
-          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[400px]',
+          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[400px] cursor-pointer',
       }}
       cardContentProps={{
         className: 'space-y-3 sm:p-0',
@@ -26,7 +34,7 @@ function SetupCard({ imageUrl, title, category }: Props) {
                 className="size-full object-cover"
               />
             </div>
-            <SetupCardInfo title={title} category={category} />
+            <SetupCardInfo title={title} category={category} publisherInfo={publisherInfo} />
           </>
         ),
       }}

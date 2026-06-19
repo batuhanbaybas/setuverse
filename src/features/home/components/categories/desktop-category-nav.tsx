@@ -29,7 +29,7 @@ function DesktopCategoryNav() {
       {visibleCategories.map((category) => (
         <LinkButton
           key={category.id}
-          to={`?category=${category.slug}`}
+          to={`/?category=${category.slug}`}
           variant={selectedCategory === category.slug ? 'default' : 'outline'}
           size="sm"
           className="md:h-10 md:px-4"

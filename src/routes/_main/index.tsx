@@ -1,14 +1,10 @@
 import HomePage from '#/features/home/screen/home-page'
+import { homeSearchSchema } from '#/features/home/lib/home-list-search'
 import { getCategories } from '#/features/home/server/get-categories.functions'
 import { createFileRoute } from '@tanstack/react-router'
-import { z } from 'zod'
-
-const validateSearch = z.object({
-  category: z.string().optional(),
-})
 
 export const Route = createFileRoute('/_main/')({
-  validateSearch,
+  validateSearch: homeSearchSchema,
   beforeLoad: async () => {
     const categories = await getCategories()
     return { categories }
