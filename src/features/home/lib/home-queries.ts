@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions } from '@tanstack/react-query'
 
 import { queryKeys } from '#/features/home/lib/query-keys'
 
@@ -20,9 +20,17 @@ export function getPublishedSetupsInput(params: {
   }
 }
 
-export function publishedSetupsQueryOptions(input: GetPublishedSetupsInput) {
-  return queryOptions({
-    queryKey: [queryKeys.getPublishedSetups, input],
-    queryFn: () => getPublishedSetupsFn({ data: input }),
+export function publishedSetupsInfiniteQueryOptions(categoryId?: string) {
+  return infiniteQueryOptions({
+    queryKey: [queryKeys.getPublishedSetups, { categoryId }],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      getPublishedSetupsFn({
+        data: getPublishedSetupsInput({ page: pageParam, categoryId }),
+      }),
+    getNextPageParam: (lastPage) =>
+      lastPage.pagination.page < lastPage.pagination.totalPages
+        ? lastPage.pagination.page + 1
+        : undefined,
   })
 }
