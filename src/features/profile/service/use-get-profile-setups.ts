@@ -3,15 +3,15 @@ import type { UseQueryResult } from "@tanstack/react-query"
 import { getProfileSetupFn } from "../server/get-profile-setup-functions"
 import { queryKeys } from "../lib/query-keys"
 import type { ProfileSetup } from "../server/get-profile.functions"
+import { useServerFn } from "@tanstack/react-start"
 
 
 
-const useGetProfileSetups = (userId?: string) : UseQueryResult<ProfileSetup[], Error> => {
+const useGetProfileSetups = () : UseQueryResult<ProfileSetup[], Error> => {
+    const getProfileSetup = useServerFn(getProfileSetupFn)
     return useQuery<ProfileSetup[], Error>({
-        queryKey: [queryKeys.getProfileSetup, userId],
-        queryFn: () => getProfileSetupFn({
-            data: { userId },
-        }),
+        queryKey: [queryKeys.getProfileSetup],
+        queryFn:  getProfileSetup,
     })
 }
 export default useGetProfileSetups

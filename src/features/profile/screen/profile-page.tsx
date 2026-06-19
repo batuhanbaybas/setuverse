@@ -1,35 +1,65 @@
-import { getRouteApi } from '@tanstack/react-router'
-
 import ProfileEmptyTab from '../components/profile-empty-tab'
 import ProfileHeader from '../components/profil-header'
-import ProfileSetupsTab from '../components/profile-setups-tab'
-import ProfileTabs from '../components/profile-tabs'
-
-const profileRouteApi = getRouteApi('/_main/profile/')
+import ProfileSetupsTab from '../components/profil-setup-tab'
+import Tabs from '#/shared/components/ui/tabs'
 
 function ProfilePage() {
-  const { tab = 'my-setups' } = profileRouteApi.useSearch()
-
   return (
     <section className="py-6 sm:py-8">
-      <ProfileHeader  />
+      <ProfileHeader />
 
       <div className="mt-8 space-y-6">
-        <ProfileTabs />
-
-        {tab === 'liked' ? (
-          <ProfileEmptyTab
-            title="No liked setups yet"
-            description="Setups you like will appear here."
-          />
-        ) : tab === 'saved' ? (
-          <ProfileEmptyTab
-            title="No saved setups yet"
-            description="Setups you save will appear here."
-          />
-        ) : (
-          <ProfileSetupsTab  />
-        )}
+        <Tabs
+          defaultValue="my-setups"
+          tablist={{
+            className: 'flex-1 text-center',
+          }}
+          items={[
+            {
+              trigger: {
+                value: 'my-setups',
+                children: 'My Setups',
+                className: 'flex-1 text-center',
+              },
+              content: {
+                value: 'my-setups',
+                children: <ProfileSetupsTab />,
+              },
+            },
+            {
+              trigger: {
+                value: 'liked',
+                children: 'Liked',
+                className: 'flex-1 text-center',
+              },
+              content: {
+                value: 'liked',
+                children: (
+                  <ProfileEmptyTab
+                    title="No liked setups yet"
+                    description="Setups you like will appear here."
+                  />
+                ),
+              },
+            },
+            {
+              trigger: {
+                value: 'saved',
+                children: 'Saved',
+                className: 'flex-1 text-center',
+              },
+              content: {
+                value: 'saved',
+                children: (
+                  <ProfileEmptyTab
+                    title="No saved setups yet"
+                    description="Setups you save will appear here."
+                  />
+                ),
+              },
+            },
+          ]}
+        />
       </div>
     </section>
   )

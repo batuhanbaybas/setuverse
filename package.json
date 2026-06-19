@@ -78,6 +78,14 @@
     "onlyBuiltDependencies": [
       "esbuild",
       "lightningcss"
-    ]
+    ],
+    "packageExtensions": {
+      "nitro-nightly": {
+        "dependencies": {
+          "youch": "^4.1.1",
+          "youch-core": "^0.3.3"
+        }
+      }
+    }
   }
 }

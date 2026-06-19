@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import SetupImage from '#/features/setup/components/setup-image'
+import SetupImage from '#/shared/components/setup-card/setup-image'
 import { Button } from '#/shared/components/ui/button'
 
 import type { AdminSetup } from '../server/get-admin-setups.functions'

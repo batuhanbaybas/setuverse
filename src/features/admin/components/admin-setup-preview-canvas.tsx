@@ -1,4 +1,4 @@
-import SetupImage from '#/features/setup/components/setup-image'
+import SetupImage from '#/shared/components/setup-card/setup-image'
 import { cn } from '#/shared/lib/utils'
 
 import type { AdminSetup } from '../server/get-admin-setups.functions'

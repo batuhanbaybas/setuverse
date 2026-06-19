@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useUploader } from 'react-upload-kit'
 
-import SetupImage from '#/features/setup/components/setup-image'
+import SetupImage from '#/shared/components/setup-card/setup-image'
 import { Button } from '#/shared/components/ui/button'
 import Icon from '#/shared/components/icons'
 
