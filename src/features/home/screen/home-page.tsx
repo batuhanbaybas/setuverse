@@ -34,7 +34,7 @@ function HomePage() {
         <Categories />
       </header>
 
-      <section className="mt-8">
+      <section className="space-y-4">
         <InfiniteScroller
           hasNextPage={infiniteQuery.hasNextPage}
           fetchNextPage={infiniteQuery.fetchNextPage}
