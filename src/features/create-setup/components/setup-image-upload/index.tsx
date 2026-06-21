@@ -88,7 +88,7 @@ function SetupImageUpload() {
       } catch (error) {
         form.setError('root', {
           message:
-            error instanceof Error ? error.message : 'Failed to create setup',
+            error instanceof Error ? error.message : 'Failed to upload setup',
         })
       }
     },

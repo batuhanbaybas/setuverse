@@ -141,9 +141,9 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
     window.location.href = '/'
   }
 
-  const userName = session?.user?.name ?? 'Your account'
-  const userEmail = session?.user?.email ?? ''
-  const userImage = session?.user?.image
+  const userName = session?.user.name ?? 'Your account'
+  const userEmail = session?.user.email ?? ''
+  const userImage = session?.user.image
   const isAdmin = isAdminRole(session?.user.role)
 
   return (
@@ -195,7 +195,7 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                   <MobileNavItem
                     to="/create"
                     icon={<Icon name="plus" aria-hidden />}
-                    label="Create Setup"
+                    label="Upload Setup"
                     description="Start a new setup"
                     onClick={close}
                     variant="primary"
