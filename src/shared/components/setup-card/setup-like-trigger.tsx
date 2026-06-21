@@ -10,9 +10,10 @@ import { Button } from '../ui/button'
 
 interface Props {
   setupId: string
+  size?: 'default' | 'large'
 }
 
-function SetupLikeTrigger({ setupId }: Props) {
+function SetupLikeTrigger({ setupId, size = 'default' }: Props) {
   const { data: session, isPending: isSessionPending } = useSession()
   const { data: likeStatus, isPending: isLikeStatusPending } =
     useGetCurrentUserLikeStatus(setupId)
@@ -39,9 +40,22 @@ function SetupLikeTrigger({ setupId }: Props) {
 
   if (isLikeStatusPending) {
     return (
-      <span className="inline-flex h-8 items-center gap-1.5 px-2 text-muted-foreground">
-        <Icon name="heart" className="size-4 opacity-50" />
-        <span className="min-w-[1ch] text-sm font-medium tabular-nums opacity-50">
+      <span
+        className={cn(
+          'inline-flex items-center gap-1.5 px-2 text-muted-foreground',
+          size === 'large' ? 'h-10' : 'h-8',
+        )}
+      >
+        <Icon
+          name="heart"
+          className={cn('opacity-50', size === 'large' ? 'size-5' : 'size-4')}
+        />
+        <span
+          className={cn(
+            'min-w-[1ch] font-medium tabular-nums opacity-50',
+            size === 'large' ? 'text-base' : 'text-sm',
+          )}
+        >
           -
         </span>
       </span>
@@ -98,7 +112,8 @@ function SetupLikeTrigger({ setupId }: Props) {
       }
       onClick={handleClick}
       className={cn(
-        'group h-8 gap-1.5 px-2 text-muted-foreground transition-colors hover:bg-rose-500/10 hover:text-rose-500 active:scale-95',
+        'group text-muted-foreground transition-colors hover:bg-rose-500/10 hover:text-rose-500 active:scale-95',
+        size === 'large' ? 'h-10 gap-2 px-3' : 'h-8 gap-1.5 px-2',
         optimisticLiked && 'text-rose-500 hover:text-rose-500',
         !session?.user && 'cursor-not-allowed opacity-60',
       )}
@@ -112,7 +127,8 @@ function SetupLikeTrigger({ setupId }: Props) {
         <Icon
           name="heart"
           className={cn(
-            'size-4 transition-all duration-300',
+            'transition-all duration-300',
+            size === 'large' ? 'size-5' : 'size-4',
             optimisticLiked && 'fill-current text-rose-500',
             isAnimating && 'text-rose-500',
           )}
@@ -120,7 +136,8 @@ function SetupLikeTrigger({ setupId }: Props) {
       </span>
       <span
         className={cn(
-          'min-w-[1ch] text-sm font-medium tabular-nums transition-all duration-300',
+          'min-w-[1ch] font-medium tabular-nums transition-all duration-300',
+          size === 'large' ? 'text-base' : 'text-sm',
           isAnimating && 'scale-110 text-rose-500',
         )}
       >

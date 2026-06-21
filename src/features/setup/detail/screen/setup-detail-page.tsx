@@ -3,6 +3,8 @@ import { useState } from 'react'
 import CategoryOption from '#/features/create-setup/components/setup-info/category-option'
 import EmptyState from '#/shared/components/empty-state'
 import Icon from '#/shared/components/icons'
+import SetupLikeTrigger from '#/shared/components/setup-card/setup-like-trigger'
+import SetupSaveTrigger from '#/shared/components/setup-card/setup-save-trigger'
 import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
 import LinkButton from '#/shared/components/ui/button/link-button'
 import { cn } from '#/shared/lib/utils'
@@ -84,26 +86,33 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
     <section className="py-6 sm:py-8">
       <BackToHomeLink className="mb-4" />
       <header className="space-y-4 pb-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {setup.title ?? 'Untitled setup'}
-          </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            {setup.category ? (
-              <CategoryOption
-                icon={setup.category.icon}
-                name={setup.category.name}
-              />
-            ) : null}
-            <span className="flex items-center gap-2">
-              <Avatar className="size-6 ring-1 ring-ring/20">
-                <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
-                <AvatarFallback className="text-[10px]">
-                  {getInitials(setup.user.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span>{setup.user.name}</span>
-            </span>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              {setup.title ?? 'Untitled setup'}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              {setup.category ? (
+                <CategoryOption
+                  icon={setup.category.icon}
+                  name={setup.category.name}
+                />
+              ) : null}
+              <span className="flex items-center gap-2">
+                <Avatar className="size-6 ring-1 ring-ring/20">
+                  <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
+                  <AvatarFallback className="text-[10px]">
+                    {getInitials(setup.user.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span>{setup.user.name}</span>
+              </span>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1 self-start">
+            <SetupSaveTrigger setupId={setup.id} size="large" />
+            <SetupLikeTrigger setupId={setup.id} size="large" />
           </div>
         </div>
 

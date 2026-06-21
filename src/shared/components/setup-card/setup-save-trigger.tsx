@@ -10,9 +10,10 @@ import { Button } from '../ui/button'
 
 interface Props {
   setupId: string
+  size?: 'default' | 'large'
 }
 
-function SetupSaveTrigger({ setupId }: Props) {
+function SetupSaveTrigger({ setupId, size = 'default' }: Props) {
   const { data: session, isPending: isSessionPending } = useSession()
   const { data: saveStatus, isPending: isSaveStatusPending } =
     useGetCurrentUserSaveStatus(setupId)
@@ -33,8 +34,16 @@ function SetupSaveTrigger({ setupId }: Props) {
 
   if (isSaveStatusPending) {
     return (
-      <span className="inline-flex h-8 items-center px-2 text-muted-foreground">
-        <Icon name="bookmark" className="size-4 opacity-50" />
+      <span
+        className={cn(
+          'inline-flex items-center px-2 text-muted-foreground',
+          size === 'large' ? 'h-10' : 'h-8',
+        )}
+      >
+        <Icon
+          name="bookmark"
+          className={cn('opacity-50', size === 'large' ? 'size-5' : 'size-4')}
+        />
       </span>
     )
   }
@@ -84,7 +93,8 @@ function SetupSaveTrigger({ setupId }: Props) {
       }
       onClick={handleClick}
       className={cn(
-        'group h-8 px-2 text-muted-foreground transition-colors hover:bg-sky-500/10 hover:text-sky-500 active:scale-95',
+        'group text-muted-foreground transition-colors hover:bg-sky-500/10 hover:text-sky-500 active:scale-95',
+        size === 'large' ? 'h-10 px-3' : 'h-8 px-2',
         optimisticSaved && 'text-sky-500 hover:text-sky-500',
         !session?.user && 'cursor-not-allowed opacity-60',
       )}
@@ -98,7 +108,8 @@ function SetupSaveTrigger({ setupId }: Props) {
         <Icon
           name="bookmark"
           className={cn(
-            'size-4 transition-all duration-300',
+            'transition-all duration-300',
+            size === 'large' ? 'size-5' : 'size-4',
             optimisticSaved && 'fill-current text-sky-500',
             isAnimating && 'text-sky-500',
           )}
