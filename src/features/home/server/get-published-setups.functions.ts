@@ -19,7 +19,7 @@ const getPublishedSetupsInputSchema = z.object({
 export type GetPublishedSetupsInput = z.infer<typeof getPublishedSetupsInputSchema>
 
 export type PublishedSetup = Prisma.SetupGetPayload<{
-  include: { category: true, user: true }
+  include: { category: true, user: true, likes: true }
 }>
 
 export type GetPublishedSetupsResult = {
@@ -44,6 +44,7 @@ export const getPublishedSetupsFn = createServerFn({ method: 'GET' })
         include: {
           category: true,
           user: true,
+          likes: true,
         },
         orderBy: {
           publishedAt: 'desc',

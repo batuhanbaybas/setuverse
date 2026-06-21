@@ -35,7 +35,7 @@ function TagItemList({ setupId }: TagItemListProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-auto min-w-0 w-full flex-1 justify-start gap-3 overflow-hidden whitespace-normal rounded-md px-3 py-2.5 text-left hover:bg-muted/60"
+                    className="h-auto min-w-0 w-full flex-1 justify-start gap-3 whitespace-normal rounded-md px-3 py-2.5 text-left hover:bg-muted/60"
                   >
                     <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
                       {index + 1}
@@ -44,14 +44,14 @@ function TagItemList({ setupId }: TagItemListProps) {
                       triggerProps={{
                         asChild: true,
                         children: (
-                          <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden text-left">
-                            <p className="truncate text-sm font-medium leading-tight">
+                          <div className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
+                            <p className="min-w-0 flex-1 truncate text-sm font-medium leading-tight">
                               {item.name}
                             </p>
                             {item.url ? (
                               <Icon
                                 name="external-link"
-                                className="size-3.5 shrink-0 text-muted-foreground"
+                                className="size-3.5 shrink-0 text-primary"
                               />
                             ) : null}
                           </div>

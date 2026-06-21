@@ -1,4 +1,5 @@
-import { forwardRef, type ImgHTMLAttributes } from 'react'
+import { forwardRef  } from 'react'
+import type {ImgHTMLAttributes} from 'react';
 
 import { cn } from '#/shared/lib/utils'
 

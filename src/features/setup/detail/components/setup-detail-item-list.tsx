@@ -47,8 +47,8 @@ function SetupDetailItemList({
                     className="inline-flex min-w-0 max-w-full items-center gap-1.5 text-sm font-medium leading-tight text-primary hover:underline"
                     onClick={(event) => event.stopPropagation()}
                   >
-                    <span className="truncate">{item.name}</span>
-                    <Icon name="external-link" className="size-3.5" />
+                    <span className="min-w-0 truncate">{item.name}</span>
+                    <Icon name="external-link" className="size-3.5 shrink-0" />
                   </a>
                 ) : (
                   <p className="text-sm font-medium leading-tight">{item.name}</p>

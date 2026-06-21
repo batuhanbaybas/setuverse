@@ -3,19 +3,6 @@ import { createServerFn } from '@tanstack/react-start'
 import { prisma } from '#/shared/lib/prisma'
 import { authMiddleware } from '#/features/auth/middleware/auth.middleware'
 
-export type ProfileSetup = {
-  id: string
-  title: string | null
-  imageUrl: string | null
-  description: string | null
-  publishedAt: Date | null
-  category: {
-    id: string
-    name: string
-    slug: string
-  } | null
-}
-
 export type GetProfileResult = {
   bio: string | null
   links: Array<{

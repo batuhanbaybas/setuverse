@@ -45,8 +45,8 @@ function TooltipBody({ title, href, description }: TooltipBodyProps) {
           rel="noreferrer"
           className="inline-flex max-w-full items-center gap-1.5 text-sm leading-snug font-semibold text-background hover:underline"
         >
-          <span className="wrap-break-word">{title}</span>
-          <Icon name="external-link" className="size-3.5 shrink-0" />
+          <span className="min-w-0 wrap-break-word">{title}</span>
+          <Icon name="external-link" className="size-3.5 shrink-0 opacity-90" />
         </a>
       ) : (
         <p className="text-sm leading-snug font-semibold wrap-break-word">{title}</p>

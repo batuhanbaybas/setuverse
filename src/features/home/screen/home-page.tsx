@@ -29,6 +29,8 @@ function HomePage() {
     [infiniteQuery.data],
   )
 
+  console.log({ setups })
+
   return (
     <section className="py-6 sm:py-8">
       <header className="pb-6">
@@ -58,14 +60,16 @@ function HomePage() {
           <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {setups.map((setup) => (
               <Link to={`/setup/${setup.id}`} key={setup.id}>
-              <SetupCard
-                imageUrl={setup.imageUrl ?? ''}
-                title={setup.title ?? ''}
-                category={setup.category?.name ?? ''}
-                publisherInfo={{
-                  name: setup.user.name,
+                <SetupCard  
+                  setupId={setup.id}
+                  imageUrl={setup.imageUrl ?? ''}
+                  title={setup.title ?? ''}
+                  category={setup.category?.name ?? ''}
+                  publisherInfo={{
+                    name: setup.user.name,
                     avatarUrl: setup.user.image ?? '',
                   }}
+                  likesCount={setup.likes.length}
                 />
               </Link>
             ))}
