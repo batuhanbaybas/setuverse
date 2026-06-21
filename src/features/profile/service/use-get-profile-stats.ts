@@ -1,14 +1,18 @@
-import { useQuery  } from "@tanstack/react-query"
-import type {UseQueryResult} from "@tanstack/react-query";
-import { queryKeys } from "../lib/query-keys"
-import { getProfileSetupStatisticsFn  } from "../server/get-profile-setup-statistics"
-import type {GetProfileSetupStatisticsResult} from "../server/get-profile-setup-statistics";
+import { useQuery } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useServerFn } from '@tanstack/react-start'
 
-const useGetProfileStats = () : UseQueryResult<GetProfileSetupStatisticsResult, Error> => {
-    return useQuery<GetProfileSetupStatisticsResult, Error>({
-        queryKey: [queryKeys.getProfileStats],
-        queryFn: getProfileSetupStatisticsFn,
-    })
+import { queryKeys } from '../lib/query-keys'
+import { getProfileStatsFn } from '../server/get-profile-stats.functions'
+import type { GetProfileStatsResult } from '../server/get-profile-stats.functions'
+
+const useGetProfileStats = (): UseQueryResult<GetProfileStatsResult, Error> => {
+  const getProfileStats = useServerFn(getProfileStatsFn)
+
+  return useQuery<GetProfileStatsResult, Error>({
+    queryKey: [queryKeys.getProfileStats],
+    queryFn: getProfileStats,
+  })
 }
 
 export default useGetProfileStats

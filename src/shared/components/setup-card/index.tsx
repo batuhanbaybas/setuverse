@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import SetupImage from '#/shared/components/setup-card/setup-image'
 import { cn } from '#/shared/lib/utils'
 import { Link } from '@tanstack/react-router'
@@ -16,6 +18,7 @@ interface Props {
   category: string
   itemsCount?: number
   isProfilePage?: boolean
+  ownerActions?: ReactNode
   publisherInfo?: PublisherInfo
 }
 
@@ -27,6 +30,7 @@ function SetupCard({
   itemsCount,
   publisherInfo,
   isProfilePage = false,
+  ownerActions,
 }: Props) {
   const card = (
     <Card
@@ -64,8 +68,28 @@ function SetupCard({
     />
   )
 
+  const cardWithOwnerActions = ownerActions ? (
+    <div className="relative">
+      {card}
+      <div className="absolute top-2 right-2 z-10">{ownerActions}</div>
+    </div>
+  ) : (
+    card
+  )
+
   if (!setupId) {
-    return card
+    return cardWithOwnerActions
+  }
+
+  if (ownerActions) {
+    return (
+      <div className="relative">
+        <Link to="/setup/$id" params={{ id: setupId }} className="block">
+          {card}
+        </Link>
+        <div className="absolute top-2 right-2 z-10">{ownerActions}</div>
+      </div>
+    )
   }
 
   return (

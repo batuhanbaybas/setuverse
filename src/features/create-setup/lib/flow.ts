@@ -27,7 +27,7 @@ export function getCreateFlowProgress(pathname: string) {
     totalSteps: CREATE_FLOW_STEPS.length,
     label: step.label,
     description: step.description,
-    nextLabel: nextStep?.label ?? null,
+    nextLabel: nextStep.label,
     value: Math.round(((stepIndex + 1) / CREATE_FLOW_STEPS.length) * 100),
   }
 }

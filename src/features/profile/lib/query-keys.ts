@@ -5,4 +5,5 @@ export const queryKeys = {
   getProfileLikedSetups: 'get-profile-liked-setups',
   getProfileSavedSetups: 'get-profile-saved-setups',
   getProfileStats: 'get-profile-stats',
+  deleteUserSetup: 'delete-user-setup',
 } as const

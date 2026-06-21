@@ -141,6 +141,9 @@ const useTriggerLikeSetup = () => {
       queryClient.invalidateQueries({
         queryKey: [profileQueryKeys.getProfileLikedSetups],
       })
+      queryClient.invalidateQueries({
+        queryKey: [profileQueryKeys.getProfileStats],
+      })
     },
   })
 }
