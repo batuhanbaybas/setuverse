@@ -2,7 +2,10 @@ import { useState } from 'react'
 
 import CategoryOption from '#/features/create-setup/components/setup-info/category-option'
 import EmptyState from '#/shared/components/empty-state'
+import Icon from '#/shared/components/icons'
 import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
+import LinkButton from '#/shared/components/ui/button/link-button'
+import { cn } from '#/shared/lib/utils'
 
 import SetupDetailCanvas from '../components/setup-detail-canvas'
 import SetupDetailItemList from '../components/setup-detail-item-list'
@@ -21,38 +24,65 @@ function getInitials(name: string) {
     .toUpperCase()
 }
 
+function BackToHomeLink({ className }: { className?: string }) {
+  return (
+    <LinkButton
+      to="/"
+      variant="ghost"
+      size="sm"
+      className={cn(
+        '-ml-2 text-muted-foreground hover:text-foreground',
+        className,
+      )}
+    >
+      <Icon name="home" aria-hidden />
+      Back to home
+    </LinkButton>
+  )
+}
+
 function SetupDetailPage({ setupId }: SetupDetailPageProps) {
   const { data: setup, isPending, isError } = useGetSetupDetail(setupId)
   const [activeItemId, setActiveItemId] = useState<string | null>(null)
 
   if (isPending) {
     return (
-      <div className="py-8 text-center text-sm text-muted-foreground">
-        Loading setup...
-      </div>
+      <section className="py-6 sm:py-8">
+        <BackToHomeLink className="mb-6" />
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Loading setup...
+        </div>
+      </section>
     )
   }
 
   if (isError) {
     return (
-      <EmptyState
-        title="Failed to load setup"
-        description="Something went wrong. Please try again later."
-      />
+      <section className="py-6 sm:py-8">
+        <BackToHomeLink className="mb-6" />
+        <EmptyState
+          title="Failed to load setup"
+          description="Something went wrong. Please try again later."
+        />
+      </section>
     )
   }
 
   if (!setup) {
     return (
-      <EmptyState
-        title="Setup not found"
-        description="This setup may have been removed or is not published yet."
-      />
+      <section className="py-6 sm:py-8">
+        <BackToHomeLink className="mb-6" />
+        <EmptyState
+          title="Setup not found"
+          description="This setup may have been removed or is not published yet."
+        />
+      </section>
     )
   }
 
   return (
     <section className="py-6 sm:py-8">
+      <BackToHomeLink className="mb-4" />
       <header className="space-y-4 pb-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -94,7 +124,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
               onMarkerClick={setActiveItemId}
             />
           ) : (
-            <div className="rounded-xl border border-dashed px-6 py-16 text-center text-sm text-muted-foreground">
+            <div className="flex h-[min(70vh,640px)] items-center justify-center rounded-xl border border-dashed px-6 text-center text-sm text-muted-foreground">
               No setup image
             </div>
           )}

@@ -19,12 +19,12 @@ function SetupDetailCanvas({
   onMarkerClick,
 }: SetupDetailCanvasProps) {
   return (
-    <div className="flex items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
-      <div className="relative inline-flex max-w-full">
+    <div className="flex h-[min(70vh,640px)] items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
+      <div className="relative max-w-full">
         <SetupImage
           imageUrl={imageUrl}
           alt="Setup preview"
-          className="max-w-full rounded-lg object-contain"
+          className="block max-h-[calc(min(70vh,640px)-1rem)] w-auto max-w-full rounded-lg object-contain sm:max-h-[calc(min(70vh,640px)-2rem)]"
         />
         {items.map((item, index) => {
           const isActive = activeItemId === item.id
