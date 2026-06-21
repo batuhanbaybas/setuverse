@@ -28,7 +28,7 @@ function SetupCard({
     <Card
       wrapperProps={{
         className:
-          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[410px] cursor-pointer hover:scale-105 transition-all duration-300',
+          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[410px] cursor-pointer',
       }}
       cardContentProps={{
         className: 'space-y-3 sm:p-0',
