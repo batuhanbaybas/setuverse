@@ -1,4 +1,3 @@
-import { queryKeys } from '#/features/create-setup/lib/query-keys'
 import { getSetupDraftFn } from '#/features/create-setup/server/get-setup-draft.functions'
 import { ClientOnly, createFileRoute } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
