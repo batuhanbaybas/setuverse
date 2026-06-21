@@ -22,6 +22,7 @@ import {
   LuPencil,
   LuCalendar,
   LuTrash2,
+  LuExternalLink,
 } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
 import { IoHome } from 'react-icons/io5'
@@ -48,6 +49,7 @@ export const iconList = [
   { name: 'calendar', icon: LuCalendar },
   { name: 'menu', icon: LuMenu },
   { name: 'trash', icon: LuTrash2 },
+  { name: 'external-link', icon: LuExternalLink },
   // category icons
   { name: 'layout-grid', icon: LuLayoutGrid },
   { name: 'code', icon: LuCodeXml },

@@ -1,3 +1,4 @@
+import Icon from '#/shared/components/icons'
 import { cn } from '#/shared/lib/utils'
 
 import type { SetupDetailItem } from '../server/get-setup-detail'
@@ -38,18 +39,20 @@ function SetupDetailItemList({
                 {index + 1}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium leading-tight">{item.name}</p>
                 {item.url ? (
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-1 block truncate text-xs text-primary hover:underline"
+                    className="inline-flex min-w-0 max-w-full items-center gap-1.5 text-sm font-medium leading-tight text-primary hover:underline"
                     onClick={(event) => event.stopPropagation()}
                   >
-                    {item.url}
+                    <span className="truncate">{item.name}</span>
+                    <Icon name="external-link" className="size-3.5" />
                   </a>
-                ) : null}
+                ) : (
+                  <p className="text-sm font-medium leading-tight">{item.name}</p>
+                )}
               </div>
             </div>
           </button>

@@ -54,7 +54,7 @@ function SetupDetailCanvas({
               }}
               contentProps={{
                 title: item.name,
-                description: item.url,
+                href: item.url || undefined,
               }}
             />
           )

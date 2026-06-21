@@ -44,21 +44,22 @@ function TagItemList({ setupId }: TagItemListProps) {
                       triggerProps={{
                         asChild: true,
                         children: (
-                          <div className="min-w-0 flex-1 overflow-hidden text-left">
+                          <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden text-left">
                             <p className="truncate text-sm font-medium leading-tight">
                               {item.name}
                             </p>
                             {item.url ? (
-                              <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                                {item.url}
-                              </p>
+                              <Icon
+                                name="external-link"
+                                className="size-3.5 shrink-0 text-muted-foreground"
+                              />
                             ) : null}
                           </div>
                         ),
                       }}
                       contentProps={{
                         title: item.name,
-                        description: item.url,
+                        href: item.url || undefined,
                       }}
                     />
                   </Button>
