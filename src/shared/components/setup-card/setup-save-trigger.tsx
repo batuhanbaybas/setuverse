@@ -11,9 +11,14 @@ import { Button } from '../ui/button'
 interface Props {
   setupId: string
   size?: 'default' | 'large'
+  showLabel?: boolean
 }
 
-function SetupSaveTrigger({ setupId, size = 'default' }: Props) {
+function SetupSaveTrigger({
+  setupId,
+  size = 'default',
+  showLabel = false,
+}: Props) {
   const { data: session, isPending: isSessionPending } = useSession()
   const { data: saveStatus, isPending: isSaveStatusPending } =
     useGetCurrentUserSaveStatus(setupId)
@@ -36,14 +41,25 @@ function SetupSaveTrigger({ setupId, size = 'default' }: Props) {
     return (
       <span
         className={cn(
-          'inline-flex items-center px-2 text-muted-foreground',
+          'inline-flex items-center gap-1.5 px-2 text-muted-foreground',
           size === 'large' ? 'h-10' : 'h-8',
+          showLabel && size === 'large' && 'gap-2 px-4',
         )}
       >
         <Icon
           name="bookmark"
           className={cn('opacity-50', size === 'large' ? 'size-5' : 'size-4')}
         />
+        {showLabel ? (
+          <span
+            className={cn(
+              'font-medium opacity-50',
+              size === 'large' ? 'text-base' : 'text-sm',
+            )}
+          >
+            Save
+          </span>
+        ) : null}
       </span>
     )
   }
@@ -94,7 +110,8 @@ function SetupSaveTrigger({ setupId, size = 'default' }: Props) {
       onClick={handleClick}
       className={cn(
         'group text-muted-foreground transition-colors hover:bg-sky-500/10 hover:text-sky-500 active:scale-95',
-        size === 'large' ? 'h-10 px-3' : 'h-8 px-2',
+        size === 'large' ? 'h-10 gap-2 px-3' : 'h-8 px-2',
+        showLabel && size === 'large' && 'px-4',
         optimisticSaved && 'text-sky-500 hover:text-sky-500',
         !session?.user && 'cursor-not-allowed opacity-60',
       )}
@@ -115,6 +132,17 @@ function SetupSaveTrigger({ setupId, size = 'default' }: Props) {
           )}
         />
       </span>
+      {showLabel ? (
+        <span
+          className={cn(
+            'font-medium transition-all duration-300',
+            size === 'large' ? 'text-base' : 'text-sm',
+            isAnimating && 'text-sky-500',
+          )}
+        >
+          {optimisticSaved ? 'Saved' : 'Save'}
+        </span>
+      ) : null}
     </Button>
   )
 }

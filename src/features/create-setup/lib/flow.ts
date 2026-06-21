@@ -20,14 +20,14 @@ export const CREATE_FLOW_STEPS = [
 export function getCreateFlowProgress(pathname: string) {
   const stepIndex = getCreateFlowStepIndex(pathname)
   const step = CREATE_FLOW_STEPS[stepIndex]
-  const nextStep = CREATE_FLOW_STEPS[stepIndex + 1]
+  const isLastStep = stepIndex >= CREATE_FLOW_STEPS.length - 1
 
   return {
     stepNumber: stepIndex + 1,
     totalSteps: CREATE_FLOW_STEPS.length,
     label: step.label,
     description: step.description,
-    nextLabel: nextStep.label,
+    nextLabel: isLastStep ? null : CREATE_FLOW_STEPS[stepIndex + 1].label,
     value: Math.round(((stepIndex + 1) / CREATE_FLOW_STEPS.length) * 100),
   }
 }

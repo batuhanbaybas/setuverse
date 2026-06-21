@@ -38,10 +38,16 @@ function CreateFlowProgress() {
 
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-muted-foreground">{description}</p>
+          {nextLabel ? (
             <p className="shrink-0 text-xs text-muted-foreground">
               Next:{' '}
-            <span className="font-medium text-foreground">{nextLabel}</span>
-          </p>
+              <span className="font-medium text-foreground">{nextLabel}</span>
+            </p>
+          ) : (
+            <p className="shrink-0 text-xs font-medium text-foreground">
+              Final step
+            </p>
+          )}
         </div>
       </div>
     </section>

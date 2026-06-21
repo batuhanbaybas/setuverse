@@ -86,33 +86,26 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
     <section className="py-6 sm:py-8">
       <BackToHomeLink className="mb-4" />
       <header className="space-y-4 pb-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {setup.title ?? 'Untitled setup'}
-            </h1>
-            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-              {setup.category ? (
-                <CategoryOption
-                  icon={setup.category.icon}
-                  name={setup.category.name}
-                />
-              ) : null}
-              <span className="flex items-center gap-2">
-                <Avatar className="size-6 ring-1 ring-ring/20">
-                  <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
-                  <AvatarFallback className="text-[10px]">
-                    {getInitials(setup.user.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span>{setup.user.name}</span>
-              </span>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-1 self-start">
-            <SetupSaveTrigger setupId={setup.id} size="large" />
-            <SetupLikeTrigger setupId={setup.id} size="large" />
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            {setup.title ?? 'Untitled setup'}
+          </h1>
+          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            {setup.category ? (
+              <CategoryOption
+                icon={setup.category.icon}
+                name={setup.category.name}
+              />
+            ) : null}
+            <span className="flex items-center gap-2">
+              <Avatar className="size-6 ring-1 ring-ring/20">
+                <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
+                <AvatarFallback className="text-[10px]">
+                  {getInitials(setup.user.name)}
+                </AvatarFallback>
+              </Avatar>
+              <span>{setup.user.name}</span>
+            </span>
           </div>
         </div>
 
@@ -124,7 +117,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
       </header>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="min-w-0 lg:col-span-8">
+        <div className="flex min-w-0 flex-col gap-3 lg:col-span-8">
           {setup.imageUrl ? (
             <SetupDetailCanvas
               imageUrl={setup.imageUrl}
@@ -133,10 +126,15 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
               onMarkerClick={setActiveItemId}
             />
           ) : (
-            <div className="flex h-[min(70vh,640px)] items-center justify-center rounded-xl border border-dashed px-6 text-center text-sm text-muted-foreground">
+            <div className="flex min-h-48 w-full items-center justify-center rounded-xl border border-dashed px-6 text-center text-sm text-muted-foreground">
               No setup image
             </div>
           )}
+
+          <div className="flex flex-wrap items-center gap-2 border-t pt-3">
+            <SetupSaveTrigger setupId={setup.id} size="large" showLabel />
+            <SetupLikeTrigger setupId={setup.id} size="large" showLabel />
+          </div>
         </div>
 
         <aside className="flex min-h-0 min-w-0 flex-col gap-3 lg:col-span-4">
@@ -145,7 +143,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
               Setup items ({setup.items.length})
             </h2>
           </div>
-          <div className="min-h-0 flex-1 lg:max-h-[min(70vh,640px)]">
+          <div className="min-h-0 flex-1 lg:max-h-[min(70vh,720px)]">
             <SetupDetailItemList
               items={setup.items}
               activeItemId={activeItemId}

@@ -48,7 +48,7 @@ function SetupCard({
               <SetupImage
                 imageUrl={imageUrl}
                 alt={title}
-                className="size-full object-cover"
+                className="size-full object-cover object-top"
               />
               {itemsCount !== undefined ? (
                 <span className="absolute bottom-2 left-2 rounded-md bg-black/60 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">

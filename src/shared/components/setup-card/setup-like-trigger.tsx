@@ -11,9 +11,14 @@ import { Button } from '../ui/button'
 interface Props {
   setupId: string
   size?: 'default' | 'large'
+  showLabel?: boolean
 }
 
-function SetupLikeTrigger({ setupId, size = 'default' }: Props) {
+function SetupLikeTrigger({
+  setupId,
+  size = 'default',
+  showLabel = false,
+}: Props) {
   const { data: session, isPending: isSessionPending } = useSession()
   const { data: likeStatus, isPending: isLikeStatusPending } =
     useGetCurrentUserLikeStatus(setupId)
@@ -44,12 +49,23 @@ function SetupLikeTrigger({ setupId, size = 'default' }: Props) {
         className={cn(
           'inline-flex items-center gap-1.5 px-2 text-muted-foreground',
           size === 'large' ? 'h-10' : 'h-8',
+          showLabel && size === 'large' && 'gap-2 px-4',
         )}
       >
         <Icon
           name="heart"
           className={cn('opacity-50', size === 'large' ? 'size-5' : 'size-4')}
         />
+        {showLabel ? (
+          <span
+            className={cn(
+              'font-medium opacity-50',
+              size === 'large' ? 'text-base' : 'text-sm',
+            )}
+          >
+            Like
+          </span>
+        ) : null}
         <span
           className={cn(
             'min-w-[1ch] font-medium tabular-nums opacity-50',
@@ -114,6 +130,7 @@ function SetupLikeTrigger({ setupId, size = 'default' }: Props) {
       className={cn(
         'group text-muted-foreground transition-colors hover:bg-rose-500/10 hover:text-rose-500 active:scale-95',
         size === 'large' ? 'h-10 gap-2 px-3' : 'h-8 gap-1.5 px-2',
+        showLabel && size === 'large' && 'px-4',
         optimisticLiked && 'text-rose-500 hover:text-rose-500',
         !session?.user && 'cursor-not-allowed opacity-60',
       )}
@@ -134,6 +151,17 @@ function SetupLikeTrigger({ setupId, size = 'default' }: Props) {
           )}
         />
       </span>
+      {showLabel ? (
+        <span
+          className={cn(
+            'font-medium transition-all duration-300',
+            size === 'large' ? 'text-base' : 'text-sm',
+            isAnimating && 'text-rose-500',
+          )}
+        >
+          {optimisticLiked ? 'Liked' : 'Like'}
+        </span>
+      ) : null}
       <span
         className={cn(
           'min-w-[1ch] font-medium tabular-nums transition-all duration-300',
