@@ -1,3 +1,4 @@
+import SetupDetailPage from '#/features/setup/detail/screen/setup-detail-page'
 import getSetupDetail from '#/features/setup/detail/server/get-setup-detail'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -12,5 +13,7 @@ export const Route = createFileRoute('/_main/setup/$id/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_main/setup/$id"!</div>
+  const { id } = Route.useParams()
+
+  return <SetupDetailPage setupId={id} />
 }

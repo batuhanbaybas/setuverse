@@ -57,23 +57,8 @@ function TagItemList({ setupId }: TagItemListProps) {
                         ),
                       }}
                       contentProps={{
-                        sideOffset: 8,
-                        className: 'max-w-xs px-3.5 py-2.5 text-left',
-                        children: (
-                          <div className="space-y-2">
-                            <p className="text-sm leading-snug font-medium wrap-break-word">
-                              {item.name}
-                            </p>
-                            {item.url ? (
-                              <>
-                                <div className="h-px bg-background/20" />
-                                <p className="text-xs leading-relaxed text-background/75 break-all">
-                                  {item.url}
-                                </p>
-                              </>
-                            ) : null}
-                          </div>
-                        ),
+                        title: item.name,
+                        description: item.url,
                       }}
                     />
                   </Button>

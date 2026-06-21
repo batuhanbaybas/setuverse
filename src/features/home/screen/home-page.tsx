@@ -8,6 +8,7 @@ import Categories from '../components/categories/index'
 import useCategoryFilter from '../components/categories/use-category-filter'
 import { homeRouteApi } from '../lib/home-route'
 import useGetPublishedSetups from '../service/use-get-published-setups'
+import { Link } from '@tanstack/react-router'
 
 function HomePage() {
   const { selectedCategory } = useCategoryFilter()
@@ -56,16 +57,17 @@ function HomePage() {
         >
           <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {setups.map((setup) => (
+              <Link to={`/setup/${setup.id}`} key={setup.id}>
               <SetupCard
-                key={setup.id}
                 imageUrl={setup.imageUrl ?? ''}
                 title={setup.title ?? ''}
                 category={setup.category?.name ?? ''}
                 publisherInfo={{
                   name: setup.user.name,
-                  avatarUrl: setup.user.image ?? '',
-                }}
-              />
+                    avatarUrl: setup.user.image ?? '',
+                  }}
+                />
+              </Link>
             ))}
           </section>
         </InfiniteScroller>
