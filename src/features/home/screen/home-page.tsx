@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useSession } from '#/features/auth/lib/auth-client'
 import EmptyState from '#/shared/components/empty-state'
 import InfiniteScroller from '#/shared/components/infinite-scroller'
 import SetupCard from '#/shared/components/setup-card'
@@ -11,6 +12,7 @@ import useGetPublishedSetups from '../service/use-get-published-setups'
 import { Link } from '@tanstack/react-router'
 
 function HomePage() {
+  const { data: session } = useSession()
   const { selectedCategory } = useCategoryFilter()
   const { categories } = homeRouteApi.useRouteContext()
 
@@ -28,8 +30,6 @@ function HomePage() {
     () => infiniteQuery.data?.pages.flatMap((page) => page.setups) ?? [],
     [infiniteQuery.data],
   )
-
-  console.log({ setups })
 
   return (
     <section className="py-6 sm:py-8">
@@ -59,19 +59,20 @@ function HomePage() {
         >
           <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {setups.map((setup) => (
-              <Link to={`/setup/${setup.id}`} key={setup.id}>
-                <SetupCard  
-                  setupId={setup.id}
-                  imageUrl={setup.imageUrl ?? ''}
-                  title={setup.title ?? ''}
-                  category={setup.category?.name ?? ''}
-                  publisherInfo={{
-                    name: setup.user.name,
-                    avatarUrl: setup.user.image ?? '',
-                  }}
-                  likesCount={setup.likes.length}
-                />
-              </Link>
+              <SetupCard
+                setupId={setup.id}
+                imageUrl={setup.imageUrl ?? ''}
+                title={setup.title ?? ''}
+                category={setup.category?.name ?? ''}
+                publisherInfo={{
+                  name: setup.user.name,
+                  avatarUrl: setup.user.image ?? '',
+                }}
+                isLiked={setup.likes.some(
+                  (like) => like.userId === session?.user.id,
+                )}
+                likesCount={setup.likes.length}
+              />
             ))}
           </section>
         </InfiniteScroller>

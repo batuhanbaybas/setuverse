@@ -13,6 +13,7 @@ interface Props {
   title: string
   category: string
   publisherInfo?: PublisherInfo
+  isLiked?: boolean
   likesCount?: number
 }
 
@@ -22,6 +23,7 @@ function SetupCard({
   title,
   category,
   publisherInfo,
+  isLiked,
   likesCount,
 }: Props) {
   return (
@@ -42,10 +44,11 @@ function SetupCard({
               />
             </div>
             <SetupCardInfo
-              setupId={setupId ?? ''}
+              setupId={setupId}
               title={title}
               category={category}
               publisherInfo={publisherInfo}
+              isLiked={isLiked}
               likesCount={likesCount}
             />
           </>
