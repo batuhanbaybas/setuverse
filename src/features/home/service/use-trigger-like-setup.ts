@@ -7,6 +7,7 @@ import { useSession } from '#/features/auth/lib/auth-client'
 import { queryKeys } from '../lib/query-keys'
 import triggerLikeSetup from '../server/trigger-like-setup'
 import type { GetPublishedSetupsResult } from '../server/get-published-setups.functions'
+import { queryKeys as profileQueryKeys } from '#/features/profile/lib/query-keys'
 
 const publishedSetupsQueryKey = [queryKeys.getPublishedSetups] as const
 
@@ -136,6 +137,9 @@ const useTriggerLikeSetup = () => {
       })
       queryClient.invalidateQueries({
         queryKey: [queryKeys.getCurrentUserLikeStatus, variables.setupId],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [profileQueryKeys.getProfileLikedSetups],
       })
     },
   })

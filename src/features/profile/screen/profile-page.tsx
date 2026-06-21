@@ -1,5 +1,6 @@
 import ProfileEmptyTab from '../components/profile-empty-tab'
 import ProfileHeader from '../components/profil-header'
+import ProfileLikedTab from '../components/profil-liked-tab'
 import ProfileSetupsTab from '../components/profil-setup-tab'
 import Tabs from '#/shared/components/ui/tabs'
 
@@ -34,12 +35,7 @@ function ProfilePage() {
               },
               content: {
                 value: 'liked',
-                children: (
-                  <ProfileEmptyTab
-                    title="No liked setups yet"
-                    description="Setups you like will appear here."
-                  />
-                ),
+                children: <ProfileLikedTab />,
               },
             },
             {

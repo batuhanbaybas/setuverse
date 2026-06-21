@@ -1,4 +1,5 @@
 import SetupImage from '#/shared/components/setup-card/setup-image'
+import { cn } from '#/shared/lib/utils'
 import Card from '../ui/card'
 import SetupCardInfo from './setup-card-info'
 
@@ -12,6 +13,7 @@ interface Props {
   imageUrl: string
   title: string
   category: string
+  isProfilePage?: boolean
   publisherInfo?: PublisherInfo
 }
 
@@ -21,12 +23,16 @@ function SetupCard({
   title,
   category,
   publisherInfo,
+  isProfilePage = false,
 }: Props) {
   return (
     <Card
       wrapperProps={{
         className:
+        cn(
           'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[410px] cursor-pointer',
+          isProfilePage && 'h-[390px]',
+        ),
       }}
       cardContentProps={{
         className: 'space-y-3 sm:p-0',

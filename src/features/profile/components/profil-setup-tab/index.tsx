@@ -23,7 +23,7 @@ function ProfileSetupsTab() {
   return (
     <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {setups.map((setup) => (
-        <SetupCard key={setup.id} imageUrl={setup.imageUrl ?? ''} title={setup.title ?? ''} category={setup.category?.name ?? ''} />
+        <SetupCard key={setup.id} imageUrl={setup.imageUrl ?? ''} title={setup.title ?? ''} category={setup.category?.name ?? ''} isProfilePage />
       ))}
     </section>
   )
