@@ -3,7 +3,7 @@ import type { IconName } from '#/shared/components/icons/icon-list'
 export type AdminNavItem = {
   label: string
   icon: IconName
-  to: '/admin' | '/admin/users' | '/admin/setups' | '/admin/categories'
+  to: '/admin' | '/admin/users' | '/admin/setups' | '/admin/categories' | '/admin/images'
   isActive: (pathname: string) => boolean
 }
 
@@ -40,5 +40,12 @@ export const adminNavItems: AdminNavItem[] = [
     to: '/admin/categories',
     isActive: (pathname) =>
       normalizeAdminPath(pathname).startsWith('/admin/categories'),
+  },
+  {
+    label: 'Images',
+    icon: 'image-plus',
+    to: '/admin/images',
+    isActive: (pathname) =>
+      normalizeAdminPath(pathname).startsWith('/admin/images'),
   },
 ]

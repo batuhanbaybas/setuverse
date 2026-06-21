@@ -17,9 +17,15 @@ export const adminCategoriesSearchSchema = z.object({
   categoryStatus: z.enum(['active', 'inactive']).optional(),
 })
 
+export const adminImagesSearchSchema = z.object({
+  page: adminPageSchema,
+  imageStatus: z.enum(['referenced', 'draft']).optional(),
+})
+
 export type AdminUsersSearch = z.infer<typeof adminUsersSearchSchema>
 export type AdminSetupsSearch = z.infer<typeof adminSetupsSearchSchema>
 export type AdminCategoriesSearch = z.infer<typeof adminCategoriesSearchSchema>
+export type AdminImagesSearch = z.infer<typeof adminImagesSearchSchema>
 
 export function getAdminListPage(search: { page?: number }) {
   return search.page ?? 1
@@ -53,4 +59,10 @@ export function mapCategoryStatusFilter(
   if (!status) return undefined
 
   return status === 'active'
+}
+
+export function mapImageStatusFilter(
+  status?: AdminImagesSearch['imageStatus'],
+): 'referenced' | 'draft' | undefined {
+  return status
 }

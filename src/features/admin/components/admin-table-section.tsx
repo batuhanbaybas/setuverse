@@ -14,6 +14,7 @@ import AdminDataTable, {
 import AdminTablePagination from './admin-table-pagination'
 import type {
   AdminCategoriesSearch,
+  AdminImagesSearch,
   AdminSetupsSearch,
   AdminUsersSearch,
 } from '../lib/admin-list-search'
@@ -61,10 +62,25 @@ type AdminCategoriesTableSectionProps<T> = {
   emptyDescription?: string
 }
 
+type AdminImagesTableSectionProps<T> = {
+  title: string
+  description: string
+  filters?: ReactNode
+  data: T[]
+  columns: AdminTableColumn<T>[]
+  getRowKey: (row: T) => string
+  pagination: AdminPagination
+  paginationTo: '/admin/images'
+  search: AdminImagesSearch
+  emptyTitle?: string
+  emptyDescription?: string
+}
+
 type AdminTableSectionProps<T> =
   | AdminUsersTableSectionProps<T>
   | AdminSetupsTableSectionProps<T>
   | AdminCategoriesTableSectionProps<T>
+  | AdminImagesTableSectionProps<T>
 
 function AdminTableSection<T>({
   title,
@@ -109,6 +125,12 @@ function AdminTableSection<T>({
             to="/admin/setups"
             pagination={pagination}
             search={search as AdminSetupsSearch}
+          />
+        ) : paginationTo === '/admin/images' ? (
+          <AdminTablePagination
+            to="/admin/images"
+            pagination={pagination}
+            search={search as AdminImagesSearch}
           />
         ) : (
           <AdminTablePagination

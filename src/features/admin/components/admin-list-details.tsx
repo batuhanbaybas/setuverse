@@ -1,11 +1,14 @@
+import AdminImageActions from './admin-image-actions'
 import AdminSetupActions from './admin-setup-actions'
 import {
   CategoryTableFilters,
+  ImageTableFilters,
   SetupTableFilters,
   UserTableFilters,
 } from './admin-table-filters'
 import AdminTableSection from './admin-table-section'
 import type { AdminTableColumn } from './admin-data-table'
+import { getAdminImageColumns } from './admin-image-columns'
 import {
   getAdminCategoryColumns,
   getAdminSetupColumns,
@@ -13,10 +16,12 @@ import {
 } from './admin-table-columns'
 import type {
   AdminCategoriesSearch,
+  AdminImagesSearch,
   AdminSetupsSearch,
   AdminUsersSearch,
 } from '../lib/admin-list-search'
 import type { GetAdminCategoriesResult } from '../server/get-admin-categories.functions'
+import type { GetAdminImagesResult } from '../server/get-admin-images.functions'
 import type { GetAdminSetupsResult } from '../server/get-admin-setups.functions'
 import type { GetAdminUsersResult } from '../server/get-admin-users.functions'
 
@@ -71,6 +76,38 @@ export function AdminSetupsDetail({ search, data }: AdminSetupsDetailProps) {
       search={search}
       emptyTitle="No setups found"
       emptyDescription="Setups will appear here once they leave draft status."
+    />
+  )
+}
+
+type AdminImagesDetailProps = {
+  search: AdminImagesSearch
+  data: GetAdminImagesResult
+}
+
+export function AdminImagesDetail({ search, data }: AdminImagesDetailProps) {
+  const imageColumns: AdminTableColumn<(typeof data.images)[number]>[] = [
+    ...getAdminImageColumns(),
+    {
+      id: 'actions',
+      header: 'Actions',
+      render: (image) => <AdminImageActions image={image} />,
+    },
+  ]
+
+  return (
+    <AdminTableSection
+      title="Images"
+      description="Setup images stored in R2 and their linked setups."
+      filters={<ImageTableFilters search={search} counts={data.counts} />}
+      data={data.images}
+      columns={imageColumns}
+      getRowKey={(image) => image.key}
+      pagination={data.pagination}
+      paginationTo="/admin/images"
+      search={search}
+      emptyTitle="No images found"
+      emptyDescription="Uploaded setup images will appear here."
     />
   )
 }

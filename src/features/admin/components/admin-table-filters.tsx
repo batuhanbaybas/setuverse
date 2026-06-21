@@ -6,13 +6,16 @@ import { cn } from '#/shared/lib/utils'
 
 import type {
   AdminCategoriesSearch,
+  AdminImagesSearch,
   AdminSetupsSearch,
   AdminUsersSearch,
 } from '../lib/admin-list-search'
 import { CategoryStatusBadge } from './category-status-badge'
+import { ImageStatusBadge } from './image-status-badge'
 import { SetupStatusBadge } from './setup-status-badge'
 import { UserRoleBadge } from './user-role-badge'
 import type { AdminCategoryCounts } from '../server/get-admin-categories.functions'
+import type { AdminImageCounts } from '../server/get-admin-images.functions'
 import type { AdminSetupCounts } from '../server/get-admin-setups.functions'
 import type { AdminUserRoleCounts } from '../server/get-admin-users.functions'
 
@@ -93,6 +96,44 @@ export function UserTableFilters({ search, counts }: UserTableFiltersProps) {
             className={getFilterBadgeClassName(isActive)}
           >
             <UserRoleBadge role={filter.role} count={filter.count} />
+          </Link>
+        )
+      })}
+    </div>
+  )
+}
+
+type ImageTableFiltersProps = {
+  search: AdminImagesSearch
+  counts: AdminImageCounts
+}
+
+export function ImageTableFilters({ search, counts }: ImageTableFiltersProps) {
+  const filters = [
+    {
+      id: 'referenced' as const,
+      status: 'referenced' as const,
+      count: counts.referenced,
+    },
+    { id: 'draft' as const, status: 'draft' as const, count: counts.draft },
+  ]
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {filters.map((filter) => {
+        const isActive = search.imageStatus === filter.id
+
+        return (
+          <Link
+            key={filter.id}
+            to="/admin/images"
+            search={{
+              page: 1,
+              imageStatus: isActive ? undefined : filter.id,
+            }}
+            className={getFilterBadgeClassName(isActive)}
+          >
+            <ImageStatusBadge status={filter.status} count={filter.count} />
           </Link>
         )
       })}

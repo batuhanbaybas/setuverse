@@ -1,5 +1,6 @@
 import {
   DeleteObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
@@ -71,6 +72,51 @@ export async function putR2Object({
     url: getR2PublicUrl(key),
     key,
   }
+}
+
+export type R2ListedObject = {
+  key: string
+  size: number
+  lastModified: Date
+}
+
+export async function listR2Objects({
+  prefix,
+}: {
+  prefix: string
+}): Promise<R2ListedObject[]> {
+  const { bucketName } = getR2Config()
+  const client = getR2Client()
+  const objects: R2ListedObject[] = []
+  let continuationToken: string | undefined
+
+  do {
+    const response = await client.send(
+      new ListObjectsV2Command({
+        Bucket: bucketName,
+        Prefix: prefix,
+        ContinuationToken: continuationToken,
+      }),
+    )
+
+    for (const object of response.Contents ?? []) {
+      if (!object.Key || object.Key.endsWith('/')) {
+        continue
+      }
+
+      objects.push({
+        key: object.Key,
+        size: object.Size ?? 0,
+        lastModified: object.LastModified ?? new Date(0),
+      })
+    }
+
+    continuationToken = response.IsTruncated
+      ? response.NextContinuationToken
+      : undefined
+  } while (continuationToken)
+
+  return objects
 }
 
 export async function deleteR2Object({ key }: { key: string }) {

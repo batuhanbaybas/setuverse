@@ -6,15 +6,19 @@ import { adminQueryStaleTime } from './admin-query-options'
 import {
   getAdminListPage,
   mapCategoryStatusFilter,
+  mapImageStatusFilter,
   mapSetupStatusFilter,
   mapUserRoleFilter,
   type AdminCategoriesSearch,
+  type AdminImagesSearch,
   type AdminSetupsSearch,
   type AdminUsersSearch,
 } from './admin-list-search'
 import { ADMIN_PAGE_SIZE } from './admin-pagination'
 import { getAdminCategoriesFn } from '../server/get-admin-categories.functions'
 import type { GetAdminCategoriesInput } from '../server/get-admin-categories.functions'
+import { getAdminImagesFn } from '../server/get-admin-images.functions'
+import type { GetAdminImagesInput } from '../server/get-admin-images.functions'
 import { getAdminOverviewFn } from '../server/get-admin-overview.functions'
 import { getAdminSetupsFn } from '../server/get-admin-setups.functions'
 import type { GetAdminSetupsInput } from '../server/get-admin-setups.functions'
@@ -47,6 +51,14 @@ export function getAdminCategoriesInput(
   }
 }
 
+export function getAdminImagesInput(search: AdminImagesSearch): GetAdminImagesInput {
+  return {
+    page: getAdminListPage(search),
+    pageSize: ADMIN_PAGE_SIZE,
+    status: mapImageStatusFilter(search.imageStatus),
+  }
+}
+
 export function adminOverviewQueryOptions() {
   return queryOptions({
     queryKey: [queryKeys.getAdminOverview],
@@ -75,6 +87,14 @@ export function adminCategoriesQueryOptions(input: GetAdminCategoriesInput) {
   return queryOptions({
     queryKey: [queryKeys.getAdminCategories, input],
     queryFn: () => getAdminCategoriesFn({ data: input }),
+    staleTime: adminQueryStaleTime,
+  })
+}
+
+export function adminImagesQueryOptions(input: GetAdminImagesInput) {
+  return queryOptions({
+    queryKey: [queryKeys.getAdminImages, input],
+    queryFn: () => getAdminImagesFn({ data: input }),
     staleTime: adminQueryStaleTime,
   })
 }

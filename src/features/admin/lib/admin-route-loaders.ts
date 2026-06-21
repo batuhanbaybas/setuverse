@@ -2,15 +2,18 @@ import type { QueryClient } from '@tanstack/react-query'
 
 import type {
   AdminCategoriesSearch,
+  AdminImagesSearch,
   AdminSetupsSearch,
   AdminUsersSearch,
 } from './admin-list-search'
 import {
   adminCategoriesQueryOptions,
+  adminImagesQueryOptions,
   adminOverviewQueryOptions,
   adminSetupsQueryOptions,
   adminUsersQueryOptions,
   getAdminCategoriesInput,
+  getAdminImagesInput,
   getAdminSetupsInput,
   getAdminUsersInput,
 } from './admin-queries'
@@ -41,4 +44,12 @@ export async function prefetchAdminCategories(
 ) {
   const input = getAdminCategoriesInput(search)
   await queryClient.ensureQueryData(adminCategoriesQueryOptions(input))
+}
+
+export async function prefetchAdminImages(
+  queryClient: QueryClient,
+  search: AdminImagesSearch,
+) {
+  const input = getAdminImagesInput(search)
+  await queryClient.ensureQueryData(adminImagesQueryOptions(input))
 }
