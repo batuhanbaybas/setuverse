@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useSession } from '#/features/auth/lib/auth-client'
+import useGetCurrentUserLikeStatus from '#/features/home/service/use-get-current-user-like-status'
 import useTriggerLikeSetup from '#/features/home/service/use-trigger-like-setup'
 import { cn } from '#/shared/lib/utils'
 
@@ -9,17 +10,16 @@ import { Button } from '../ui/button'
 
 interface Props {
   setupId: string
-  isLiked?: boolean
-  likesCount?: number
 }
 
-function SetupLikeTrigger({
-  setupId,
-  isLiked = false,
-  likesCount = 0,
-}: Props) {
-  const { data: session } = useSession()
+function SetupLikeTrigger({ setupId }: Props) {
+  const { data: session, isPending: isSessionPending } = useSession()
+  const { data: likeStatus, isPending: isLikeStatusPending } =
+    useGetCurrentUserLikeStatus(setupId)
   const triggerLikeSetup = useTriggerLikeSetup()
+
+  const isLiked = likeStatus?.isLiked ?? false
+  const likesCount = likeStatus?.likesCount ?? 0
 
   const [optimisticLiked, setOptimisticLiked] = useState(isLiked)
   const [optimisticCount, setOptimisticCount] = useState(likesCount)
@@ -27,22 +27,29 @@ function SetupLikeTrigger({
 
   useEffect(() => {
     setOptimisticLiked(isLiked)
+  }, [isLiked])
+
+  useEffect(() => {
     setOptimisticCount(likesCount)
-  }, [isLiked, likesCount])
+  }, [likesCount])
 
   if (!setupId) {
+    return null
+  }
+
+  if (isLikeStatusPending) {
     return (
-      <span className="inline-flex items-center gap-1 text-muted-foreground">
-        <Icon name="heart" className="size-4" />
-        <span className="min-w-[1ch] text-sm font-medium tabular-nums">
-          {likesCount}
+      <span className="inline-flex h-8 items-center gap-1.5 px-2 text-muted-foreground">
+        <Icon name="heart" className="size-4 opacity-50" />
+        <span className="min-w-[1ch] text-sm font-medium tabular-nums opacity-50">
+          -
         </span>
       </span>
     )
   }
 
   const isDisabled =
-    !session?.user || triggerLikeSetup.isPending || optimisticLiked
+    isSessionPending || !session?.user || triggerLikeSetup.isPending
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -54,9 +61,12 @@ function SetupLikeTrigger({
 
     const previousLiked = optimisticLiked
     const previousCount = optimisticCount
+    const nextLiked = !optimisticLiked
 
-    setOptimisticLiked(true)
-    setOptimisticCount((count) => count + 1)
+    setOptimisticLiked(nextLiked)
+    setOptimisticCount((count) =>
+      Math.max(0, count + (nextLiked ? 1 : -1)),
+    )
     setIsAnimating(true)
     window.setTimeout(() => setIsAnimating(false), 350)
 
@@ -76,14 +86,14 @@ function SetupLikeTrigger({
       type="button"
       variant="ghost"
       size="sm"
-      aria-label={optimisticLiked ? 'Liked setup' : 'Like setup'}
+      aria-label={optimisticLiked ? 'Unlike setup' : 'Like setup'}
       aria-pressed={optimisticLiked}
       disabled={isDisabled}
       title={
         !session?.user
           ? 'Sign in to like'
           : optimisticLiked
-            ? 'Already liked'
+            ? 'Unlike setup'
             : 'Like setup'
       }
       onClick={handleClick}

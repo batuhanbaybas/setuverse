@@ -12,8 +12,6 @@ interface Props {
   title: string
   category: string
   publisherInfo?: PublisherInfo
-  isLiked?: boolean
-  likesCount?: number
 }
 
 function SetupCardInfo({
@@ -21,8 +19,6 @@ function SetupCardInfo({
   title,
   category,
   publisherInfo,
-  isLiked,
-  likesCount,
 }: Props) {
   return (
     <div className="p-4 space-y-3">
@@ -54,11 +50,7 @@ function SetupCardInfo({
       <div className="flex flex-wrap items-center gap-1.5">
         <Badge variant="secondary">{category}</Badge>
         <span className="ml-auto">
-          <SetupLikeTrigger
-            setupId={setupId ?? ''}
-            isLiked={isLiked}
-            likesCount={likesCount ?? 0}
-          />
+          <SetupLikeTrigger setupId={setupId ?? ''} />
         </span>
       </div>
     </div>
