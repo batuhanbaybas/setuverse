@@ -1,11 +1,10 @@
-import { Link } from '@tanstack/react-router'
-
 import { Badge } from '#/shared/components/ui/badge'
 
 import type { PublisherInfo } from '.'
 import { Avatar, AvatarImage } from '../ui/avatar'
 import Tooltip from '../ui/tooltip-root'
 import SetupLikeTrigger from './setup-like-trigger'
+import SetupSaveTrigger from './setup-save-trigger'
 
 interface Props {
   setupId?: string
@@ -25,10 +24,9 @@ function SetupCardInfo({
       <div>
         <Tooltip
           triggerProps={{
+            asChild: true,
             children: (
-              <Link to={`/setup/${setupId}`}>
-                <h3 className="line-clamp-1 font-medium">{title}</h3>
-              </Link>
+              <h3 className="line-clamp-1 font-medium">{title}</h3>
             ),
           }}
           contentProps={{
@@ -49,7 +47,12 @@ function SetupCardInfo({
       </div>
       <div className="flex flex-wrap items-center gap-1.5">
         <Badge variant="secondary">{category}</Badge>
-        <span className="ml-auto">
+        <span
+          className="relative z-10 ml-auto flex items-center gap-0.5"
+          onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
+        >
+          <SetupSaveTrigger setupId={setupId ?? ''} />
           <SetupLikeTrigger setupId={setupId ?? ''} />
         </span>
       </div>

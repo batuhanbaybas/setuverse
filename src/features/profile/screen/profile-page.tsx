@@ -1,6 +1,6 @@
-import ProfileEmptyTab from '../components/profile-empty-tab'
 import ProfileHeader from '../components/profil-header'
 import ProfileLikedTab from '../components/profil-liked-tab'
+import ProfileSavedTab from '../components/profil-saved-tab'
 import ProfileSetupsTab from '../components/profil-setup-tab'
 import Tabs from '#/shared/components/ui/tabs'
 
@@ -46,12 +46,7 @@ function ProfilePage() {
               },
               content: {
                 value: 'saved',
-                children: (
-                  <ProfileEmptyTab
-                    title="No saved setups yet"
-                    description="Setups you save will appear here."
-                  />
-                ),
+                children: <ProfileSavedTab />,
               },
             },
           ]}

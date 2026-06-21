@@ -3,5 +3,6 @@ export const queryKeys = {
   updateProfile: 'update-profile',
   getProfileSetup: 'get-profile-setup',
   getProfileLikedSetups: 'get-profile-liked-setups',
+  getProfileSavedSetups: 'get-profile-saved-setups',
   getProfileStats: 'get-profile-stats',
 } as const

@@ -24,6 +24,7 @@ import {
   LuTrash2,
   LuExternalLink,
   LuHeart,
+  LuBookmark,
 } from 'react-icons/lu'
 import { TbPlanet } from 'react-icons/tb'
 import { IoHome } from 'react-icons/io5'
@@ -52,6 +53,7 @@ export const iconList = [
   { name: 'trash', icon: LuTrash2 },
   { name: 'external-link', icon: LuExternalLink },
   { name: 'heart', icon: LuHeart },
+  { name: 'bookmark', icon: LuBookmark },
   // category icons
   { name: 'layout-grid', icon: LuLayoutGrid },
   { name: 'code', icon: LuCodeXml },

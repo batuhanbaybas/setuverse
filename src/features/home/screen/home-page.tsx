@@ -62,6 +62,7 @@ function HomePage() {
                 imageUrl={setup.imageUrl ?? ''}
                 title={setup.title ?? ''}
                 category={setup.category?.name ?? ''}
+                itemsCount={setup._count.items}
                 publisherInfo={{
                   name: setup.user.name,
                   avatarUrl: setup.user.image ?? '',
