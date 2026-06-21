@@ -3,7 +3,7 @@ import { putR2Object } from '#/features/setup/lib/r2'
 import { SETUP_IMAGE_MAX_FILE_SIZE } from '../../lib/upload-config'
 import { resolveImageContentType } from '../../lib/upload-utils'
 import { SETUP_IMAGE_KEY_PREFIX } from './constants'
-import { getFileExtension } from './utils'
+import { optimizeSetupImageForUpload } from './optimize-setup-image'
 
 export type SetupImageUploadResult = {
   url: string
@@ -22,13 +22,13 @@ export async function uploadSetupImage({
   }
 
   const contentType = resolveImageContentType(file)
-  const extension = getFileExtension(file.name, contentType)
-  const key = `${SETUP_IMAGE_KEY_PREFIX}${userId}/${crypto.randomUUID()}${extension}`
-  const body = Buffer.from(await file.arrayBuffer())
+  const originalBody = Buffer.from(await file.arrayBuffer())
+  const optimized = await optimizeSetupImageForUpload(originalBody, contentType)
+  const key = `${SETUP_IMAGE_KEY_PREFIX}${userId}/${crypto.randomUUID()}${optimized.extension}`
 
   return putR2Object({
     key,
-    body,
-    contentType,
+    body: optimized.body,
+    contentType: optimized.contentType,
   })
 }
