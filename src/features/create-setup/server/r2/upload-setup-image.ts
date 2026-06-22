@@ -8,6 +8,8 @@ import { optimizeSetupImageForUpload } from './optimize-setup-image'
 export type SetupImageUploadResult = {
   url: string
   key: string
+  width: number
+  height: number
 }
 
 export async function uploadSetupImage({
@@ -26,9 +28,13 @@ export async function uploadSetupImage({
   const optimized = await optimizeSetupImageForUpload(originalBody, contentType)
   const key = `${SETUP_IMAGE_KEY_PREFIX}${userId}/${crypto.randomUUID()}${optimized.extension}`
 
-  return putR2Object({
-    key,
-    body: optimized.body,
-    contentType: optimized.contentType,
-  })
+  return {
+    ...(await putR2Object({
+      key,
+      body: optimized.body,
+      contentType: optimized.contentType,
+    })),
+    width: optimized.width,
+    height: optimized.height,
+  }
 }

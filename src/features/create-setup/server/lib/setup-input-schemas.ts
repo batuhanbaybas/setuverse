@@ -4,8 +4,15 @@ export const setupIdSchema = z.object({
   setupId: z.string().trim().min(1, 'Setup id is required'),
 })
 
+const imageDimensionsSchema = z.object({
+  imageWidth: z.number().int().positive(),
+  imageHeight: z.number().int().positive(),
+})
+
 export const createSetupInputSchema = z.object({
   imageUrl: z.string().trim().url('Upload an image to continue'),
+  imageWidth: imageDimensionsSchema.shape.imageWidth,
+  imageHeight: imageDimensionsSchema.shape.imageHeight,
 })
 
 export const updateSetupInfoInputSchema = setupIdSchema.extend({
@@ -45,6 +52,8 @@ export const updateSetupItemsInputSchema = setupIdSchema.extend({
 
 export const updateSetupImageUrlInputSchema = setupIdSchema.extend({
   imageUrl: z.string().trim().url('Image URL must be valid'),
+  imageWidth: imageDimensionsSchema.shape.imageWidth,
+  imageHeight: imageDimensionsSchema.shape.imageHeight,
 })
 
 export const publishSetupInputSchema = setupIdSchema

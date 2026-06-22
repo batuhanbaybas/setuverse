@@ -3,6 +3,8 @@ model Setup {
     title String?
     description String?
     imageUrl String?
+    imageWidth Int?
+    imageHeight Int?
     completedStep Int @default(-1)
     status SetupStatus @default(DRAFT)
     publishedAt DateTime?

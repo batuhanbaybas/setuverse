@@ -43,6 +43,14 @@ function SetupImageUpload() {
         shouldDirty: true,
         shouldValidate: true,
       })
+      form.setValue('imageWidth', response.width, {
+        shouldDirty: true,
+        shouldValidate: true,
+      })
+      form.setValue('imageHeight', response.height, {
+        shouldDirty: true,
+        shouldValidate: true,
+      })
     },
   })
 
@@ -73,13 +81,25 @@ function SetupImageUpload() {
       shouldDirty: true,
       shouldValidate: true,
     })
+    form.setValue('imageWidth', 0, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
+    form.setValue('imageHeight', 0, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
     uploadSetupImage.reset()
   }, [form, uploadSetupImage])
 
   const onSubmit = useCallback(
     async (values: SetupImageFormValues) => {
       try {
-        const setup = await createSetup.mutateAsync({ imageUrl: values.imageUrl })
+        const setup = await createSetup.mutateAsync({
+          imageUrl: values.imageUrl,
+          imageWidth: values.imageWidth,
+          imageHeight: values.imageHeight,
+        })
 
         await navigate({
           to: '/create/$id/info',
@@ -102,6 +122,16 @@ function SetupImageUpload() {
       <FormField
         control={form.control}
         name="imageUrl"
+        render={({ field }) => <input type="hidden" {...field} />}
+      />
+      <FormField
+        control={form.control}
+        name="imageWidth"
+        render={({ field }) => <input type="hidden" {...field} />}
+      />
+      <FormField
+        control={form.control}
+        name="imageHeight"
         render={({ field }) => <input type="hidden" {...field} />}
       />
 

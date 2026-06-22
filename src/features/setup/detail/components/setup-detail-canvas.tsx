@@ -1,7 +1,15 @@
+import { useRef } from 'react'
+
 import SetupImage from '#/shared/components/setup-card/setup-image'
 import { Button } from '#/shared/components/ui/button'
 import Tooltip from '#/shared/components/ui/tooltip-root'
+import useContainedImageRect from '#/shared/hooks/use-contained-image-rect'
+import { getContainedMarkerPositionStyle } from '#/shared/lib/contained-image-rect'
 import { cn } from '#/shared/lib/utils'
+import {
+  getSetupMarkerPositionStyle,
+  SETUP_TAGGED_IMAGE_CONTAINED_CLASS,
+} from '#/shared/lib/setup-tagged-image-classes'
 
 import type { SetupDetailItem } from '../server/get-setup-detail'
 
@@ -18,16 +26,23 @@ function SetupDetailCanvas({
   activeItemId = null,
   onMarkerClick,
 }: SetupDetailCanvasProps) {
+  const imgRef = useRef<HTMLImageElement>(null)
+  const renderRect = useContainedImageRect(imgRef)
+
   return (
-    <div className="flex items-center justify-center overflow-hidden rounded-xl border bg-muted/20">
-      <div className="relative inline-flex max-w-full">
+    <div className="aspect-video w-full max-h-[min(70vh,720px)] overflow-hidden rounded-xl border bg-muted/20">
+      <div className="relative size-full">
         <SetupImage
+          ref={imgRef}
           imageUrl={imageUrl}
           alt="Setup preview"
-          className="max-w-full object-contain"
+          className={SETUP_TAGGED_IMAGE_CONTAINED_CLASS}
         />
         {items.map((item, index) => {
           const isActive = activeItemId === item.id
+          const markerStyle = renderRect
+            ? getContainedMarkerPositionStyle(item.x, item.y, renderRect)
+            : getSetupMarkerPositionStyle(item.x, item.y)
 
           return (
             <Tooltip
@@ -44,7 +59,7 @@ function SetupDetailCanvas({
                         ? 'scale-110 bg-primary ring-2 ring-primary/50 ring-offset-2 ring-offset-background'
                         : 'bg-primary/85 hover:scale-110 hover:bg-primary',
                     )}
-                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
+                    style={markerStyle}
                     onClick={() => onMarkerClick?.(item.id)}
                     aria-label={`Tag ${index + 1}: ${item.name}`}
                   >

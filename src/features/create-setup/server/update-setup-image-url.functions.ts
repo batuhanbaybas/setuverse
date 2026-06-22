@@ -12,6 +12,8 @@ export type { UpdateSetupImageUrlInput }
 export type UpdateSetupImageUrlResult = {
   id: string
   imageUrl: string
+  imageWidth: number
+  imageHeight: number
 }
 
 export const updateSetupImageUrlFn = createServerFn({ method: 'POST' })
@@ -26,10 +28,16 @@ export const updateSetupImageUrlFn = createServerFn({ method: 'POST' })
 
     return prisma.setup.update({
       where: { id: data.setupId },
-      data: { imageUrl: data.imageUrl },
+      data: {
+        imageUrl: data.imageUrl,
+        imageWidth: data.imageWidth,
+        imageHeight: data.imageHeight,
+      },
       select: {
         id: true,
         imageUrl: true,
+        imageWidth: true,
+        imageHeight: true,
       },
     })
   })

@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { useUploader } from 'react-upload-kit'
 
 import SetupImage from '#/shared/components/setup-card/setup-image'
+import { cn } from '#/shared/lib/utils'
+import { SETUP_TAGGED_IMAGE_NATURAL_CLASS } from '#/shared/lib/setup-tagged-image-classes'
 import { Button } from '#/shared/components/ui/button'
 import Icon from '#/shared/components/icons'
 
@@ -29,6 +31,8 @@ function ReviewImageSection() {
       await updateImageUrl.mutateAsync({
         setupId,
         imageUrl: response.url,
+        imageWidth: response.width,
+        imageHeight: response.height,
       })
       setIsChanging(false)
     },
@@ -88,7 +92,7 @@ function ReviewImageSection() {
         <SetupImage
           imageUrl={setup?.imageUrl}
           alt="Setup preview"
-          className="max-w-full rounded-lg object-contain"
+          className={cn(SETUP_TAGGED_IMAGE_NATURAL_CLASS, 'rounded-lg')}
         />
       </div>
       <Button

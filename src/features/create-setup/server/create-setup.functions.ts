@@ -32,6 +32,8 @@ export const createSetupFn = createServerFn({ method: 'POST' })
     return prisma.setup.create({
       data: {
         imageUrl,
+        imageWidth: data.imageWidth,
+        imageHeight: data.imageHeight,
         userId: session.user.id,
         completedStep: SETUP_FLOW_STEPS.IMAGE,
         status: 'DRAFT',

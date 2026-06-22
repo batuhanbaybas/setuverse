@@ -3,6 +3,8 @@ import type { UploadAdapter } from 'react-upload-kit'
 export type SetupImageUploadResponse = {
   url: string
   key: string
+  width: number
+  height: number
 }
 
 function rejectOnAbort(signal: AbortSignal) {

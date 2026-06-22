@@ -18,16 +18,32 @@ export type OptimizedSetupImage = {
   body: Buffer
   contentType: string
   extension: string
+  width: number
+  height: number
 }
 
-function toOptimizedSetupImage(
+async function readImageDimensions(body: Buffer): Promise<{ width: number; height: number }> {
+  const metadata = await sharp(body, { failOn: 'none' }).metadata()
+
+  if (!metadata.width || !metadata.height) {
+    throw new Error('Could not read image dimensions')
+  }
+
+  return { width: metadata.width, height: metadata.height }
+}
+
+async function toOptimizedSetupImage(
   body: Buffer,
   contentType: string,
-): OptimizedSetupImage {
+): Promise<OptimizedSetupImage> {
+  const { width, height } = await readImageDimensions(body)
+
   return {
     body,
     contentType,
     extension: EXTENSION_BY_CONTENT_TYPE[contentType] ?? '',
+    width,
+    height,
   }
 }
 
@@ -54,10 +70,10 @@ async function encodeWithoutMetadata(
         pipeline.clone().png({ compressionLevel: 9, effort: 10 }).toBuffer(),
       ])
 
-      const candidates = [
+      const candidates = await Promise.all([
         toOptimizedSetupImage(webpLossless, 'image/webp'),
         toOptimizedSetupImage(pngOptimized, 'image/png'),
-      ]
+      ])
 
       return candidates.reduce((best, candidate) =>
         candidate.body.length < best.body.length ? candidate : best,

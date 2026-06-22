@@ -2,7 +2,12 @@ import { useState } from 'react'
 import type { MouseEvent } from 'react'
 
 import SetupImage from '#/shared/components/setup-card/setup-image'
+import SetupImageMarkerWrapper from '#/shared/components/setup-image-marker-canvas/setup-image-marker-wrapper'
 import { cn } from '#/shared/lib/utils'
+import {
+  getSetupMarkerPositionStyle,
+  SETUP_TAGGED_IMAGE_NATURAL_CLASS,
+} from '#/shared/lib/setup-tagged-image-classes'
 
 import { Button } from '#/shared/components/ui/button'
 import calculateImageRect from '#/shared/lib/image-rect-calculator'
@@ -30,7 +35,7 @@ function TagCanvas({ setupId }: Props) {
 
   return (
     <div className="flex items-center justify-center rounded-xl border bg-muted/20 p-2 sm:p-4">
-      <div className="relative inline-flex max-w-full">
+      <SetupImageMarkerWrapper>
         <TagItemDialog
           setupId={setupId}
           itemsPositions={itemsPositions}
@@ -39,7 +44,10 @@ function TagCanvas({ setupId }: Props) {
               <SetupImage
                 imageUrl={setup?.imageUrl}
                 alt="Setup preview"
-                className="max-w-full cursor-crosshair rounded-lg object-contain"
+                className={cn(
+                  SETUP_TAGGED_IMAGE_NATURAL_CLASS,
+                  'cursor-crosshair rounded-lg',
+                )}
                 onClick={handleImageClick}
               />
             ),
@@ -62,7 +70,7 @@ function TagCanvas({ setupId }: Props) {
                       'absolute flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
                       'bg-primary/85 hover:scale-110 hover:bg-primary focus:scale-110 focus:bg-primary/85 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background',
                     )}
-                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
+                    style={getSetupMarkerPositionStyle(item.x, item.y)}
                     aria-label={`Tag ${index + 1}: ${item.name}`}
                   >
                     {index + 1}
@@ -72,7 +80,7 @@ function TagCanvas({ setupId }: Props) {
             />
           )
         })}
-      </div>
+      </SetupImageMarkerWrapper>
     </div>
   )
 }
