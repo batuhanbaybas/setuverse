@@ -14,6 +14,7 @@ const getSetupItem = createServerFn({
   const { setupId } = data
   const items = await prisma.setupItem.findMany({
     where: { setupId },
+    orderBy: { createdAt: 'asc' },
   })
   return items
 })

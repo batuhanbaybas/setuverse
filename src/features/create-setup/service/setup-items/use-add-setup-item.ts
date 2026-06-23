@@ -9,16 +9,35 @@ const useAddSetupItem = (setupId: string) => {
 
   return useMutation({
     mutationFn: (input: AddSetupItemInput) => addSetupItemFn({ data: input }),
-    onMutate: (input: AddSetupItemInput) => {
-      const previousItems = queryClient.getQueryData(['setup-item', setupId])
-      console.log({ previousItems })
-      queryClient.setQueryData(['setup-item', setupId], (old: SetupItem[]) => {
-        console.log({ old })
-        return [...old, input]
+    onMutate: async (input: AddSetupItemInput) => {
+      await queryClient.cancelQueries({ queryKey: ['setup-item', setupId] })
+
+      const previousItems = queryClient.getQueryData<SetupItem[]>([
+        'setup-item',
+        setupId,
+      ])
+
+      queryClient.setQueryData<SetupItem[]>(['setup-item', setupId], (old) => [
+        ...(old ?? []),
+        {
+          id: `temp-${Date.now()}`,
+          name: input.name,
+          url: input.url,
+          x: input.x,
+          y: input.y,
+        },
+      ])
+
+      return { previousItems }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData<SetupItem[]>(['setup-item', setupId], (old) => {
+        const items = (old ?? []).filter((item) => !item.id.startsWith('temp-'))
+        if (items.some((item) => item.id === data.id)) {
+          return items
+        }
+        return [...items, data]
       })
-      return {
-        previousItems,
-      }
     },
     onError: (_, __, context) => {
       if (context?.previousItems) {
@@ -26,7 +45,6 @@ const useAddSetupItem = (setupId: string) => {
       }
     },
     onSettled: (data, error, __, context) => {
-      console.log({ data, error, context })
       if (error) {
         if (context?.previousItems) {
           queryClient.setQueryData(['setup-item', setupId], context.previousItems)
@@ -37,6 +55,9 @@ const useAddSetupItem = (setupId: string) => {
           queryKey: ['setup-item', setupId],
         })
         queryClient.invalidateQueries({ queryKey: ['setup-draft', setupId] })
+        queryClient.invalidateQueries({
+          queryKey: ['get-setup-detail', setupId],
+        })
       }
     },
   })

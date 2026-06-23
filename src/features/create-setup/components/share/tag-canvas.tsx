@@ -17,11 +17,14 @@ import TagItemDialog from '../setup-tags/tag-item-dialog/tag-item-dialog'
 
 type Props = {
   setupId: string
+  imageUrl?: string | null
 }
 export type TagItemPositions = { x: number | null; y: number | null }
 
-function TagCanvas({ setupId }: Props) {
-  const { data: setup } = useGetSetupDraft(setupId)
+function TagCanvas({ setupId, imageUrl }: Props) {
+  const { data: setup } = useGetSetupDraft(setupId, {
+    enabled: imageUrl === undefined,
+  })
   const { data: items } = useGetSetupItem(setupId)
   const [itemsPositions, setItemsPositions] = useState<TagItemPositions>({
     x: null,
@@ -42,7 +45,7 @@ function TagCanvas({ setupId }: Props) {
           triggerProps={{
             children: (
               <SetupImage
-                imageUrl={setup?.imageUrl}
+                imageUrl={imageUrl ?? setup?.imageUrl}
                 alt="Setup preview"
                 className={cn(
                   SETUP_TAGGED_IMAGE_NATURAL_CLASS,

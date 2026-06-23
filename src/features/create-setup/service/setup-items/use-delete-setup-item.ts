@@ -29,6 +29,9 @@ const useDeleteSetupItem = (setupId: string) => {
       void queryClient.invalidateQueries({
         queryKey: ['setup-draft', setupId],
       })
+      void queryClient.invalidateQueries({
+        queryKey: ['get-setup-detail', setupId],
+      })
     },
   })
 }

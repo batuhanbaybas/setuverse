@@ -51,7 +51,10 @@ function SetupItemForm({ setupId, itemsPositions, itemId }: Props) {
     <form
       id="setup-item-form"
       className="space-y-4"
-      onSubmit={form.handleSubmit(handleSubmit)}
+      onSubmit={(event) => {
+        event.stopPropagation()
+        void form.handleSubmit(handleSubmit)(event)
+      }}
     >
       <FormField
         control={form.control}

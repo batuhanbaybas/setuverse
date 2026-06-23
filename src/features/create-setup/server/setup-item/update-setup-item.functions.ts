@@ -5,6 +5,7 @@ import { prisma } from '#/shared/lib/prisma'
 
 import { updateSetupItemInputSchema } from '../lib/setup-input-schemas'
 import type { UpdateSetupItemInput } from '../lib/setup-input-schemas'
+import { canModifySetupItems } from '../lib/require-owned-editable-setup'
 
 export type { UpdateSetupItemInput }
 
@@ -34,8 +35,8 @@ export const updateSetupItemFn = createServerFn({ method: 'POST' })
       throw new Error('Item not found')
     }
 
-    if (item.setup.status !== 'DRAFT') {
-      throw new Error('Cannot modify items on a non-draft setup')
+    if (!canModifySetupItems(item.setup)) {
+      throw new Error('Cannot modify items on this setup')
     }
 
     return prisma.setupItem.update({

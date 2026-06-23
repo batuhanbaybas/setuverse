@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
 import Icon from '#/shared/components/icons'
@@ -28,8 +29,16 @@ function ProfileSetupOwnerActions({
   setupId,
   title,
 }: ProfileSetupOwnerActionsProps) {
+  const navigate = useNavigate()
   const [deleteOpen, setDeleteOpen] = useState(false)
   const deleteSetup = useDeleteUserSetup()
+
+  const handleEdit = () => {
+    void navigate({
+      to: '/setup/$id/edit',
+      params: { id: setupId },
+    })
+  }
 
   const handleDelete = () => {
     deleteSetup.mutate(
@@ -59,10 +68,15 @@ function ProfileSetupOwnerActions({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
+          <DropdownMenuItem onSelect={handleEdit}>
+            <Icon name="pencil" aria-hidden />
+            Edit
+          </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             onSelect={() => setDeleteOpen(true)}
           >
+            <Icon name="trash" aria-hidden />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

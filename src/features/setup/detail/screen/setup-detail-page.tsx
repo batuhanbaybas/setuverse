@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { useSession } from '#/features/auth/lib/auth-client'
+
 import CategoryOption from '#/features/create-setup/components/setup-info/category-option'
 import EmptyState from '#/shared/components/empty-state'
 import Icon from '#/shared/components/icons'
@@ -45,6 +47,7 @@ function BackToHomeLink({ className }: { className?: string }) {
 
 function SetupDetailPage({ setupId }: SetupDetailPageProps) {
   const { data: setup, isPending, isError } = useGetSetupDetail(setupId)
+  const { data: session } = useSession()
   const [activeItemId, setActiveItemId] = useState<string | null>(null)
 
   if (isPending) {
@@ -82,31 +85,47 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
     )
   }
 
+  const isOwner = session?.user.id === setup.user.id
+
   return (
     <section className="py-6 sm:py-8">
       <BackToHomeLink className="mb-4" />
       <header className="space-y-4 pb-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {setup.title ?? 'Untitled setup'}
-          </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            {setup.category ? (
-              <CategoryOption
-                icon={setup.category.icon}
-                name={setup.category.name}
-              />
-            ) : null}
-            <span className="flex items-center gap-2">
-              <Avatar className="size-6 ring-1 ring-ring/20">
-                <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
-                <AvatarFallback className="text-[10px]">
-                  {getInitials(setup.user.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span>{setup.user.name}</span>
-            </span>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              {setup.title ?? 'Untitled setup'}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              {setup.category ? (
+                <CategoryOption
+                  icon={setup.category.icon}
+                  name={setup.category.name}
+                />
+              ) : null}
+              <span className="flex items-center gap-2">
+                <Avatar className="size-6 ring-1 ring-ring/20">
+                  <AvatarImage src={setup.user.image ?? ''} alt={setup.user.name} />
+                  <AvatarFallback className="text-[10px]">
+                    {getInitials(setup.user.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span>{setup.user.name}</span>
+              </span>
+            </div>
           </div>
+
+          {isOwner ? (
+            <LinkButton
+              to="/setup/$id/edit"
+              params={{ id: setupId }}
+              variant="outline"
+              size="sm"
+            >
+              <Icon name="pencil" aria-hidden />
+              Edit setup
+            </LinkButton>
+          ) : null}
         </div>
 
         {setup.description ? (

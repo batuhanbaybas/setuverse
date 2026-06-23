@@ -43,6 +43,9 @@ const useUpdateSetupItem = (setupId: string) => {
       void queryClient.invalidateQueries({
         queryKey: queryKeys.getSetupDraft(setupId),
       })
+      void queryClient.invalidateQueries({
+        queryKey: ['get-setup-detail', setupId],
+      })
     },
   })
 }
