@@ -13,12 +13,7 @@ interface Props {
   publisherInfo?: PublisherInfo
 }
 
-function SetupCardInfo({
-  setupId,
-  title,
-  category,
-  publisherInfo,
-}: Props) {
+function SetupCardInfo({ setupId, title, category, publisherInfo }: Props) {
   return (
     <div className="p-4 space-y-3">
       <div>
@@ -26,7 +21,7 @@ function SetupCardInfo({
           triggerProps={{
             asChild: true,
             children: (
-              <h3 className="line-clamp-1 font-medium">{title}</h3>
+                <h3 className="truncate max-w-full w-fit font-medium">{title}</h3>
             ),
           }}
           contentProps={{
