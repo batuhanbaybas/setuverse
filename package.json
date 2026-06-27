@@ -9,7 +9,7 @@
     "dev": "dotenv -e .env --override -- vite dev --port 3000",
     "test:r2": "dotenv -e .env --override -- tsx scripts/test-r2-upload.ts",
     "generate-routes": "tsr generate",
-    "build": "vite build",
+    "build": "prisma generate && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint",
