@@ -11,7 +11,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 
 RUN yarn build
 
