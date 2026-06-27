@@ -19,6 +19,7 @@
     "db:generate": "dotenv -e .env -- prisma generate",
     "db:push": "dotenv -e .env -- prisma db push",
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "db:studio": "dotenv -e .env -- prisma studio",
     "db:seed": "dotenv -e .env -- prisma db seed",
     "db:validate": "dotenv -e .env -- prisma validate"

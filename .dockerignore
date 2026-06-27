@@ -1,0 +1,15 @@
+node_modules
+.git
+.output
+.nitro
+.tanstack
+dist
+dist-ssr
+*.local
+.env
+.DS_Store
+.vinxi
+__unconfig*
+public/uploads
+.cursor
+coverage
