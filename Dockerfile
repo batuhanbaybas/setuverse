@@ -2,15 +2,13 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-RUN corepack enable
-
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm build
+RUN yarn build
 
 EXPOSE 3000
 
-CMD ["pnpm", "start"]
+CMD ["yarn", "start"]
