@@ -54,7 +54,7 @@ function SetupDetailCanvas({
                     variant="outline"
                     size="icon-xs"
                     className={cn(
-                      'absolute flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
+                      'absolute hidden md:inline-flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
                       isActive
                         ? 'scale-110 bg-primary ring-2 ring-primary/50 ring-offset-2 ring-offset-background'
                         : 'bg-primary/85 hover:scale-110 hover:bg-primary',

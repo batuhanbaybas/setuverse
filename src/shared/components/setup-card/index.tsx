@@ -36,12 +36,12 @@ function SetupCard({
     <Card
       wrapperProps={{
         className: cn(
-          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl h-[410px]',
-          isProfilePage && 'h-[390px]',
+          'overflow-hidden rounded-xl border transition-shadow pt-0 space-y-5 hover:shadow-2xl sm:h-[410px] h-[340px]',
+          isProfilePage && 'h-[320px] sm:h-[390px]',
         ),
       }}
       cardContentProps={{
-        className: 'space-y-3 sm:p-0',
+        className: 'space-y-5 sm:px-0 px-0',
         children: (
           <>
             <div className="relative grid aspect-video overflow-hidden bg-muted">
