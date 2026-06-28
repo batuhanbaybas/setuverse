@@ -36,7 +36,7 @@ function SetupCard({
     <Card
       wrapperProps={{
         className: cn(
-          'overflow-hidden rounded-xl border transition-shadow pt-0 space-y-5 hover:shadow-2xl sm:h-[410px] h-[340px]',
+          'overflow-hidden rounded-xl border transition-shadow pt-0 hover:shadow-2xl pb-1' ,
           isProfilePage && 'h-[320px] sm:h-[390px]',
         ),
       }}

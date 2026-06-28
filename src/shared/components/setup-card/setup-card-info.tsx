@@ -15,8 +15,8 @@ interface Props {
 
 function SetupCardInfo({ setupId, title, category, publisherInfo }: Props) {
   return (
-    <div className="p-4 space-y-3">
-      <div>
+    <div className="p-4 space-y-3 flex flex-col gap-3 justify-between">
+      <div className="flex flex-col gap-2">
         <Tooltip
           triggerProps={{
             asChild: true,
