@@ -84,12 +84,7 @@ function SetupItemForm({ setupId, itemsPositions, itemId }: Props) {
         name="url"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>
-              URL{' '}
-              <span className="text-destructive" aria-hidden>
-                *
-              </span>
-            </FormLabel>
+            <FormLabel>URL</FormLabel>
             <FormControl>
               <Input placeholder="https://..." autoComplete="off" {...field} />
             </FormControl>

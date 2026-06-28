@@ -1,7 +1,7 @@
 model SetupItem {
     id String @id @default(cuid())
     name String
-    url String
+    url String?
     x Float
     y Float
     createdAt DateTime @default(now())

@@ -45,7 +45,7 @@ function TagItemDialog({
         if (setupItem) {
           return {
             name: setupItem.name,
-            url: setupItem.url,
+            url: setupItem.url || '',
           }
         }
       }

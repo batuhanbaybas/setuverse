@@ -25,9 +25,18 @@ export const updateSetupInfoInputSchema = setupIdSchema.extend({
   categoryId: z.string().trim().min(1, 'Category is required'),
 })
 
+const setupItemUrlSchema = z
+  .string()
+  .trim()
+  .refine(
+    (value) => value.length === 0 || z.url().safeParse(value).success,
+    'Item url must be valid',
+  )
+  .transform((value) => (value.length === 0 ? null : value))
+
 export const setupItemInputSchema = z.object({
   name: z.string().trim().min(1, 'Item name is required').max(100),
-  url: z.string().trim().url('Item url must be valid'),
+  url: setupItemUrlSchema,
   x: z.number().finite(),
   y: z.number().finite(),
 })
@@ -37,7 +46,7 @@ export const addSetupItemInputSchema = setupIdSchema.merge(setupItemInputSchema)
 export const updateSetupItemInputSchema = z.object({
   itemId: z.string().trim().min(1, 'Item id is required'),
   name: z.string().trim().min(1, 'Item name is required').max(100).optional(),
-  url: z.string().trim().url('Item url must be valid').optional(),
+  url: setupItemUrlSchema.optional(),
   x: z.number().finite().optional(),
   y: z.number().finite().optional(),
 })
