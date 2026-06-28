@@ -8,9 +8,10 @@ import { prisma } from '#/shared/lib/prisma'
 import {
   ADMIN_PAGE_SIZE,
   buildAdminPagination,
-  getAdminSkip,
-  type AdminPagination,
+  getAdminSkip
+  
 } from '../lib/admin-pagination'
+import type {AdminPagination} from '../lib/admin-pagination';
 
 export type AdminCategory = {
   id: string
@@ -66,18 +67,22 @@ export const getAdminCategoriesFn = createServerFn({ method: 'GET' })
       orderBy: { order: 'asc' },
       skip: getAdminSkip(pagination.page, pagination.pageSize),
       take: pagination.pageSize,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          icon: true,
-          order: true,
-          isActive: true,
-          createdAt: true,
-          _count: {
-            select: {
-              setups: true,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        icon: true,
+        order: true,
+        isActive: true,
+        createdAt: true,
+        _count: {
+          select: {
+            setups: {
+              where: {
+                status: { not: 'DRAFT' },
+              },
             },
+          },
         },
       },
     })
