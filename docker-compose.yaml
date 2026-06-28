@@ -1,24 +1,5 @@
-x-app-common: &app-common
-  build: .
-  image: setuverse-app
-
 services:
-  migrate:
-    <<: *app-common
-    restart: "no"
-    command: yarn db:deploy
-
-  app:
-    <<: *app-common
-    restart: unless-stopped
-    ports:
-      - "${APP_PORT:-3000}:3000"
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
-
   db:
-    profiles: [local-db]
     image: postgres:16-alpine
     restart: unless-stopped
     ports:
