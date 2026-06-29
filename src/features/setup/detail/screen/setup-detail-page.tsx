@@ -5,7 +5,9 @@ import { useSession } from '#/features/auth/lib/auth-client'
 import CategoryOption from '#/features/create-setup/components/setup-info/category-option'
 import EmptyState from '#/shared/components/empty-state'
 import Icon from '#/shared/components/icons'
+import SetupAverageRateTrigger from '#/shared/components/setup-card/setup-average-rate-trigger'
 import SetupLikeTrigger from '#/shared/components/setup-card/setup-like-trigger'
+import SetupRateTrigger from '#/shared/components/setup-card/setup-rate-trigger'
 import SetupSaveTrigger from '#/shared/components/setup-card/setup-save-trigger'
 import { Avatar, AvatarFallback, AvatarImage } from '#/shared/components/ui/avatar'
 import LinkButton from '#/shared/components/ui/button/link-button'
@@ -151,6 +153,8 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
           )}
 
           <div className="flex flex-wrap items-center gap-2 border-t pt-3">
+            <SetupRateTrigger setupId={setup.id} size="large" showLabel />
+            <SetupAverageRateTrigger setupId={setup.id} size="large" showLabel />
             <SetupSaveTrigger setupId={setup.id} size="large" showLabel />
             <SetupLikeTrigger setupId={setup.id} size="large" showLabel />
           </div>

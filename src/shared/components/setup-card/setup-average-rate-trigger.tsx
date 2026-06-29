@@ -27,6 +27,11 @@ function SetupAverageRateTrigger({
     return null
   }
 
+  const countTextClassName = cn(
+    'font-medium tabular-nums text-muted-foreground',
+    size === 'large' ? 'text-sm' : 'text-xs',
+  )
+
   if (isPending) {
     return (
       <span
@@ -117,6 +122,15 @@ function SetupAverageRateTrigger({
       >
         {hasAverage ? formatAverageRate(averageRate) : '-'}
       </span>
+      {hasAverage && ratingsCount > 0 ? (
+        showLabel && size === 'large' ? (
+          <span className={countTextClassName}>
+            ({ratingsCount} {ratingsCount === 1 ? 'rating' : 'ratings'})
+          </span>
+        ) : (
+          <span className={countTextClassName}>({ratingsCount})</span>
+        )
+      ) : null}
     </Button>
   )
 }

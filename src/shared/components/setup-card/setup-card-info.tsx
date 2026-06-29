@@ -3,7 +3,6 @@ import { Badge } from '#/shared/components/ui/badge'
 import type { PublisherInfo } from '.'
 import { Avatar, AvatarImage } from '../ui/avatar'
 import Tooltip from '../ui/tooltip-root'
-import SetupAverageRateTrigger from './setup-average-rate-trigger'
 import SetupLikeTrigger from './setup-like-trigger'
 import SetupRateTrigger from './setup-rate-trigger'
 import SetupSaveTrigger from './setup-save-trigger'
@@ -62,7 +61,6 @@ function SetupCardInfo({
           onKeyDown={(event) => event.stopPropagation()}
         >
           <SetupRateTrigger setupId={setupId} />
-          <SetupAverageRateTrigger setupId={setupId} />
           <SetupSaveTrigger setupId={setupId} />
           <SetupLikeTrigger setupId={setupId} />
         </span>
