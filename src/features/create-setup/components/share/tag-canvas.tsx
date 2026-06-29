@@ -71,7 +71,7 @@ function TagCanvas({ setupId, imageUrl }: Props) {
                     size="icon"
                     className={cn(
                       'absolute hidden md:inline-flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-transform sm:size-7',
-                      'bg-primary/85 hover:scale-110 hover:bg-primary focus:scale-110 focus:bg-primary/85 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background',
+                      'bg-primary/60 hover:scale-110 hover:bg-primary/85 focus:scale-110 focus:bg-primary/80 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background',
                     )}
                     style={getSetupMarkerPositionStyle(item.x, item.y)}
                     aria-label={`Tag ${index + 1}: ${item.name}`}
