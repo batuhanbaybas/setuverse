@@ -4,6 +4,7 @@ import SetupImage from '#/shared/components/setup-card/setup-image'
 import { cn } from '#/shared/lib/utils'
 import { Link } from '@tanstack/react-router'
 import Card from '../ui/card'
+import SetupAverageRateBadge from './setup-average-rate-badge'
 import SetupCardInfo from './setup-card-info'
 
 export type PublisherInfo = {
@@ -55,9 +56,10 @@ function SetupCard({
                   {itemsCount} {itemsCount === 1 ? 'item' : 'items'}
                 </span>
               ) : null}
+              {setupId ? <SetupAverageRateBadge setupId={setupId} /> : null}
             </div>
             <SetupCardInfo
-              setupId={setupId}
+              setupId={setupId ?? ''}
               title={title}
               category={category}
               publisherInfo={publisherInfo}

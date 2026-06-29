@@ -1,0 +1,14 @@
+model SetupRate {
+  userId    String   @map("user_id")
+  setupId   String   @map("setup_id")
+  rate      Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  setup Setup @relation(fields: [setupId], references: [id], onDelete: Cascade)
+
+  @@id([userId, setupId])
+  @@index([setupId])
+  @@map("setup_rates")
+}
