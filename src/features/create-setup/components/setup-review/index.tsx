@@ -104,7 +104,7 @@ function SetupReview({ setupId }: SetupReviewProps) {
 
         await publishSetup.mutateAsync({ setupId })
 
-        await navigate({ to: '/' })
+        await navigate({ to: '/setups' })
       } catch (error) {
         form.setError('root', {
           message:

@@ -190,6 +190,14 @@ function MobileNav({ isAuthenticated }: MobileNavProps) {
                 Navigation
               </p>
 
+              <MobileNavItem
+                to="/setups"
+                icon={<Icon name="layout-grid" aria-hidden />}
+                label="Browse setups"
+                description="Explore community workspaces"
+                onClick={close}
+              />
+
               {isAuthenticated ? (
                 <>
                   <MobileNavItem

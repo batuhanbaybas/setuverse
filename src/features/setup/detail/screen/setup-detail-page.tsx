@@ -15,6 +15,7 @@ import { cn } from '#/shared/lib/utils'
 
 import SetupDetailCanvas from '../components/setup-detail-canvas'
 import SetupDetailItemList from '../components/setup-detail-item-list'
+import SetupExploreHint from '../components/setup-explore-hint'
 import useGetSetupDetail from '../service/use-get-setup-detail'
 
 type SetupDetailPageProps = {
@@ -30,10 +31,10 @@ function getInitials(name: string) {
     .toUpperCase()
 }
 
-function BackToHomeLink({ className }: { className?: string }) {
+function BackToSetupsLink({ className }: { className?: string }) {
   return (
     <LinkButton
-      to="/"
+      to="/setups"
       variant="ghost"
       size="sm"
       className={cn(
@@ -41,8 +42,8 @@ function BackToHomeLink({ className }: { className?: string }) {
         className,
       )}
     >
-      <Icon name="home" aria-hidden />
-      Back to home
+      <Icon name="layout-grid" aria-hidden />
+      Back to setups
     </LinkButton>
   )
 }
@@ -55,7 +56,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
   if (isPending) {
     return (
       <section className="py-6 sm:py-8">
-        <BackToHomeLink className="mb-6" />
+        <BackToSetupsLink className="mb-6" />
         <div className="py-8 text-center text-sm text-muted-foreground">
           Loading setup...
         </div>
@@ -66,7 +67,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
   if (isError) {
     return (
       <section className="py-6 sm:py-8">
-        <BackToHomeLink className="mb-6" />
+        <BackToSetupsLink className="mb-6" />
         <EmptyState
           title="Failed to load setup"
           description="Something went wrong. Please try again later."
@@ -78,7 +79,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
   if (!setup) {
     return (
       <section className="py-6 sm:py-8">
-        <BackToHomeLink className="mb-6" />
+        <BackToSetupsLink className="mb-6" />
         <EmptyState
           title="Setup not found"
           description="This setup may have been removed or is not published yet."
@@ -91,7 +92,7 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
 
   return (
     <section className="py-6 sm:py-8">
-      <BackToHomeLink className="mb-4" />
+      <BackToSetupsLink className="mb-4" />
       <header className="space-y-4 pb-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-2">
@@ -137,7 +138,11 @@ function SetupDetailPage({ setupId }: SetupDetailPageProps) {
         ) : null}
       </header>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      {setup.items.length > 0 ? (
+        <SetupExploreHint />
+      ) : null}
+
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="flex min-w-0 flex-col gap-3 lg:col-span-8">
           {setup.imageUrl ? (
             <SetupDetailCanvas

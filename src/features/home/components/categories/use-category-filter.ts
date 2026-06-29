@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import type { IconName } from '#/shared/components/icons/icon-list'
 
-import { homeRouteApi } from '#/features/home/lib/home-route'
+import { setupsRouteApi } from '#/features/home/lib/setups-route'
 import type { CategoryItem } from './types'
 
 const ALL_CATEGORY: CategoryItem = {
@@ -12,8 +12,8 @@ const ALL_CATEGORY: CategoryItem = {
 }
 
 function useCategoryFilter() {
-  const { categories } = homeRouteApi.useRouteContext()
-  const { category: selectedCategory } = homeRouteApi.useSearch()
+  const { categories } = setupsRouteApi.useRouteContext()
+  const { category: selectedCategory } = setupsRouteApi.useSearch()
 
   const categoryItems = useMemo<CategoryItem[]>(
     () =>
