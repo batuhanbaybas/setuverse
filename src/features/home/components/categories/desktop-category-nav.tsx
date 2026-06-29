@@ -2,11 +2,11 @@ import Icon from '#/shared/components/icons'
 import type { IconName } from '#/shared/components/icons/icon-list'
 import LinkButton from '#/shared/components/ui/button/link-button'
 
-import { homeRouteApi } from '#/features/home/lib/home-route'
+import { setupsRouteApi } from '#/features/home/lib/setups-route'
 
 function DesktopCategoryNav() {
-  const { categories } = homeRouteApi.useRouteContext()
-  const { category: selectedCategory } = homeRouteApi.useSearch()
+  const { categories } = setupsRouteApi.useRouteContext()
+  const { category: selectedCategory } = setupsRouteApi.useSearch()
 
   const visibleCategories = categories.filter(
     (category) => category.slug !== '/',
@@ -21,7 +21,7 @@ function DesktopCategoryNav() {
         variant={selectedCategory ? 'outline' : 'default'}
         size="sm"
         className="md:h-10 md:px-4"
-        to="/"
+        to="/setups"
       >
         <Icon name="layout-grid" />
         All
@@ -29,7 +29,8 @@ function DesktopCategoryNav() {
       {visibleCategories.map((category) => (
         <LinkButton
           key={category.id}
-          to={`/?category=${category.slug}`}
+          to="/setups"
+          search={{ category: category.slug }}
           variant={selectedCategory === category.slug ? 'default' : 'outline'}
           size="sm"
           className="md:h-10 md:px-4"

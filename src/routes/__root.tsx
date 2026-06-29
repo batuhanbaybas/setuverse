@@ -28,7 +28,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Setuverse',
+        title: 'Setuverse — Discover & share desk setups',
+      },
+      {
+        name: 'description',
+        content:
+          'Browse real workspace setups, explore tagged gear on photos, save favorites, and share your own desk setup with the community.',
       },
     ],
     links: [

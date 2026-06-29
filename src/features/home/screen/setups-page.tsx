@@ -6,12 +6,12 @@ import SetupCard from '#/shared/components/setup-card'
 
 import Categories from '../components/categories/index'
 import useCategoryFilter from '../components/categories/use-category-filter'
-import { homeRouteApi } from '../lib/home-route'
+import { setupsRouteApi } from '../lib/setups-route'
 import useGetPublishedSetups from '../service/use-get-published-setups'
 
-function HomePage() {
+function SetupsPage() {
   const { selectedCategory } = useCategoryFilter()
-  const { categories } = homeRouteApi.useRouteContext()
+  const { categories } = setupsRouteApi.useRouteContext()
 
   const categoryId = useMemo(() => {
     if (!selectedCategory) {
@@ -31,7 +31,17 @@ function HomePage() {
   return (
     <section className="py-6 sm:py-8">
       <header className="pb-6">
-        <Categories />
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Browse setups
+            </h1>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              Filter by category or open any card to explore the gear inside.
+            </p>
+          </div>
+          <Categories />
+        </div>
       </header>
 
       <section className="space-y-4">
@@ -76,4 +86,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default SetupsPage

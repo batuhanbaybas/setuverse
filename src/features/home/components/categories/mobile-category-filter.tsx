@@ -14,11 +14,11 @@ function MobileCategoryFilter() {
     setOpen(false)
 
     if (!slug) {
-      void navigate({ to: '/' })
+      void navigate({ to: '/setups' })
       return
     }
 
-    void navigate({ to: '/', search: { category: slug } })
+    void navigate({ to: '/setups', search: { category: slug } })
   }
 
   return (

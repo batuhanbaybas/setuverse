@@ -1,17 +1,20 @@
-import HomePage from '#/features/home/screen/home-page'
-import { homeSearchSchema } from '#/features/home/lib/home-list-search'
-import { getCategories } from '#/features/home/server/get-categories.functions'
+import LandingPage from '#/features/home/screen/landing-page'
+import { getMostLikedSetupsFn } from '#/features/home/server/get-most-liked-setups.functions'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_main/')({
-  validateSearch: homeSearchSchema,
-  beforeLoad: async () => {
-    const categories = await getCategories()
-    return { categories }
+  loader: async () => {
+    const { setups } = await getMostLikedSetupsFn({
+      data: { take: 3 },
+    })
+
+    return { mostLikedSetups: setups }
   },
-  component: Home,
+  component: Landing,
 })
 
-function Home() {
-  return <HomePage />
+function Landing() {
+  const { mostLikedSetups = [] } = Route.useLoaderData()
+
+  return <LandingPage mostLikedSetups={mostLikedSetups} />
 }
