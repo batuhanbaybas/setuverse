@@ -22,6 +22,7 @@ model Setup {
     items SetupItem[]
     likes SetupLike[]
     saves SetupSave[]
+    rates SetupRate[]
 
     @@index([status, publishedAt])
     @@index([categoryId])

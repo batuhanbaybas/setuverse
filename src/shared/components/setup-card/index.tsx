@@ -57,7 +57,7 @@ function SetupCard({
               ) : null}
             </div>
             <SetupCardInfo
-              setupId={setupId}
+              setupId={setupId ?? ''}
               title={title}
               category={category}
               publisherInfo={publisherInfo}

@@ -20,6 +20,7 @@ model User {
   setups Setup[]
   setupLikes SetupLike[]
   setupSaves SetupSave[]
+  setupRates SetupRate[]
   @@unique([email])
   @@map("user")
 }
