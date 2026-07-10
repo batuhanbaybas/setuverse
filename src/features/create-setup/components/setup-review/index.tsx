@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useNavigate } from '@tanstack/react-router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
 import useGetCategories from '#/features/home/service/use-get-categories'
@@ -30,15 +30,10 @@ import {
   setupInfoFormSchema,
 } from '../../lib/setup-info-form'
 import type { SetupInfoFormValues } from '../../lib/setup-info-form'
-import type { SetupTagItemFormValues } from '../../lib/setup-tag-item-form'
-import useAddSetupItem from '../../service/setup-items/use-add-setup-item'
-import useDeleteSetupItem from '../../service/setup-items/use-delete-setup-item'
 import usePublishSetup from '../../service/use-publish-setup'
 import useUpdateSetupInfo from '../../service/setup-info/use-update-setup-info'
-import useUpdateSetupItem from '../../service/setup-items/use-update-setup-item'
 import CategoryOption from '../setup-info/category-option'
 import TagCanvas from '../share/tag-canvas'
-import TagItemDialog from '../setup-tags/tag-item-dialog/tag-item-dialog'
 import TagItemList from '../share/tag-item-list'
 import ReviewImageSection from './review-image-section'
 import { getSetupDraftFn } from '../../server/get-setup-draft.functions'
@@ -53,9 +48,6 @@ function SetupReview({ setupId }: SetupReviewProps) {
   const categoriesQuery = useGetCategories()
   const updateSetupInfo = useUpdateSetupInfo()
   const publishSetup = usePublishSetup()
-  const addItem = useAddSetupItem(setupId)
-  const updateItem = useUpdateSetupItem(setupId)
-  const deleteItem = useDeleteSetupItem(setupId)
 
   const categories = useMemo(
     () =>

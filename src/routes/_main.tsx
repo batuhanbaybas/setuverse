@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 import Navbar from '#/features/shell/components/navbar'
+import ScrollToTop from '#/shared/components/scroll-to-top'
 import { pageContainerClass } from '#/shared/lib/layout'
 
 export const Route = createFileRoute('/_main')({
@@ -9,11 +10,12 @@ export const Route = createFileRoute('/_main')({
 
 function MainLayout() {
   return (
-    <main className="min-h-screen">
+    <main className="relative min-h-screen">
       <Navbar />
       <div className={pageContainerClass}>
         <Outlet />
       </div>
+      <ScrollToTop />
     </main>
   )
 }

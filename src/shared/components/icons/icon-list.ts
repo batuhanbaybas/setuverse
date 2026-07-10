@@ -1,6 +1,7 @@
 import type { IconType } from 'react-icons'
 import { FaGoogle } from 'react-icons/fa6'
 import {
+  LuArrowUp,
   LuCheck,
   LuChevronRight,
   LuCircle,
@@ -54,6 +55,7 @@ export const iconList = [
   { name: 'external-link', icon: LuExternalLink },
   { name: 'heart', icon: LuHeart },
   { name: 'bookmark', icon: LuBookmark },
+  { name: 'arrow-up', icon: LuArrowUp },
   // category icons
   { name: 'layout-grid', icon: LuLayoutGrid },
   { name: 'code', icon: LuCodeXml },
