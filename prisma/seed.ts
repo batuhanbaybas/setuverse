@@ -1,8 +1,9 @@
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../src/generated/prisma/client'
+import { SEED_EMAIL_DOMAIN } from '../src/shared/lib/seed-data'
 
 const SETUP_COUNT = 280
-const EMAIL_DOMAIN = 'setuver.space'
+const EMAIL_DOMAIN = SEED_EMAIL_DOMAIN
 const LEGACY_SEED_USER_IDS = ['seed_dummy_user_001']
 const LEGACY_SEED_EMAILS = ['dummy.setups@setuverse.local']
 const REMOVED_CATEGORY_SLUGS = ['apple-setup', 'desk-setup', 'plant-corner'] as const

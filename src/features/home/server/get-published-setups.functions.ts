@@ -2,13 +2,12 @@ import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
 import type { Prisma } from '#/generated/prisma/client'
-import { prisma } from '#/shared/lib/prisma'
 
 import {
   buildHomePagination
-  
 } from '../lib/home-pagination'
-import type {HomePagination} from '../lib/home-pagination';
+import type { HomePagination } from '../lib/home-pagination'
+import { findPublishedSetupsRealFirst } from '../lib/prioritize-real-setups'
 
 const getPublishedSetupsInputSchema = z.object({
   take: z.number().int().min(1).max(50).default(10),
@@ -32,40 +31,31 @@ export type GetPublishedSetupsResult = {
   pagination: HomePagination
 }
 
+const publishedSetupInclude = {
+  category: true,
+  user: true,
+  likes: true,
+  _count: {
+    select: {
+      items: true,
+    },
+  },
+} satisfies Prisma.SetupInclude
+
 export const getPublishedSetupsFn = createServerFn({ method: 'GET' })
   .validator(getPublishedSetupsInputSchema)
   .handler(async ({ data }): Promise<GetPublishedSetupsResult> => {
-    const where = {
-      status: 'PUBLISHED' as const,
-      categoryId: data.categoryId,
-    }
-
     const page = Math.floor(data.skip / data.take) + 1
 
-    const [total, setups] = await Promise.all([
-      prisma.setup.count({ where }),
-      prisma.setup.findMany({
-        where,
-        include: {
-          category: true,
-          user: true,
-          likes: true,
-          _count: {
-            select: {
-              items: true,
-            },
-          },
-        },
-        orderBy: {
-          publishedAt: 'desc',
-        },
-        take: data.take,
-        skip: data.skip,
-      }),
-    ])
+    const { setups, total } = await findPublishedSetupsRealFirst({
+      take: data.take,
+      skip: data.skip,
+      categoryId: data.categoryId,
+      include: publishedSetupInclude,
+    })
 
     return {
-      setups,
+      setups: setups as PublishedSetup[],
       pagination: buildHomePagination(total, page, data.take),
     }
   })
