@@ -1,261 +1,244 @@
-Welcome to your new TanStack Start app! 
+# Setuverse
 
-# Getting Started
+**Setuverse** is a community gallery for workspace setups. Browse real desk photos, explore every tagged item inside them, save favorites, and share your own setup with the community.
 
-To run this application:
+Browsing is open to everyone. Sharing requires an account (Google OAuth).
 
-```bash
-pnpm install
-pnpm dev
-```
+---
 
-# Building For Production
+## Features
 
-To build this application for production:
+- **Setup gallery** — Discover published workspace photos by category
+- **Tagged items** — Click hotspots on a photo to see monitors, keyboards, and other gear
+- **Create flow** — Upload images, place item tags, review, and submit for publishing
+- **Social actions** — Like, save, and rate setups
+- **Profiles** — Public profiles with setups, likes, saves, and custom links
+- **Admin panel** — Moderate setups, manage users, categories, and images
+- **Image pipeline** — Cloudflare R2 storage with Sharp-based optimization
 
-```bash
-pnpm build
-```
+---
 
-## Testing
+## Tech stack
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+| Layer | Technology |
+| --- | --- |
+| Framework | [TanStack Start](https://tanstack.com/start) (React 19, SSR) |
+| Routing & data | TanStack Router, TanStack Query |
+| Auth | [Better Auth](https://www.better-auth.com) + Google OAuth |
+| Database | PostgreSQL + [Prisma](https://www.prisma.io) |
+| Storage | Cloudflare R2 (S3-compatible) |
+| UI | Tailwind CSS 4, Radix UI / shadcn-style components |
+| Validation | Zod, React Hook Form |
+| Runtime / deploy | Nitro (Node server) |
+| Package manager | Yarn |
 
-```bash
-pnpm test
-```
+---
 
-## Styling
+## Prerequisites
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+- **Node.js** `22.14` (see `.nvmrc`)
+- **Yarn**
+- **Docker** (recommended for PostgreSQL)
+- A **Google Cloud OAuth** client (for login)
+- A **Cloudflare R2** bucket (for setup images)
 
-### Removing Tailwind CSS
+---
 
-If you prefer not to use Tailwind CSS:
+## Getting started
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `pnpm add @tailwindcss/vite tailwindcss --dev`
-
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
-
-
-## Deploy with Nitro
-
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
+### 1. Clone and install
 
 ```bash
-npm run build
-node dist/server/index.mjs
+git clone https://github.com/<your-org>/setuverse.git
+cd setuverse
+yarn install
 ```
 
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+### 2. Environment variables
 
 ```bash
-pnpm dlx shadcn@latest add button
+cp .env.example .env
 ```
 
+Fill in the values described in [Environment variables](#environment-variables). At minimum you need a working `DATABASE_URL`, `BETTER_AUTH_SECRET`, Google OAuth credentials, and R2 settings for uploads.
 
-## Setting up Better Auth
-
-1. Generate and set the `BETTER_AUTH_SECRET` environment variable in your `.env.local`:
-
-   ```bash
-   pnpm dlx @better-auth/cli secret
-   ```
-
-2. Visit the [Better Auth documentation](https://www.better-auth.com) to unlock the full potential of authentication in your app.
-
-### Adding a Database (Optional)
-
-Better Auth can work in stateless mode, but to persist user data, add a database:
-
-```typescript
-// src/lib/auth.ts
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
-
-export const auth = betterAuth({
-  database: new Pool({
-    connectionString: process.env.DATABASE_URL,
-  }),
-  // ... rest of config
-});
-```
-
-Then run migrations:
+Generate an auth secret:
 
 ```bash
-pnpm dlx @better-auth/cli migrate
+openssl rand -base64 32
 ```
 
+### 3. Start PostgreSQL
 
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
+```bash
+docker compose up -d
 ```
 
-Then anywhere in your JSX you can use it like so:
+This starts Postgres 16 using the credentials from your `.env`.
 
-```tsx
-<Link to="/about">About</Link>
+### 4. Prepare the database
+
+```bash
+yarn db:generate
+yarn db:migrate
+yarn db:seed   # optional sample data
 ```
 
-This will create a link that will navigate to the `/about` route.
+### 5. Run the app
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
+```bash
+yarn dev
 ```
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+The app starts at [http://localhost:3000](http://localhost:3000).
 
-## Server Functions
+---
 
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
+## Environment variables
 
-```tsx
-import { createServerFn } from '@tanstack/react-start'
+Copy from `.env.example`. Important keys:
 
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
+| Variable | Description |
+| --- | --- |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `POSTGRES_PORT` | Local Docker Postgres settings |
+| `DATABASE_URL` | Prisma connection string |
+| `BASE_URL` / `VITE_BASE_URL` | App origin (e.g. `http://localhost:3000`) |
+| `BETTER_AUTH_SECRET` | Better Auth signing secret |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth credentials |
+| `R2_ENDPOINT` / `R2_ACCOUNT_ID` / `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_BUCKET_NAME` / `R2_PUBLIC_URL` | Cloudflare R2 configuration |
 
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
+Never commit `.env`. Only `.env.example` belongs in the repository.
+
+---
+
+## Project structure
+
+```text
+src/
+  features/          # Domain modules (auth, home, create-setup, setup, profile, admin, …)
+  routes/            # File-based TanStack Router routes
+  shared/            # Shared UI, libs, and utilities
+  integrations/      # Cross-cutting integrations (e.g. Query)
+  generated/         # Prisma client output (gitignored)
+prisma/
+  schema/            # Split Prisma models
+  migrations/        # SQL migrations
+  seed.ts            # Seed script
 ```
 
-## API Routes
+Feature code is organized by domain (`screen`, `components`, `server`, `service`, `lib`) so UI, server functions, and hooks stay close to the feature they belong to.
 
-You can create API routes by using the `server` property in your route definitions:
+---
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
+## Scripts
 
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
+| Command | Description |
+| --- | --- |
+| `yarn dev` | Generate Prisma client and start Vite dev server on port 3000 |
+| `yarn build` | Production build |
+| `yarn start` | Run the Nitro production server (`.output/server/index.mjs`) |
+| `yarn test` | Run Vitest |
+| `yarn lint` / `yarn format` / `yarn check` | Lint and format |
+| `yarn db:generate` | Generate Prisma client |
+| `yarn db:migrate` | Create / apply migrations (dev) |
+| `yarn db:deploy` | Apply migrations (production) |
+| `yarn db:push` | Push schema without a migration (prototyping) |
+| `yarn db:seed` | Seed the database |
+| `yarn db:studio` | Open Prisma Studio |
+| `yarn test:r2` | Smoke-test R2 upload credentials |
+
+---
+
+## Database
+
+Prisma schemas live under `prisma/schema/` and map to PostgreSQL.
+
+Core domain models:
+
+- **User / Session / Account** — Better Auth identity
+- **Profile / ProfileLink** — Public profile data
+- **Setup** — Draft → pending → published (or rejected) workspace posts
+- **SetupItem** — Tagged products on a setup image
+- **Category** — Setup categories
+- **SetupLike / SetupSave / SetupRate** — Engagement
+
+Useful workflow:
+
+```bash
+yarn db:migrate     # change schema + create migration
+yarn db:studio      # inspect data
 ```
 
-## Data Fetching
+---
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+## Authentication
 
-For example:
+Auth is handled by Better Auth with a Prisma adapter and Google as the social provider. Sessions use TanStack Start cookies.
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
+On first sign-in, a related `Profile` row is created automatically.
 
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
+Configure the Google OAuth redirect URI to match your `BASE_URL` (for local development: `http://localhost:3000/api/auth/callback/google` — confirm against your Better Auth / Google Cloud console settings).
 
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
+---
+
+## Media storage (R2)
+
+Setup images are uploaded to Cloudflare R2. The create flow optimizes images with Sharp before storage.
+
+Ensure `R2_PUBLIC_URL` points at a publicly readable URL for your bucket (custom domain or `r2.dev` URL).
+
+---
+
+## Deployment
+
+### Production build (Node)
+
+```bash
+yarn build
+yarn start
 ```
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+### Docker
 
-# Demo files
+A multi-stage `Dockerfile` builds and runs the app. Migrations run on container start via `docker-entrypoint.sh`.
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+Typical flow:
 
-# Learn More
+1. Provide production env vars (database, auth, R2, `BASE_URL`)
+2. Ensure Postgres is reachable
+3. Build and run the image
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+Local Postgres for development remains available via `docker compose up -d`.
 
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+---
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository and create a feature branch
+2. Keep changes focused and consistent with the existing feature-based layout
+3. Run `yarn lint` and `yarn test` before opening a PR
+4. Describe the motivation and how to verify the change
+
+If you are fixing a bug, include steps to reproduce. If you are proposing a larger feature, open an issue first so scope can be discussed.
+
+---
+
+## Roadmap ideas
+
+- Additional OAuth providers
+- Richer discovery (search, filters, collections)
+- Moderation tooling improvements
+
+---
+
+## License
+
+License to be decided. Until a `LICENSE` file is added, all rights are reserved by the author(s). If you plan to use or redistribute this project, open an issue to confirm terms.
+
+---
+
+## Acknowledgments
+
+Built with [TanStack](https://tanstack.com), [Better Auth](https://www.better-auth.com), [Prisma](https://www.prisma.io), and [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/).
