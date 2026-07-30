@@ -1,5 +1,5 @@
 import type { IconType } from 'react-icons'
-import { FaGoogle } from 'react-icons/fa6'
+import { FaGithub, FaGoogle } from 'react-icons/fa6'
 import {
   LuArrowUp,
   LuCheck,
@@ -64,6 +64,7 @@ export const iconList = [
   { name: 'apple', icon: LiaApple },
   // social icons
   { name: 'google', icon: FaGoogle },
+  { name: 'github', icon: FaGithub },
 ] as const satisfies ReadonlyArray<{ name: string; icon: IconType }>
 
 export type IconName = (typeof iconList)[number]['name']
